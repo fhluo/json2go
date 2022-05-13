@@ -6,38 +6,45 @@ import (
 	"strings"
 )
 
-var nameRegexp = regexp.MustCompile(`^[a-zA-Z_]\w*$`)
+var (
+	allCapsRe     = regexp.MustCompile(`^[A-Z]{2,}\d*$`)
+	capitalizedRe = regexp.MustCompile(`[A-Z][a-z]+\d*`)
+)
 
-func toFieldName(s string) string {
+var ALLCaps = map[string]bool{"ID": true}
+
+func SetAcronyms(acronyms ...string) {
+	for _, acronym := range acronyms {
+		ALLCaps[acronym] = true
+	}
+}
+
+func ToCamelCase(s string) string {
 	words := strings.Split(s, "_")
 
 	for i, word := range words {
 		if len(word) != 0 {
-			words[i] = strings.ToUpper(word[:1]) + strings.ToLower(word[1:])
+			if allCapsRe.MatchString(word) {
+				words[i] = s[:1] + strings.ToLower(s[1:])
+			} else {
+				words[i] = strings.ToUpper(word[:1]) + word[1:]
+			}
 		}
 	}
 
-	return strings.Join(words, "")
-}
-
-func fieldNameConverter() func(s string) string {
-	counter := make(map[string]int)
-
-	return func(s string) string {
-		result := toFieldName(s)
-		counter[result]++
-
-		if counter[result] == 1 {
-			return result
-		} else {
-			return result + strconv.Itoa(counter[result])
+	return capitalizedRe.ReplaceAllStringFunc(strings.Join(words, ""), func(s string) string {
+		if word := strings.ToUpper(s); ALLCaps[word] {
+			return word
 		}
-	}
+		return s
+	})
 }
+
+var nameRe = regexp.MustCompile(`^[a-zA-Z_]\w*$`)
 
 func validNames(items []string) bool {
 	for _, item := range items {
-		if !nameRegexp.MatchString(item) {
+		if !nameRe.MatchString(item) {
 			return false
 		}
 	}

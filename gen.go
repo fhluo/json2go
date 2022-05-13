@@ -4,6 +4,7 @@ import (
 	gen "github.com/dave/jennifer/jen"
 	"github.com/tidwall/gjson"
 	"golang.org/x/exp/maps"
+	"strconv"
 )
 
 func Type(name string, json gjson.Result) gen.Code {
@@ -55,27 +56,14 @@ func UnnamedStructOrMap(json gjson.Result) gen.Code {
 		}
 	}
 
-	return gen.StructFunc(func(group *gen.Group) {
-		convert := fieldNameConverter()
+	s := NewUnnamedStruct()
 
-		json.ForEach(func(key, value gjson.Result) bool {
-			var code gen.Code
-
-			switch t := JSONType(value); t {
-			case Object:
-				code = UnnamedStructOrMap(value)
-			case Array:
-				code = UnnamedSlice(value)
-			default:
-				code = t.Code()
-			}
-
-			name := key.String()
-			group.Id(convert(name)).Add(code).Tag(map[string]string{"json": name})
-
-			return true
-		})
+	json.ForEach(func(key, value gjson.Result) bool {
+		s.Add(key.String(), UnnamedType(value), false)
+		return true
 	})
+
+	return s.Code()
 }
 
 func UnnamedSlice(json gjson.Result) gen.Code {
@@ -126,44 +114,74 @@ func UnnamedStructOrMapFromArray(array []gjson.Result) gen.Code {
 		}
 	}
 
-	return gen.StructFunc(func(group *gen.Group) {
-		convert := fieldNameConverter()
+	s := NewUnnamedStruct()
 
-		for _, name := range names {
-			fieldValues := fields[name]
+	for _, name := range names {
+		fieldValues := fields[name]
 
-			t, null := JSONArrayType(fieldValues)
-			omitempty := len(fieldValues) != len(array)
+		t, null := JSONArrayType(fieldValues)
+		omitempty := len(fieldValues) != len(array)
 
-			var code gen.Code
+		var code gen.Code
 
-			switch t {
-			case Any:
-				code = t.Code()
-			case Array:
-				code = gen.Index().Add(UnnamedTypeFromArray(reduceArrayResults(fieldValues)))
-			case Object:
-				if null || omitempty {
-					code = gen.Op("*").Add(UnnamedStructOrMapFromArray(fieldValues))
-				} else {
-					code = UnnamedStructOrMapFromArray(fieldValues)
-				}
-			default:
-				if null || omitempty {
-					code = gen.Op("*").Add(t.Code())
-				} else {
-					code = t.Code()
-				}
-			}
-
-			tag := make(map[string]string)
-			if omitempty {
-				tag["json"] = name + ",omitempty"
+		switch t {
+		case Any:
+			code = t.Code()
+		case Array:
+			code = gen.Index().Add(UnnamedTypeFromArray(reduceArrayResults(fieldValues)))
+		case Object:
+			if null || omitempty {
+				code = gen.Op("*").Add(UnnamedStructOrMapFromArray(fieldValues))
 			} else {
-				tag["json"] = name
+				code = UnnamedStructOrMapFromArray(fieldValues)
 			}
-
-			group.Id(convert(name)).Add(code).Tag(tag)
+		default:
+			if null || omitempty {
+				code = gen.Op("*").Add(t.Code())
+			} else {
+				code = t.Code()
+			}
 		}
-	})
+
+		s.Add(name, code, omitempty)
+	}
+
+	return s.Code()
+}
+
+func JSONTag(s string) gen.Code {
+	return gen.Tag(map[string]string{"json": s})
+}
+
+type UnnamedStruct struct {
+	Fields []gen.Code
+
+	counter map[string]int
+}
+
+func NewUnnamedStruct() *UnnamedStruct {
+	return &UnnamedStruct{counter: make(map[string]int)}
+}
+
+func (s *UnnamedStruct) naming(key string) string {
+	name := ToCamelCase(key)
+	if s.counter[name]++; s.counter[name] != 1 {
+		name += strconv.Itoa(s.counter[name])
+	}
+	return name
+}
+
+func (s *UnnamedStruct) Add(key string, type_ gen.Code, omitempty bool) {
+	var tag gen.Code
+	if omitempty {
+		tag = JSONTag(key + ",omitempty")
+	} else {
+		tag = JSONTag(key)
+	}
+
+	s.Fields = append(s.Fields, gen.Id(s.naming(key)).Add(type_, tag))
+}
+
+func (s UnnamedStruct) Code() gen.Code {
+	return gen.Struct(s.Fields...)
 }
