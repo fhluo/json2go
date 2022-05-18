@@ -7,8 +7,10 @@ import (
 )
 
 var (
-	allCapsRe     = regexp.MustCompile(`^[A-Z]{2,}\d*$`)
-	capitalizedRe = regexp.MustCompile(`[A-Z][a-z]+\d*`)
+	allCapsRe      = regexp.MustCompile(`^[A-Z]{2,}\d*$`)
+	capitalizedRe  = regexp.MustCompile(`[A-Z][a-z]+\d*`)
+	followNonCapRe = regexp.MustCompile(`([a-z\d])([A-Z])`)
+	followCapRe    = regexp.MustCompile(`([A-Z])([A-Z][a-z]+)`)
 )
 
 var ALLCaps = map[string]bool{"ID": true}
@@ -25,7 +27,7 @@ func ToCamelCase(s string) string {
 	for i, word := range words {
 		if len(word) != 0 {
 			if allCapsRe.MatchString(word) {
-				words[i] = s[:1] + strings.ToLower(s[1:])
+				words[i] = word[:1] + strings.ToLower(word[1:])
 			} else {
 				words[i] = strings.ToUpper(word[:1]) + word[1:]
 			}
@@ -38,6 +40,12 @@ func ToCamelCase(s string) string {
 		}
 		return s
 	})
+}
+
+func ToSnakeCase(s string) string {
+	s = followNonCapRe.ReplaceAllString(s, "${1}_$2")
+	s = followCapRe.ReplaceAllString(s, "${1}_$2")
+	return strings.ToLower(s)
 }
 
 var nameRe = regexp.MustCompile(`^[a-zA-Z_]\w*$`)
