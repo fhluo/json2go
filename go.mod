@@ -5,7 +5,7 @@ go 1.18
 require (
 	github.com/dave/jennifer v1.5.0
 	github.com/tidwall/gjson v1.14.1
-	golang.org/x/exp v0.0.0-20220428152302-39d4317da171
+	golang.org/x/exp v0.0.0-20220516143420-24438e51023a
 )
 
 require (
