@@ -1,3 +1,3 @@
 # json2go
 
-Package json2go generates a Go type definition from JSON.
+Package json2go provides generating a Go type definition from JSON.
