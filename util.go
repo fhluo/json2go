@@ -11,6 +11,7 @@ var (
 	capitalizedRe  = regexp.MustCompile(`[A-Z][a-z]+\d*`)
 	followNonCapRe = regexp.MustCompile(`([a-z\d])([A-Z])`)
 	followCapRe    = regexp.MustCompile(`([A-Z])([A-Z][a-z]+)`)
+	splitRe        = regexp.MustCompile(`_|\s+`)
 )
 
 var ALLCaps = map[string]bool{"ID": true}
@@ -22,7 +23,7 @@ func SetAcronyms(acronyms ...string) {
 }
 
 func ToCamelCase(s string) string {
-	words := strings.Split(s, "_")
+	words := splitRe.Split(s, -1)
 
 	for i, word := range words {
 		if len(word) != 0 {
