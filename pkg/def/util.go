@@ -1,4 +1,4 @@
-package json2go
+package def
 
 import (
 	"regexp"
@@ -60,7 +60,7 @@ func validNames(items []string) bool {
 	return true
 }
 
-func validInts(items []string) bool {
+func validIntegers(items []string) bool {
 	for _, item := range items {
 		if _, err := strconv.Atoi(item); err != nil {
 			return false

@@ -1,4 +1,4 @@
-package json2go
+package def
 
 import (
 	gen "github.com/dave/jennifer/jen"

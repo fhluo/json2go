@@ -1,4 +1,4 @@
-package json2go
+package def
 
 import (
 	gen "github.com/dave/jennifer/jen"
@@ -49,7 +49,7 @@ func UnnamedStructOrMap(json gjson.Result) gen.Code {
 	keys := maps.Keys(json.Map())
 	if !validNames(keys) {
 		code := UnnamedTypeFromArray(maps.Values(json.Map()))
-		if validInts(keys) {
+		if validIntegers(keys) {
 			return gen.Map(gen.Int()).Add(code)
 		} else {
 			return gen.Map(gen.String()).Add(code)
@@ -107,7 +107,7 @@ func UnnamedStructOrMapFromArray(array []gjson.Result) gen.Code {
 
 	if !validNames(names) {
 		code := UnnamedTypeFromArray(reduce(maps.Values(fields)))
-		if validInts(names) {
+		if validIntegers(names) {
 			return gen.Map(gen.Int()).Add(code)
 		} else {
 			return gen.Map(gen.String()).Add(code)
@@ -182,6 +182,6 @@ func (s *UnnamedStruct) Add(key string, type_ gen.Code, omitempty bool) {
 	s.Fields = append(s.Fields, gen.Id(s.naming(key)).Add(type_, tag))
 }
 
-func (s UnnamedStruct) Code() gen.Code {
+func (s *UnnamedStruct) Code() gen.Code {
 	return gen.Struct(s.Fields...)
 }
