@@ -3,7 +3,6 @@ package cmd
 import (
 	"fmt"
 	"github.com/fhluo/json2go/pkg/def"
-	"github.com/fhluo/json2go/pkg/util"
 	"github.com/spf13/cobra"
 	"log"
 	"os"
@@ -40,7 +39,7 @@ var rootCmd = &cobra.Command{
 				base := filepath.Base(path)
 				name := strings.TrimSuffix(base, filepath.Ext(path))
 
-				data, err = util.Generate(data, output, fmt.Sprintf("Generated from %s", base), def.ToCamelCase(name))
+				data, err = Generate(data, output, fmt.Sprintf("Generated from %s", base), def.ToCamelCase(name))
 				if err != nil {
 					log.Println(err)
 					return
