@@ -5,6 +5,8 @@
     import {drawSelection, keymap} from "@codemirror/view";
     import {indentWithTab} from "@codemirror/commands";
     import {onMount} from "svelte";
+    import {go} from "@codemirror/legacy-modes/mode/go";
+    import {StreamLanguage} from "@codemirror/language";
 
     let jsonView: EditorView
     let goView: EditorView
@@ -16,7 +18,7 @@
         })
 
         goView = new EditorView({
-            extensions: [basicSetup, keymap.of([indentWithTab]), drawSelection()],
+            extensions: [basicSetup, keymap.of([indentWithTab]), drawSelection(), StreamLanguage.define(go)],
             parent: document.querySelector("#go")
         })
     })
@@ -90,14 +92,5 @@
 
     .button:hover {
         @apply bg-gray-100;
-    }
-
-    textarea {
-        @apply border-0 shadow-inner resize-none;
-        @apply font-mono;
-    }
-
-    textarea:focus {
-        @apply ring-0;
     }
 </style>
