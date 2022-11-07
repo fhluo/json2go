@@ -3,10 +3,29 @@
 @tailwind utilities;
 
 #app {
-    @apply h-screen text-center;
+    @apply h-screen max-h-screen;
 }
 
+.cm-editor {
+    @apply h-full border-b max-h-full;
+}
 
-::-webkit-scrollbar {
+.cm-editor .cm-scroller {
+    @apply overflow-y-auto;
+}
 
+.cm-editor.cm-focused {
+    outline: 0 !important;
+}
+
+.cm-editor.cm-focused .cm-selectionBackground, ::selection {
+    @apply bg-blue-500;
+}
+
+.cm-editor .cm-content{
+    @apply font-mono bg-white/75 shadow-inner;
+}
+
+.cm-editor .cm-gutters {
+    @apply bg-white/50 font-mono pl-2;
 }

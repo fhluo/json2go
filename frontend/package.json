@@ -22,5 +22,11 @@
     "tslib": "^2.4.0",
     "typescript": "^4.6.4",
     "vite": "^3.0.0"
+  },
+  "dependencies": {
+    "@codemirror/commands": "^6.1.2",
+    "@codemirror/lang-json": "^6.0.1",
+    "@codemirror/view": "^6.4.0",
+    "codemirror": "^6.0.1"
   }
 }

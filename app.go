@@ -7,7 +7,6 @@ import (
 	"github.com/fhluo/json2go/pkg/def"
 	"github.com/tidwall/gjson"
 	"golang.design/x/clipboard"
-	"log"
 	"strings"
 )
 
@@ -31,12 +30,16 @@ func (a *App) startup(ctx context.Context) {
 }
 
 func (a *App) Generate(json string) string {
+	if !gjson.Valid(json) {
+		return "invalid json"
+	}
+
 	file := gen.NewFile("main")
 	file.Add(def.Type("T", gjson.Parse(json)))
 
 	buf := new(bytes.Buffer)
 	if err := file.Render(buf); err != nil {
-		log.Println(err)
+		return err.Error()
 	}
 
 	return strings.TrimPrefix(buf.String(), "package main\n\n")

@@ -1,60 +1,103 @@
 <script lang="ts">
     import {Generate, ReadClipboard, WriteClipboard} from '../wailsjs/go/main/App.js'
+    import {basicSetup, EditorView} from "codemirror";
+    import {json} from "@codemirror/lang-json";
+    import {drawSelection, keymap} from "@codemirror/view";
+    import {indentWithTab} from "@codemirror/commands";
+    import {onMount} from "svelte";
 
-    let code: string
-    let json: string
+    let jsonView: EditorView
+    let goView: EditorView
+
+    onMount(async () => {
+        jsonView = new EditorView({
+            extensions: [basicSetup, keymap.of([indentWithTab]), drawSelection(), json()],
+            parent: document.querySelector("#json")
+        })
+
+        goView = new EditorView({
+            extensions: [basicSetup, keymap.of([indentWithTab]), drawSelection()],
+            parent: document.querySelector("#go")
+        })
+    })
+
 
     function generate(): void {
-        Generate(json).then(result => code = result)
+        Generate(jsonView.state.doc.toString()).then(result => {
+            goView.dispatch({
+                changes: {from: 0, to: goView.state.doc.length, insert: result}
+            })
+        })
     }
 
-    function readClipboard() {
-        ReadClipboard().then(result => json = result)
+    function pasteJSON() {
+        ReadClipboard().then(result => {
+            jsonView.dispatch({
+                changes: {from: 0, to: jsonView.state.doc.length, insert: result}
+            })
+            generate()
+        })
     }
 
-    function writeClipboard(): void {
-        WriteClipboard(code)
+    function copyCode(): void {
+        WriteClipboard(goView.state.doc.toString())
     }
 </script>
 
 <main>
     <div class="flex flex-col h-screen w-screen">
-        <div>
-            <button class="w-fit px-5 py-1.5 bg-white/75 border rounded-md hover:bg-gray-100 transition self-center"
-                    on:click={generate}>
-                Generate
-            </button>
-
-            <button class="w-fit px-5 py-1.5 bg-white/75 border rounded-md hover:bg-gray-100 transition self-center"
-                    on:click={writeClipboard}>
-                Copy Code
-            </button>
-
-            <button class="w-fit px-5 py-1.5 bg-white/75 border rounded-md hover:bg-gray-100 transition self-center"
-                    on:click={readClipboard}>
-                Paste JSON
-            </button>
+        <div class="self-center justify-self-center">
+            <button class="button" on:click={generate}>Generate</button>
         </div>
 
         <div class="columns-2 gap-6 mx-8 grow mb-8 mt-4">
-            <div class="h-full">
-                <textarea bind:value={json} class="w-full h-full" autocomplete="off" on:change={generate}
-                          spellcheck="false"></textarea>
+            <div class="code h-full max-h-full flex flex-col" id="json">
+                <div class="w-full bg-white/50 border-b border-t flex flex-row">
+                    <span class="py-1 px-4 select-none text-yellow-600 font-mono">JSON</span>
+                    <button on:click={pasteJSON} class="font-mono">Paste</button>
+                </div>
             </div>
-            <div class="h-full">
-                <textarea bind:value={code} class="w-full h-full" autocomplete="off" spellcheck="false"></textarea>
+            <div class="code h-full flex flex-col" id="go">
+                <div class="w-full bg-white/50 border-b flex flex-row">
+                    <span class="py-1 px-4 select-none text-purple-600 font-mono">Go</span>
+                    <button on:click={copyCode} class="font-mono">Copy</button>
+                </div>
             </div>
         </div>
     </div>
 </main>
 
 <style>
+    .code {
+        @apply border rounded-lg py-2.5 shadow-sm transition duration-200;
+    }
+
+    .code:focus-within {
+        @apply ring-1 shadow-md;
+    }
+
+    .code button {
+        @apply px-5 py-1 ml-auto text-gray-800 select-none transition;
+    }
+
+    .code button:hover {
+        @apply bg-gray-300/25;
+    }
+
+    .button {
+        @apply w-fit px-4 py-1 bg-white/75 border rounded-md transition select-none;
+    }
+
+    .button:hover {
+        @apply bg-gray-100;
+    }
+
     textarea {
-        @apply rounded-md border-gray-300 shadow-inner resize-none;
+        @apply border-0 shadow-inner resize-none;
         @apply font-mono;
     }
 
     textarea:focus {
-        @apply ring-1 ring-blue-400;
+        @apply ring-0;
     }
 </style>
