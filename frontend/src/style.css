@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 400;
+    src: local(""), url("assets/fonts/JetBrainsMono-Regular.woff2") format("woff2");;
+}
+
 #app {
     @apply h-screen max-h-screen;
 }
@@ -22,8 +29,9 @@
     @apply bg-blue-500;
 }
 
-.cm-editor .cm-content{
-    @apply font-mono bg-white/75 shadow-inner;
+.cm-editor .cm-content {
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    @apply bg-white/75 shadow-inner;
 }
 
 .cm-editor .cm-gutters {

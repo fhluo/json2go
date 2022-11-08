@@ -7,18 +7,29 @@
     import {onMount} from "svelte";
     import {go} from "@codemirror/legacy-modes/mode/go";
     import {StreamLanguage} from "@codemirror/language";
+    import {EditorState} from "@codemirror/state";
 
     let jsonView: EditorView
     let goView: EditorView
 
+    let jsonState = EditorState.create({
+        extensions: [basicSetup, drawSelection(), keymap.of([indentWithTab]), json()],
+    })
+    let goState = EditorState.create({
+        extensions: [
+            EditorState.tabSize.of(4), basicSetup, drawSelection(),
+            keymap.of([indentWithTab]), StreamLanguage.define(go)
+        ],
+    })
+
     onMount(async () => {
         jsonView = new EditorView({
-            extensions: [basicSetup, keymap.of([indentWithTab]), drawSelection(), json()],
+            state: jsonState,
             parent: document.querySelector("#json")
         })
 
         goView = new EditorView({
-            extensions: [basicSetup, keymap.of([indentWithTab]), drawSelection(), StreamLanguage.define(go)],
+            state: goState,
             parent: document.querySelector("#go")
         })
     })
