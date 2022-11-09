@@ -8,8 +8,8 @@
     import {go} from "@codemirror/legacy-modes/mode/go";
     import {onMount} from "svelte";
 
-    let classes: string
-    export {classes as class}
+    let className: string
+    export {className as class}
 
     let element: HTMLDivElement
 
@@ -36,11 +36,11 @@
         })
     })
 
-    export let value: { set(s: string): void; get(): string } = {
-        get() {
+    export let editor: { text: string } = {
+        get text() {
             return view.state.doc.toString()
         },
-        set(s: string) {
+        set text(s: string) {
             view.dispatch({
                 changes: {from: 0, to: view.state.doc.length, insert: s}
             })
@@ -49,8 +49,7 @@
 
 </script>
 
-<div class="editor {classes}" bind:this={element}></div>
-
+<div class="editor {className}" bind:this={element}></div>
 
 <style global>
     @font-face {
