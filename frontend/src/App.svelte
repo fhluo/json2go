@@ -1,80 +1,48 @@
 <script lang="ts">
     import {Generate, ReadClipboard, WriteClipboard} from '../wailsjs/go/main/App.js'
-    import {basicSetup, EditorView} from "codemirror";
-    import {json} from "@codemirror/lang-json";
-    import {drawSelection, keymap} from "@codemirror/view";
-    import {indentWithTab} from "@codemirror/commands";
-    import {onMount} from "svelte";
-    import {go} from "@codemirror/legacy-modes/mode/go";
-    import {StreamLanguage} from "@codemirror/language";
-    import {EditorState} from "@codemirror/state";
+    import Editor from "./Editor.svelte";
 
-    let jsonView: EditorView
-    let goView: EditorView
-
-    let jsonState = EditorState.create({
-        extensions: [basicSetup, drawSelection(), keymap.of([indentWithTab]), json()],
-    })
-    let goState = EditorState.create({
-        extensions: [
-            EditorState.tabSize.of(4), basicSetup, drawSelection(),
-            keymap.of([indentWithTab]), StreamLanguage.define(go)
-        ],
-    })
-
-    onMount(async () => {
-        jsonView = new EditorView({
-            state: jsonState,
-            parent: document.querySelector("#json")
-        })
-
-        goView = new EditorView({
-            state: goState,
-            parent: document.querySelector("#go")
-        })
-    })
-
+    let input: { set(s: string): void; get(): string }
+    let output: { set(s: string): void; get(): string }
 
     function generate(): void {
-        Generate(jsonView.state.doc.toString()).then(result => {
-            goView.dispatch({
-                changes: {from: 0, to: goView.state.doc.length, insert: result}
-            })
+        Generate(input.get()).then(result => {
+            output.set(result)
         })
     }
 
     function pasteJSON() {
         ReadClipboard().then(result => {
-            jsonView.dispatch({
-                changes: {from: 0, to: jsonView.state.doc.length, insert: result}
-            })
+            input.set(result)
             generate()
         })
     }
 
     function copyCode(): void {
-        WriteClipboard(goView.state.doc.toString())
+        WriteClipboard(output.get())
     }
 </script>
 
 <main>
-    <div class="flex flex-col h-screen w-screen">
+    <div class="flex flex-col h-screen w-screen max-h-screen overflow-clip">
         <div class="self-center justify-self-center">
             <button class="button" on:click={generate}>Generate</button>
         </div>
 
-        <div class="columns-2 gap-6 mx-8 grow mb-8 mt-4">
-            <div class="code h-full max-h-full flex flex-col" id="json">
+        <div class="columns-2 gap-6 mx-8 mb-8 mt-4 h-full max-h-full">
+            <div class="code h-full max-h-full flex flex-col overflow-clip">
                 <div class="w-full bg-white/50 border-b border-t flex flex-row">
                     <span class="py-1 px-4 select-none text-yellow-600 font-mono">JSON</span>
                     <button on:click={pasteJSON} class="font-mono">Paste</button>
                 </div>
+                <Editor class="w-full h-full border-b" lang="json" bind:value={input}/>
             </div>
-            <div class="code h-full flex flex-col" id="go">
-                <div class="w-full bg-white/50 border-b flex flex-row">
+            <div class="code h-full max-h-full flex flex-col overflow-clip">
+                <div class="w-full bg-white/50 border-b border-t flex flex-row">
                     <span class="py-1 px-4 select-none text-purple-600 font-mono">Go</span>
                     <button on:click={copyCode} class="font-mono">Copy</button>
                 </div>
+                <Editor class="w-full h-full border-b" lang="go" bind:value={output}/>
             </div>
         </div>
     </div>
