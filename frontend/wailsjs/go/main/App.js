@@ -6,8 +6,16 @@ export function Generate(arg1) {
   return window['go']['main']['App']['Generate'](arg1);
 }
 
+export function GetAcronyms() {
+  return window['go']['main']['App']['GetAcronyms']();
+}
+
 export function ReadClipboard() {
   return window['go']['main']['App']['ReadClipboard']();
+}
+
+export function SetAcronyms(arg1) {
+  return window['go']['main']['App']['SetAcronyms'](arg1);
 }
 
 export function WriteClipboard(arg1) {

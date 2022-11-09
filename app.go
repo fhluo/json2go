@@ -29,6 +29,14 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
+func (a *App) GetAcronyms() []string {
+	return def.GetAcronyms()
+}
+
+func (a *App) SetAcronyms(acronyms []string) {
+	def.SetAcronyms(acronyms...)
+}
+
 func (a *App) Generate(json string) string {
 	if !gjson.Valid(json) {
 		return "invalid json"

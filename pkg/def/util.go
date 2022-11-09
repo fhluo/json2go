@@ -1,6 +1,7 @@
 package def
 
 import (
+	"golang.org/x/exp/maps"
 	"regexp"
 	"strconv"
 	"strings"
@@ -16,7 +17,12 @@ var (
 
 var ALLCaps = map[string]bool{"ID": true}
 
+func GetAcronyms() []string {
+	return maps.Keys(ALLCaps)
+}
+
 func SetAcronyms(acronyms ...string) {
+	ALLCaps = make(map[string]bool)
 	for _, acronym := range acronyms {
 		ALLCaps[acronym] = true
 	}

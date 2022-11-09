@@ -1,10 +1,23 @@
 <script lang="ts">
-    import {Generate, ReadClipboard, WriteClipboard} from '../wailsjs/go/main/App.js'
+    import {Generate, GetAcronyms, ReadClipboard, SetAcronyms, WriteClipboard} from '../wailsjs/go/main/App.js'
     import Editor from "./Editor.svelte";
     import Button from "./Button.svelte";
+    import {onMount} from "svelte";
 
     let input: { text: string }
     let output: { text: string }
+
+    let acronyms: string
+
+    function setAcronyms() {
+        SetAcronyms(acronyms.split(",").map(acronym => acronym.trim()))
+    }
+
+    function getAcronyms() {
+        GetAcronyms().then(result => {
+            acronyms = result.join(", ")
+        })
+    }
 
     function generate(): void {
         Generate(input.text).then(result => {
@@ -22,11 +35,19 @@
     function copyCode(): void {
         WriteClipboard(output.text)
     }
+
+    onMount(()=>{
+        getAcronyms()
+    })
 </script>
 
 <main>
     <div class="flex flex-col h-screen w-screen max-h-screen overflow-clip">
-        <div class="self-center justify-self-center">
+        <div class="flex flex-row mx-8 mt-4 gap-3 items-center">
+            <label for="acronyms">Acronyms</label>
+            <input type="text" id="acronyms"
+                   class="rounded-md flex-grow border-gray-300 focus:ring-1 focus:ring-cyan-300 py-1 transition mr-3"
+                   bind:value={acronyms} on:change={setAcronyms}>
             <Button on:click={generate}>Generate</Button>
         </div>
 

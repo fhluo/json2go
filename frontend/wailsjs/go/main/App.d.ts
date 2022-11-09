@@ -3,6 +3,10 @@
 
 export function Generate(arg1:string):Promise<string>;
 
+export function GetAcronyms():Promise<Array<string>>;
+
 export function ReadClipboard():Promise<string>;
+
+export function SetAcronyms(arg1:Array<string>):Promise<void>;
 
 export function WriteClipboard(arg1:string):Promise<void>;
