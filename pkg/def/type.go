@@ -1,10 +1,11 @@
 package def
 
 import (
-	"encoding/json"
+	"fmt"
 	gen "github.com/dave/jennifer/jen"
-	"github.com/fhluo/json2go/internal/def"
+	"github.com/goccy/go-json"
 	"github.com/samber/lo"
+	"golang.org/x/exp/slices"
 	"strconv"
 	"strings"
 )
@@ -23,12 +24,24 @@ type TypeDecl struct {
 	Type Type
 }
 
+func (t TypeDecl) String() string {
+	return fmt.Sprintf("type T %s", t.Type)
+}
+
 func (t TypeDecl) Code() gen.Code {
 	return gen.Type().Id(t.Name).Add(t.Type.Code())
 }
 
 type Int struct {
 	Pointer bool
+}
+
+func (i Int) String() string {
+	if i.Pointer {
+		return "*int"
+	} else {
+		return "int"
+	}
 }
 
 func (i Int) Nullable() Type {
@@ -47,6 +60,14 @@ type Float struct {
 	Pointer bool
 }
 
+func (f Float) String() string {
+	if f.Pointer {
+		return "*float64"
+	} else {
+		return "float64"
+	}
+}
+
 func (f Float) Nullable() Type {
 	f.Pointer = true
 	return f
@@ -63,6 +84,19 @@ type Bool struct {
 	Pointer bool
 }
 
+func (b Bool) String() string {
+	if b.Pointer {
+		return "*bool"
+	} else {
+		return "bool"
+	}
+}
+
+func (b Bool) Nullable() Type {
+	b.Pointer = true
+	return b
+}
+
 func (b Bool) Code() gen.Code {
 	if b.Pointer {
 		return gen.Op("*").Bool()
@@ -72,6 +106,14 @@ func (b Bool) Code() gen.Code {
 
 type String struct {
 	Pointer bool
+}
+
+func (s String) String() string {
+	if s.Pointer {
+		return "*string"
+	} else {
+		return "string"
+	}
 }
 
 func (s String) Nullable() Type {
@@ -90,6 +132,10 @@ type Array struct {
 	Element Type // element type
 }
 
+func (a Array) String() string {
+	return fmt.Sprintf("[]%s", a.Element)
+}
+
 func (a Array) Code() gen.Code {
 	return gen.Index().Add(a.Element.Code())
 }
@@ -99,7 +145,11 @@ type Field struct {
 	Key       string // json key
 	Type      Type
 	OmitEmpty bool
-	String    bool // string option: string, bool, int or float
+	//String    bool // string option: string, bool, int or float
+}
+
+func (f Field) String() string {
+	return fmt.Sprintf("%s %s `json:\"%s\"`", f.Name, f.Type, f.Key)
 }
 
 func (f Field) Code() gen.Code {
@@ -109,9 +159,9 @@ func (f Field) Code() gen.Code {
 	if f.OmitEmpty {
 		options = append(options, "omitempty")
 	}
-	if f.String {
-		options = append(options, "string")
-	}
+	//if f.String {
+	//	options = append(options, "string")
+	//}
 
 	return gen.Id(f.Name).Add(f.Type.Code(), gen.Tag(map[string]string{"json": strings.Join(options, ",")}))
 }
@@ -119,8 +169,21 @@ func (f Field) Code() gen.Code {
 type Struct struct {
 	Fields  []*Field
 	Pointer bool
+}
 
-	named bool
+func (s Struct) String() string {
+	s.Naming()
+	return fmt.Sprintf(
+		`struct{
+	%s
+}`,
+		strings.Join(
+			lo.Map(s.Fields, func(field *Field, _ int) string {
+				return field.String()
+			}),
+			"\n\t",
+		),
+	)
 }
 
 func (s Struct) Map() Map {
@@ -138,19 +201,31 @@ func (s Struct) Nullable() Type {
 }
 
 func (s Struct) Naming() {
-	if s.named {
+	if len(s.Fields) == 0 {
+		return
+	}
+
+	named := !slices.Contains(
+		lo.Map(s.Fields, func(field *Field, _ int) string {
+			return field.Name
+		}),
+		"",
+	)
+	if named {
+		return
+	}
+
+	if s.Fields[0].Name != "" {
 		return
 	}
 
 	counter := make(map[string]int)
 	for _, field := range s.Fields {
-		field.Name = def.ToCamelCase(field.Key)
+		field.Name = ToCamelCase(field.Key)
 		if counter[field.Name]++; counter[field.Name] != 1 {
 			field.Name += strconv.Itoa(counter[field.Name])
 		}
 	}
-
-	s.named = true
 }
 
 func (s Struct) Code() gen.Code {
@@ -170,11 +245,19 @@ type Map struct {
 	Value Type // value type
 }
 
+func (m Map) String() string {
+	return fmt.Sprintf("map[%s]%s", m.Key, m.Value)
+}
+
 func (m Map) Code() gen.Code {
 	return gen.Map(m.Key.Code()).Add(m.Value.Code())
 }
 
 type Any struct{}
+
+func (a Any) String() string {
+	return "any"
+}
 
 func (a Any) Code() gen.Code {
 	return gen.Any()
@@ -202,8 +285,6 @@ func deduce(types []Type) Type {
 		return Any{}
 	case 1:
 		return types[0]
-	default:
-
 	}
 
 	var nullable bool
@@ -229,6 +310,12 @@ func deduce(types []Type) Type {
 	}
 
 	switch types[0].(type) {
+	case String:
+		if all[String](types) {
+			return String{Pointer: nullable}
+		} else {
+			return Any{}
+		}
 	case Int:
 		if all[Int](types) {
 			return Int{Pointer: nullable}
@@ -267,23 +354,35 @@ func deduce(types []Type) Type {
 	case Struct:
 		if all[Struct](types) {
 			m := make(map[string][]*Field)
+			var names []string
+
 			for _, t := range types {
 				s := t.(Struct)
 				s.Naming()
 				for _, field := range s.Fields {
+					if _, ok := m[field.Name]; !ok {
+						names = append(names, field.Name)
+					}
 					m[field.Name] = append(m[field.Name], field)
 				}
 			}
 
 			s := Struct{Pointer: nullable}
-			for _, v := range m {
+			for _, name := range names {
+				t := deduce(lo.Map(m[name], func(field *Field, _ int) Type {
+					return field.Type
+				}))
+
+				omitEmpty := len(m[name]) != len(types)
+				if r, ok := t.(Nullable); ok && omitEmpty {
+					t = r.Nullable()
+				}
+
 				s.Fields = append(s.Fields, &Field{
-					Name: v[0].Name,
-					Key:  v[0].Key,
-					Type: deduce(lo.Map(v, func(field *Field, _ int) Type {
-						return field.Type
-					})),
-					OmitEmpty: len(v) != len(types),
+					Name:      name,
+					Key:       m[name][0].Key,
+					Type:      t,
+					OmitEmpty: omitEmpty,
 				})
 			}
 
@@ -324,7 +423,7 @@ func deduce(types []Type) Type {
 		} else {
 			return Any{}
 		}
+	default:
+		return Any{}
 	}
-
-	return nil
 }

@@ -2,9 +2,8 @@ package def
 
 import (
 	"bytes"
-	"encoding/json"
 	"fmt"
-	"github.com/fhluo/json2go/internal/def"
+	"github.com/goccy/go-json"
 	"github.com/samber/lo"
 )
 
@@ -12,6 +11,13 @@ type Context struct {
 	*json.Decoder
 	token json.Token
 	err   error
+}
+
+func From(s string) *Context {
+	c := new(Context)
+	c.Decoder = json.NewDecoder(bytes.NewBufferString(s))
+	c.UseNumber()
+	return c
 }
 
 func FromBytes(data []byte) *Context {
@@ -42,6 +48,10 @@ func (c *Context) TypeDecl(name string) Type {
 }
 
 func (c *Context) Type() Type {
+	if c.err != nil {
+		return nil
+	}
+
 	switch x := c.Next().(type) {
 	case json.Delim:
 		switch x {
@@ -68,18 +78,14 @@ func (c *Context) Type() Type {
 				types = append(types, c.Type())
 			}
 
-			if !def.ValidNames(keys) {
-				if def.ValidIntegers(keys) {
-					return Map{
-						Key:   Int{},
-						Value: deduce(types),
-					}
+			if !ValidNames(keys) {
+				m := Map{Value: deduce(types)}
+				if ValidIntegers(keys) {
+					m.Key = Int{}
 				} else {
-					return Map{
-						Key:   String{},
-						Value: deduce(types),
-					}
+					m.Key = String{}
 				}
+				return m
 			}
 
 			return Struct{
@@ -123,6 +129,7 @@ func (c *Context) Type() Type {
 			return nil
 		}
 	default:
+		c.err = fmt.Errorf("unexpected type")
 		return nil
 	}
 }

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"context"
 	gen "github.com/dave/jennifer/jen"
-	"github.com/fhluo/json2go/internal/def"
+	"github.com/fhluo/json2go/pkg/def"
 	"github.com/tidwall/gjson"
 	"golang.design/x/clipboard"
 	"strings"
@@ -43,7 +43,13 @@ func (a *App) Generate(json string) string {
 	}
 
 	file := gen.NewFile("main")
-	file.Add(def.Type("T", gjson.Parse(json)))
+
+	ctx := def.From(json)
+	t := ctx.TypeDecl("T")
+	if ctx.Error() != nil {
+		return ctx.Error().Error()
+	}
+	file.Add(t.Code())
 
 	buf := new(bytes.Buffer)
 	if err := file.Render(buf); err != nil {
