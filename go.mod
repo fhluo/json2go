@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/dave/jennifer v1.6.0
+	github.com/samber/lo v1.33.0
 	github.com/spf13/cobra v1.4.0
 	github.com/tidwall/gjson v1.14.3
 	github.com/wailsapp/wails/v2 v2.2.0
@@ -28,7 +29,6 @@ require (
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.4.2 // indirect
-	github.com/samber/lo v1.33.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/tidwall/match v1.1.1 // indirect
 	github.com/tidwall/pretty v1.2.1 // indirect

@@ -57,7 +57,7 @@ func ToSnakeCase(s string) string {
 
 var nameRe = regexp.MustCompile(`^[a-zA-Z_]\w*$`)
 
-func validNames(items []string) bool {
+func ValidNames(items []string) bool {
 	for _, item := range items {
 		if !nameRe.MatchString(item) {
 			return false
@@ -66,7 +66,7 @@ func validNames(items []string) bool {
 	return true
 }
 
-func validIntegers(items []string) bool {
+func ValidIntegers(items []string) bool {
 	for _, item := range items {
 		if _, err := strconv.Atoi(item); err != nil {
 			return false

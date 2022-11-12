@@ -3,7 +3,7 @@ package cmd
 import (
 	"bytes"
 	gen "github.com/dave/jennifer/jen"
-	"github.com/fhluo/json2go/pkg/def"
+	"github.com/fhluo/json2go/internal/def"
 	"github.com/tidwall/gjson"
 )
 

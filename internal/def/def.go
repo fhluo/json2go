@@ -47,9 +47,9 @@ func UnnamedTypeFromArray(array []gjson.Result) gen.Code {
 
 func UnnamedStructOrMap(json gjson.Result) gen.Code {
 	keys := maps.Keys(json.Map())
-	if !validNames(keys) {
+	if !ValidNames(keys) {
 		code := UnnamedTypeFromArray(maps.Values(json.Map()))
-		if validIntegers(keys) {
+		if ValidIntegers(keys) {
 			return gen.Map(gen.Int()).Add(code)
 		} else {
 			return gen.Map(gen.String()).Add(code)
@@ -105,9 +105,9 @@ func UnnamedStructOrMapFromArray(array []gjson.Result) gen.Code {
 		})
 	}
 
-	if !validNames(names) {
+	if !ValidNames(names) {
 		code := UnnamedTypeFromArray(reduce(maps.Values(fields)))
-		if validIntegers(names) {
+		if ValidIntegers(names) {
 			return gen.Map(gen.Int()).Add(code)
 		} else {
 			return gen.Map(gen.String()).Add(code)
