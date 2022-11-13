@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/fhluo/json2go/internal/def"
+	"github.com/fhluo/json2go/pkg/def"
 	"github.com/spf13/cobra"
 	"log"
 	"os"

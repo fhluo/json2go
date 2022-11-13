@@ -3,7 +3,6 @@ package def
 import (
 	"golang.org/x/exp/maps"
 	"regexp"
-	"strconv"
 	"strings"
 )
 
@@ -65,20 +64,29 @@ func ToSnakeCase(s string) string {
 	return strings.ToLower(s)
 }
 
-var nameRe = regexp.MustCompile(`^[a-zA-Z_]\w*$`)
-
 func ValidNames(items []string) bool {
 	for _, item := range items {
-		if !nameRe.MatchString(item) {
+		if item == "" {
 			return false
 		}
+
+		if !(('a' <= item[0] && item[0] <= 'z') || ('A' <= item[0] && item[0] <= 'Z') || item[0] == '_') {
+			return false
+		}
+
+		for i := 1; i < len(item); i++ {
+			if !(('a' <= item[i] && item[i] <= 'z') || ('A' <= item[i] && item[i] <= 'Z') || ('0' <= item[i] && item[i] <= '9') || item[i] == '_') {
+				return false
+			}
+		}
 	}
+
 	return true
 }
 
 func ValidIntegers(items []string) bool {
 	for _, item := range items {
-		if _, err := strconv.Atoi(item); err != nil {
+		if !isInteger(item) {
 			return false
 		}
 	}

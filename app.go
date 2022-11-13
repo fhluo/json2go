@@ -3,11 +3,9 @@ package main
 import (
 	"bytes"
 	"context"
-	gen "github.com/dave/jennifer/jen"
 	"github.com/fhluo/json2go/pkg/def"
-	"github.com/tidwall/gjson"
+	"github.com/goccy/go-json"
 	"golang.design/x/clipboard"
-	"strings"
 )
 
 func init() {
@@ -37,26 +35,22 @@ func (a *App) SetAcronyms(acronyms []string) {
 	def.SetAcronyms(acronyms...)
 }
 
-func (a *App) Generate(json string) string {
-	if !gjson.Valid(json) {
+func (a *App) Generate(s string) string {
+	if !json.Valid([]byte(s)) {
 		return "invalid json"
 	}
 
-	file := gen.NewFile("main")
-
-	ctx := def.From(json)
-	t := ctx.TypeDecl("T")
-	if ctx.Error() != nil {
-		return ctx.Error().Error()
-	}
-	file.Add(t.Code())
-
-	buf := new(bytes.Buffer)
-	if err := file.Render(buf); err != nil {
+	statement, err := def.From(s).Declare("t")
+	if err != nil {
 		return err.Error()
 	}
 
-	return strings.TrimPrefix(buf.String(), "package main\n\n")
+	buf := new(bytes.Buffer)
+	if err := statement.Render(buf); err != nil {
+		return err.Error()
+	}
+
+	return buf.String()
 }
 
 func (a *App) WriteClipboard(s string) {

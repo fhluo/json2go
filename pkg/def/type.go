@@ -3,19 +3,16 @@ package def
 import (
 	"fmt"
 	gen "github.com/dave/jennifer/jen"
-	"github.com/goccy/go-json"
 	"github.com/samber/lo"
+	"go/format"
 	"golang.org/x/exp/slices"
 	"strconv"
 	"strings"
 )
 
 type Type interface {
+	fmt.Stringer
 	Code() gen.Code
-}
-
-type Nullable interface {
-	Type
 	Nullable() Type
 }
 
@@ -25,11 +22,13 @@ type TypeDecl struct {
 }
 
 func (t TypeDecl) String() string {
-	return fmt.Sprintf("type T %s", t.Type)
-}
-
-func (t TypeDecl) Code() gen.Code {
-	return gen.Type().Id(t.Name).Add(t.Type.Code())
+	s := fmt.Sprintf("type %s %s", t.Name, t.Type)
+	r, err := format.Source([]byte(s))
+	if err != nil {
+		return s
+	} else {
+		return string(r)
+	}
 }
 
 type Int struct {
@@ -136,6 +135,10 @@ func (a Array) String() string {
 	return fmt.Sprintf("[]%s", a.Element)
 }
 
+func (a Array) Nullable() Type {
+	return a
+}
+
 func (a Array) Code() gen.Code {
 	return gen.Index().Add(a.Element.Code())
 }
@@ -149,10 +152,10 @@ type Field struct {
 }
 
 func (f Field) String() string {
-	return fmt.Sprintf("%s %s `json:\"%s\"`", f.Name, f.Type, f.Key)
+	return fmt.Sprintf("%s %s `json:\"%s\"`", f.Name, f.Type, f.Options())
 }
 
-func (f Field) Code() gen.Code {
+func (f Field) Options() string {
 	options := make([]string, 0, 3)
 	options = append(options, f.Key)
 
@@ -162,8 +165,11 @@ func (f Field) Code() gen.Code {
 	//if f.String {
 	//	options = append(options, "string")
 	//}
+	return strings.Join(options, ",")
+}
 
-	return gen.Id(f.Name).Add(f.Type.Code(), gen.Tag(map[string]string{"json": strings.Join(options, ",")}))
+func (f Field) Code() gen.Code {
+	return gen.Id(f.Name).Add(f.Type.Code(), gen.Tag(map[string]string{"json": f.Options()}))
 }
 
 type Struct struct {
@@ -249,6 +255,10 @@ func (m Map) String() string {
 	return fmt.Sprintf("map[%s]%s", m.Key, m.Value)
 }
 
+func (m Map) Nullable() Type {
+	return m
+}
+
 func (m Map) Code() gen.Code {
 	return gen.Map(m.Key.Code()).Add(m.Value.Code())
 }
@@ -257,6 +267,10 @@ type Any struct{}
 
 func (a Any) String() string {
 	return "any"
+}
+
+func (a Any) Nullable() Type {
+	return a
 }
 
 func (a Any) Code() gen.Code {
@@ -268,42 +282,102 @@ func is[T Type](t Type) bool {
 	return ok
 }
 
-func isInteger(number json.Number) bool {
-	_, err := number.Int64()
-	return err == nil
+func isInteger(s string) bool {
+	if s == "" {
+		return false
+	}
+	if !(s[0] == '+' || s[0] == '-' || ('0' <= s[0] && s[0] <= '9')) {
+		return false
+	}
+	for i := 1; i < len(s); i++ {
+		if !('0' <= s[0] && s[0] <= '9') {
+			return false
+		}
+	}
+	return true
 }
 
 func all[T Type](types []Type) bool {
-	return lo.EveryBy(types, func(item Type) bool {
-		return is[T](item)
-	})
+	for _, t := range types {
+		if _, ok := t.(T); !ok {
+			return false
+		}
+	}
+	return true
+}
+
+func remove[T Type](types []Type) []Type {
+	i := 0
+	for j := 0; j < len(types); j++ {
+		if !is[T](types[j]) {
+			if i != j {
+				types[i] = types[j]
+			}
+			i++
+		}
+	}
+	return types[:i]
+}
+
+func deduceStruct(types []Type) Struct {
+	m := make(map[string][]*Field)
+	var names []string
+
+	for _, t := range types {
+		s := t.(Struct)
+		s.Naming()
+		for _, field := range s.Fields {
+			if _, ok := m[field.Name]; !ok {
+				m[field.Name] = make([]*Field, 0, len(types))
+				names = append(names, field.Name)
+			}
+			m[field.Name] = append(m[field.Name], field)
+		}
+	}
+
+	s := Struct{
+		Fields: make([]*Field, 0, len(names)),
+	}
+	for _, name := range names {
+		fields := m[name]
+		field := fields[0]
+
+		field.Type = deduce(lo.Map(fields, func(field *Field, _ int) Type {
+			return field.Type
+		}))
+		field.OmitEmpty = len(fields) != len(types)
+		if field.OmitEmpty {
+			field.Type = field.Type.Nullable()
+		}
+
+		s.Fields = append(s.Fields, field)
+	}
+
+	return s
+}
+
+func deduceMap(types []Type) Type {
+	return Map{
+		Key: deduce(lo.Map(types, func(item Type, _ int) Type {
+			return item.(Map).Key
+		})),
+		Value: deduce(lo.Map(types, func(item Type, _ int) Type {
+			return item.(Map).Value
+		})),
+	}
 }
 
 func deduce(types []Type) Type {
-	switch len(types) {
-	case 0:
-		return Any{}
-	case 1:
-		return types[0]
-	}
-
-	var nullable bool
-
-	types = lo.Filter(types, func(item Type, _ int) bool {
-		if is[Any](item) {
-			nullable = true
-			return false
-		} else {
-			return true
-		}
-	})
+	n := len(types)
+	types = remove[Any](types)
+	nullable := len(types) < n
 
 	switch len(types) {
 	case 0:
 		return Any{}
 	case 1:
-		if t, ok := types[0].(Nullable); ok && nullable {
-			return t.Nullable()
+		if nullable {
+			return types[0].Nullable()
 		} else {
 			return types[0]
 		}
@@ -313,8 +387,6 @@ func deduce(types []Type) Type {
 	case String:
 		if all[String](types) {
 			return String{Pointer: nullable}
-		} else {
-			return Any{}
 		}
 	case Int:
 		if all[Int](types) {
@@ -325,105 +397,50 @@ func deduce(types []Type) Type {
 			})
 			if ok {
 				return Float{Pointer: nullable}
-			} else {
-				return Any{}
 			}
 		}
 	case Float:
 		if all[Float](types) {
 			return Float{Pointer: nullable}
-		} else {
-			return Any{}
 		}
 	case Bool:
 		if all[Bool](types) {
 			return Bool{Pointer: nullable}
-		} else {
-			return Any{}
 		}
 	case Array:
 		if all[Array](types) {
-			return Array{
-				Element: deduce(lo.Map(types, func(item Type, _ int) Type {
-					return item.(Array).Element
-				})),
+			for i := range types {
+				types[i] = types[i].(Array).Element
 			}
-		} else {
-			return Any{}
+			return Array{
+				Element: deduce(types),
+			}
 		}
 	case Struct:
 		if all[Struct](types) {
-			m := make(map[string][]*Field)
-			var names []string
-
-			for _, t := range types {
-				s := t.(Struct)
-				s.Naming()
-				for _, field := range s.Fields {
-					if _, ok := m[field.Name]; !ok {
-						names = append(names, field.Name)
-					}
-					m[field.Name] = append(m[field.Name], field)
-				}
+			if nullable {
+				return deduceStruct(types).Nullable()
+			} else {
+				return deduceStruct(types)
 			}
-
-			s := Struct{Pointer: nullable}
-			for _, name := range names {
-				t := deduce(lo.Map(m[name], func(field *Field, _ int) Type {
-					return field.Type
-				}))
-
-				omitEmpty := len(m[name]) != len(types)
-				if r, ok := t.(Nullable); ok && omitEmpty {
-					t = r.Nullable()
-				}
-
-				s.Fields = append(s.Fields, &Field{
-					Name:      name,
-					Key:       m[name][0].Key,
-					Type:      t,
-					OmitEmpty: omitEmpty,
-				})
-			}
-
-			return s
 		} else {
 			ok := lo.EveryBy(types, func(item Type) bool {
 				return is[Struct](item) || is[Map](item)
 			})
 			if ok {
-				types = lo.Map(types, func(item Type, _ int) Type {
-					if s, ok := item.(Struct); ok {
-						return s.Map()
+				for i := range types {
+					if s, ok := types[i].(Struct); ok {
+						types[i] = s.Map()
 					}
-					return item
-				})
-				return Map{
-					Key: deduce(lo.Map(types, func(item Type, _ int) Type {
-						return item.(Map).Key
-					})),
-					Value: deduce(lo.Map(types, func(item Type, _ int) Type {
-						return item.(Map).Value
-					})),
 				}
-			} else {
-				return Any{}
+				return deduceMap(types)
 			}
 		}
 	case Map:
 		if all[Map](types) {
-			return Map{
-				Key: deduce(lo.Map(types, func(item Type, _ int) Type {
-					return item.(Map).Key
-				})),
-				Value: deduce(lo.Map(types, func(item Type, _ int) Type {
-					return item.(Map).Value
-				})),
-			}
-		} else {
-			return Any{}
+			return deduceMap(types)
 		}
-	default:
-		return Any{}
 	}
+
+	return Any{}
 }

@@ -7,7 +7,6 @@ require (
 	github.com/goccy/go-json v0.9.11
 	github.com/samber/lo v1.33.0
 	github.com/spf13/cobra v1.4.0
-	github.com/tidwall/gjson v1.14.3
 	github.com/wailsapp/wails/v2 v2.2.0
 	golang.design/x/clipboard v0.6.3
 	golang.org/x/exp v0.0.0-20221109134031-9ce248df8de5
@@ -31,8 +30,6 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.4.2 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/tidwall/match v1.1.1 // indirect
-	github.com/tidwall/pretty v1.2.1 // indirect
 	github.com/tkrajina/go-reflector v0.5.6 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect

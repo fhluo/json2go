@@ -3,14 +3,13 @@ package def
 import (
 	"bytes"
 	"fmt"
+	gen "github.com/dave/jennifer/jen"
 	"github.com/goccy/go-json"
 	"github.com/samber/lo"
 )
 
 type Context struct {
 	*json.Decoder
-	token json.Token
-	err   error
 }
 
 func From(s string) *Context {
@@ -27,109 +26,115 @@ func FromBytes(data []byte) *Context {
 	return c
 }
 
-func (c *Context) Error() error {
-	return c.err
+func (c *Context) Declare(name string) (*gen.Statement, error) {
+	t, err := c.Type()
+	if err != nil {
+		return nil, err
+	}
+	return gen.Type().Id(name).Add(t.Code()), nil
 }
 
-func (c *Context) Token() json.Token {
-	return c.token
+func (c *Context) object() (keys []string, types []Type, err error) {
+	for c.More() {
+		// key
+		token, err := c.Token()
+		if err != nil {
+			return keys, types, err
+		}
+
+		if key, ok := token.(string); !ok {
+			return keys, types, fmt.Errorf("unexpected type")
+		} else {
+			keys = append(keys, key)
+		}
+		// value
+		if t, err := c.Type(); err != nil {
+			return keys, types, err
+		} else {
+			types = append(types, t)
+		}
+	}
+
+	_, err = c.Token()
+	return
 }
 
-func (c *Context) Next() json.Token {
-	c.token, c.err = c.Decoder.Token()
-	return c.token
+func (c *Context) objectType() (Type, error) {
+	keys, types, err := c.object()
+	if err != nil {
+		return nil, err
+	}
+
+	if !ValidNames(keys) {
+		m := Map{Value: deduce(types)}
+		if ValidIntegers(keys) {
+			m.Key = Int{}
+		} else {
+			m.Key = String{}
+		}
+		return m, nil
+	}
+
+	return Struct{
+		Fields: lo.Map(keys, func(key string, i int) *Field {
+			return &Field{
+				Key:  key,
+				Type: types[i],
+			}
+		}),
+	}, nil
 }
 
-func (c *Context) TypeDecl(name string) Type {
-	return TypeDecl{
-		Name: name,
-		Type: c.Type(),
+func (c *Context) array() (types []Type, err error) {
+	for c.More() {
+		if t, err := c.Type(); err != nil {
+			return types, err
+		} else {
+			types = append(types, t)
+		}
+	}
+
+	_, err = c.Token()
+	return
+}
+
+func (c *Context) arrayType() (Type, error) {
+	if types, err := c.array(); err != nil {
+		return nil, err
+	} else {
+		return Array{Element: deduce(types)}, nil
 	}
 }
 
-func (c *Context) Type() Type {
-	if c.err != nil {
-		return nil
+func (c *Context) Type() (Type, error) {
+	token, err := c.Token()
+	if err != nil {
+		return nil, err
 	}
 
-	switch x := c.Next().(type) {
+	switch x := token.(type) {
 	case json.Delim:
 		switch x {
 		case '{':
-			defer func() {
-				if c.err == nil && !c.More() {
-					c.Next()
-				}
-			}()
-
-			var keys []string
-			var types []Type // value types
-
-			for c.More() {
-				// key
-				switch key := c.Next().(type) {
-				case string:
-					keys = append(keys, key)
-				default:
-					c.err = fmt.Errorf("unexpected type")
-					return nil
-				}
-				// value
-				types = append(types, c.Type())
-			}
-
-			if !ValidNames(keys) {
-				m := Map{Value: deduce(types)}
-				if ValidIntegers(keys) {
-					m.Key = Int{}
-				} else {
-					m.Key = String{}
-				}
-				return m
-			}
-
-			return Struct{
-				Fields: lo.Map(keys, func(key string, i int) *Field {
-					return &Field{
-						Key:  key,
-						Type: types[i],
-					}
-				}),
-			}
+			return c.objectType()
 		case '[':
-			defer func() {
-				if c.err == nil && !c.More() {
-					c.Next()
-				}
-			}()
-
-			var types []Type
-			for c.More() {
-				types = append(types, c.Type())
-			}
-
-			return Array{Element: deduce(types)}
+			return c.arrayType()
 		default:
-			return nil
+			return nil, fmt.Errorf("invalid delim %s", x)
 		}
 	case bool:
-		return Bool{}
+		return Bool{}, nil
 	case json.Number:
-		if isInteger(x) {
-			return Int{}
+		if isInteger(x.String()) {
+			return Int{}, nil
 		} else {
-			return Float{}
+			return Float{}, nil
 		}
 	case string:
-		return String{}
+		return String{}, nil
 	case nil:
-		if c.err == nil {
-			return Any{}
-		} else {
-			return nil
-		}
+		return Any{}, nil
 	default:
-		c.err = fmt.Errorf("unexpected type")
-		return nil
+		return nil, fmt.Errorf("unexpected type")
 	}
 }
