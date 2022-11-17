@@ -4,12 +4,12 @@ go 1.19
 
 require (
 	github.com/dave/jennifer v1.6.0
-	github.com/samber/lo v1.33.0
+	github.com/samber/lo v1.35.0
 	github.com/spf13/cobra v1.4.0
 	github.com/stretchr/testify v1.8.0
 	github.com/wailsapp/wails/v2 v2.2.0
 	golang.design/x/clipboard v0.6.3
-	golang.org/x/exp v0.0.0-20221109134031-9ce248df8de5
+	golang.org/x/exp v0.0.0-20221114191408-850992195362
 )
 
 require (
@@ -30,16 +30,16 @@ require (
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
-	github.com/rivo/uniseg v0.4.2 // indirect
+	github.com/rivo/uniseg v0.4.3 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/tkrajina/go-reflector v0.5.6 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
-	golang.org/x/crypto v0.1.0 // indirect
-	golang.org/x/exp/shiny v0.0.0-20221109134031-9ce248df8de5 // indirect
+	golang.org/x/crypto v0.3.0 // indirect
+	golang.org/x/exp/shiny v0.0.0-20221114191408-850992195362 // indirect
 	golang.org/x/image v0.1.0 // indirect
-	golang.org/x/mobile v0.0.0-20221020085226-b36e6246172e // indirect
+	golang.org/x/mobile v0.0.0-20221110043201-43a038452099 // indirect
 	golang.org/x/net v0.2.0 // indirect
 	golang.org/x/sys v0.2.0 // indirect
 	golang.org/x/text v0.4.0 // indirect
