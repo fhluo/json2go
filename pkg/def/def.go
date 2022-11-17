@@ -1,28 +1,26 @@
 package def
 
 import (
-	"bytes"
 	"fmt"
 	gen "github.com/dave/jennifer/jen"
-	"github.com/goccy/go-json"
+	"github.com/fhluo/json2go/pkg/scanner"
+	"github.com/fhluo/json2go/pkg/token"
 	"github.com/samber/lo"
 )
 
 type Context struct {
-	*json.Decoder
+	*scanner.Scanner
 }
 
 func From(s string) *Context {
 	c := new(Context)
-	c.Decoder = json.NewDecoder(bytes.NewBufferString(s))
-	c.UseNumber()
+	c.Scanner = scanner.New(s)
 	return c
 }
 
 func FromBytes(data []byte) *Context {
 	c := new(Context)
-	c.Decoder = json.NewDecoder(bytes.NewBuffer(data))
-	c.UseNumber()
+	c.Scanner = scanner.New(string(data))
 	return c
 }
 
@@ -35,27 +33,26 @@ func (c *Context) Declare(name string) (*gen.Statement, error) {
 }
 
 func (c *Context) object() (keys []string, types []Type, err error) {
+	var (
+		key string
+		t   Type
+	)
 	for c.More() {
 		// key
-		token, err := c.Token()
+		_, key, err = c.Scan()
 		if err != nil {
-			return keys, types, err
+			return
 		}
-
-		if key, ok := token.(string); !ok {
-			return keys, types, fmt.Errorf("unexpected type")
-		} else {
-			keys = append(keys, key)
-		}
+		keys = append(keys, key)
 		// value
-		if t, err := c.Type(); err != nil {
-			return keys, types, err
+		if t, err = c.Type(); err != nil {
+			return
 		} else {
 			types = append(types, t)
 		}
 	}
 
-	_, err = c.Token()
+	_, _, err = c.Scan()
 	return
 }
 
@@ -86,15 +83,16 @@ func (c *Context) objectType() (Type, error) {
 }
 
 func (c *Context) array() (types []Type, err error) {
+	var t Type
 	for c.More() {
-		if t, err := c.Type(); err != nil {
-			return types, err
+		if t, err = c.Type(); err != nil {
+			return
 		} else {
 			types = append(types, t)
 		}
 	}
 
-	_, err = c.Token()
+	_, _, err = c.Scan()
 	return
 }
 
@@ -107,34 +105,27 @@ func (c *Context) arrayType() (Type, error) {
 }
 
 func (c *Context) Type() (Type, error) {
-	token, err := c.Token()
+	t, _, err := c.Scan()
 	if err != nil {
 		return nil, err
 	}
 
-	switch x := token.(type) {
-	case json.Delim:
-		switch x {
-		case '{':
-			return c.objectType()
-		case '[':
-			return c.arrayType()
-		default:
-			return nil, fmt.Errorf("invalid delim %s", x)
-		}
-	case bool:
+	switch t {
+	case token.LeftBrace:
+		return c.objectType()
+	case token.LeftBracket:
+		return c.arrayType()
+	case token.Bool:
 		return Bool{}, nil
-	case json.Number:
-		if isInteger(x.String()) {
-			return Int{}, nil
-		} else {
-			return Float{}, nil
-		}
-	case string:
+	case token.Int:
+		return Int{}, nil
+	case token.Float:
+		return Float{}, nil
+	case token.String:
 		return String{}, nil
-	case nil:
+	case token.Null:
 		return Any{}, nil
 	default:
-		return nil, fmt.Errorf("unexpected type")
+		return nil, fmt.Errorf("unexpected token %s", t)
 	}
 }

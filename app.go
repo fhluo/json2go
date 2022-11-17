@@ -3,8 +3,8 @@ package main
 import (
 	"bytes"
 	"context"
+	"encoding/json"
 	"github.com/fhluo/json2go/pkg/def"
-	"github.com/goccy/go-json"
 	"golang.design/x/clipboard"
 )
 

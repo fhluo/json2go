@@ -321,25 +321,24 @@ func remove[T Type](types []Type) []Type {
 
 func deduceStruct(types []Type) Struct {
 	m := make(map[string][]*Field)
-	var names []string
+	var keys []string
 
 	for _, t := range types {
 		s := t.(Struct)
-		s.Naming()
 		for _, field := range s.Fields {
-			if _, ok := m[field.Name]; !ok {
-				m[field.Name] = make([]*Field, 0, len(types))
-				names = append(names, field.Name)
+			if _, ok := m[field.Key]; !ok {
+				m[field.Key] = make([]*Field, 0, len(types))
+				keys = append(keys, field.Key)
 			}
-			m[field.Name] = append(m[field.Name], field)
+			m[field.Key] = append(m[field.Key], field)
 		}
 	}
 
 	s := Struct{
-		Fields: make([]*Field, 0, len(names)),
+		Fields: make([]*Field, 0, len(keys)),
 	}
-	for _, name := range names {
-		fields := m[name]
+	for _, key := range keys {
+		fields := m[key]
 		field := fields[0]
 
 		field.Type = deduce(lo.Map(fields, func(field *Field, _ int) Type {
