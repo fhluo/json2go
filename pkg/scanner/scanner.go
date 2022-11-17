@@ -10,7 +10,7 @@ import (
 const eof = -1
 
 type Scanner struct {
-	buffer []byte
+	source string
 
 	character     rune
 	offset        int
@@ -19,23 +19,23 @@ type Scanner struct {
 	stack *stack.Stack[token.Token]
 }
 
-func New(data []byte) *Scanner {
+func New(s string) *Scanner {
 	scanner := new(Scanner)
-	scanner.buffer = data
+	scanner.source = s
 	scanner.stack = stack.New[token.Token]()
 	scanner.next()
 	return scanner
 }
 
 func (s *Scanner) next() {
-	if s.readingOffset >= len(s.buffer) {
+	if s.readingOffset >= len(s.source) {
 		s.character = eof
 		return
 	}
 
-	r, size := rune(s.buffer[s.readingOffset]), 1
+	r, size := rune(s.source[s.readingOffset]), 1
 	if r >= utf8.RuneSelf {
-		r, size = utf8.DecodeRune(s.buffer[s.readingOffset:])
+		r, size = utf8.DecodeRuneInString(s.source[s.readingOffset:])
 	}
 
 	s.character = r
@@ -44,10 +44,10 @@ func (s *Scanner) next() {
 }
 
 func (s *Scanner) peek() byte {
-	if s.readingOffset >= len(s.buffer) {
+	if s.readingOffset >= len(s.source) {
 		return 0
 	}
-	return s.buffer[s.readingOffset]
+	return s.source[s.readingOffset]
 }
 
 func (s *Scanner) skipWhitespace() {
@@ -75,83 +75,16 @@ func (s *Scanner) scanString() (string, error) {
 	end := s.offset
 	s.next()
 
-	return string(s.buffer[start:end]), nil
+	return s.source[start:end], nil
 }
 
-func (s *Scanner) scanTrue() error {
-	if s.character != 't' {
-		return fmt.Errorf("illegal character %c", s.character)
+func (s *Scanner) scan(target string) error {
+	if s.source[s.offset:s.offset+len(target)] != target {
+		return fmt.Errorf("fail to scan %s", target)
 	}
+
+	s.readingOffset += len(target)
 	s.next()
-
-	if s.character != 'r' {
-		return fmt.Errorf("illegal character %c", s.character)
-	}
-	s.next()
-
-	if s.character != 'u' {
-		return fmt.Errorf("illegal character %c", s.character)
-	}
-	s.next()
-
-	if s.character != 'e' {
-		return fmt.Errorf("illegal character %c", s.character)
-	}
-	s.next()
-
-	return nil
-}
-
-func (s *Scanner) scanFalse() error {
-	if s.character != 'f' {
-		return fmt.Errorf("illegal character %c", s.character)
-	}
-	s.next()
-
-	if s.character != 'a' {
-		return fmt.Errorf("illegal character %c", s.character)
-	}
-	s.next()
-
-	if s.character != 'l' {
-		return fmt.Errorf("illegal character %c", s.character)
-	}
-	s.next()
-
-	if s.character != 's' {
-		return fmt.Errorf("illegal character %c", s.character)
-	}
-	s.next()
-
-	if s.character != 'e' {
-		return fmt.Errorf("illegal character %c", s.character)
-	}
-	s.next()
-
-	return nil
-}
-
-func (s *Scanner) scanNull() error {
-	if s.character != 'n' {
-		return fmt.Errorf("illegal character %c", s.character)
-	}
-	s.next()
-
-	if s.character != 'u' {
-		return fmt.Errorf("illegal character %c", s.character)
-	}
-	s.next()
-
-	if s.character != 'l' {
-		return fmt.Errorf("illegal character %c", s.character)
-	}
-	s.next()
-
-	if s.character != 'l' {
-		return fmt.Errorf("illegal character %c", s.character)
-	}
-	s.next()
-
 	return nil
 }
 
@@ -165,7 +98,7 @@ func (s *Scanner) More() bool {
 	return s.character != eof && s.character != '}' && s.character != ']'
 }
 
-func (s *Scanner) Token() (token.Token, string, error) {
+func (s *Scanner) Scan() (token.Token, string, error) {
 scanAgain:
 	s.skipWhitespace()
 
@@ -233,11 +166,11 @@ scanAgain:
 		}
 		return t, "", nil
 	case 't':
-		return token.Bool, "", s.scanTrue()
+		return token.Bool, "", s.scan("true")
 	case 'f':
-		return token.Bool, "", s.scanFalse()
+		return token.Bool, "", s.scan("false")
 	case 'n':
-		return token.Null, "", s.scanNull()
+		return token.Null, "", s.scan("null")
 	case ',':
 		s.next()
 		goto scanAgain
