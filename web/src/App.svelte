@@ -1,26 +1,18 @@
 <script lang="ts">
-    import {Generate, GetAcronyms, ReadClipboard, SetAcronyms, WriteClipboard} from '../wailsjs/go/main/App.js'
+    import {Generate, ReadClipboard, WriteClipboard} from '../wailsjs/go/main/App.js'
     import Editor from "./Editor.svelte";
     import Button from "./Button.svelte";
-    import {onMount} from "svelte";
+    import "./i18n"
+    import {_, locale, locales} from "svelte-i18n";
+
 
     let input: { text: string }
     let output: { text: string }
 
-    let acronyms: string
-
-    function setAcronyms() {
-        SetAcronyms(acronyms.split(",").map(acronym => acronym.trim()))
-    }
-
-    function getAcronyms() {
-        GetAcronyms().then(result => {
-            acronyms = result.join(", ")
-        })
-    }
+    let allCaps: string = "ID"
 
     function generate(): void {
-        Generate(input.text).then(result => {
+        Generate(input.text, allCaps.split(",").map((v) => v.trim())).then(result => {
             output.text = result
         })
     }
@@ -36,36 +28,43 @@
         WriteClipboard(output.text)
     }
 
-    onMount(()=>{
-        getAcronyms()
-    })
 </script>
 
-<main>
-    <div class="flex flex-col h-screen w-screen max-h-screen overflow-clip">
-        <div class="flex flex-row mx-8 mt-4 gap-3 items-center">
-            <label for="acronyms">Acronyms</label>
-            <input type="text" id="acronyms"
-                   class="rounded-md flex-grow border-gray-300 focus:ring-1 focus:ring-cyan-300 py-1 transition mr-3"
-                   bind:value={acronyms} on:change={setAcronyms}>
-            <Button on:click={generate}>Generate</Button>
+<main class="flex flex-col w-screen h-screen px-6 py-4 space-y-4">
+    <div class="columns-2 gap-6 mt-4 h-full max-h-full mx-2">
+        <div class="code h-full max-h-full flex flex-col overflow-clip">
+            <div class="w-full bg-white/50 border-b border-t flex flex-row">
+                <span class="py-1 px-4 select-none text-yellow-600 font-mono">JSON</span>
+                <button on:click={pasteJSON}>{$_('paste', {default: 'Paste'})}</button>
+            </div>
+            <Editor class="w-full h-full border-b" lang="json" bind:editor={input}/>
         </div>
+        <div class="code h-full max-h-full flex flex-col overflow-clip">
+            <div class="w-full bg-white/50 border-b border-t flex flex-row">
+                <span class="py-1 px-4 select-none text-purple-600 font-mono">Go</span>
+                <button on:click={copyCode}>{$_('copy', {default: 'Copy'})}</button>
+            </div>
+            <Editor class="w-full h-full border-b" lang="go" bind:editor={output}/>
+        </div>
+    </div>
 
-        <div class="columns-2 gap-6 mx-8 mb-8 mt-4 h-full max-h-full">
-            <div class="code h-full max-h-full flex flex-col overflow-clip">
-                <div class="w-full bg-white/50 border-b border-t flex flex-row">
-                    <span class="py-1 px-4 select-none text-yellow-600 font-mono">JSON</span>
-                    <button on:click={pasteJSON} class="font-mono">Paste</button>
-                </div>
-                <Editor class="w-full h-full border-b" lang="json" bind:editor={input}/>
+    <div class="flex flex-col space-y-2 mx-2 border rounded-lg px-4 py-3 bg-white/50">
+        <div class="flex flex-row items-center gap-x-5">
+            <div class="space-x-1.5">
+                <label>{$_('language', {default: 'Language'})}</label>
+                <select bind:value={$locale} class="w-fit py-1 border-gray-300 focus:ring-1 focus:ring-cyan-300 rounded">
+                    {#each $locales as locale}
+                        <option value={locale}>{locale}</option>
+                    {/each}
+                </select>
             </div>
-            <div class="code h-full max-h-full flex flex-col overflow-clip">
-                <div class="w-full bg-white/50 border-b border-t flex flex-row">
-                    <span class="py-1 px-4 select-none text-purple-600 font-mono">Go</span>
-                    <button on:click={copyCode} class="font-mono">Copy</button>
-                </div>
-                <Editor class="w-full h-full border-b" lang="go" bind:editor={output}/>
+            <div class="space-x-1.5 flex-grow flex flex-row items-center">
+                <label for="allCaps" class="select-none">{$_('allCaps', {default: 'All caps'})}</label>
+                <input type="text" id="allCaps"
+                       class="rounded-md flex-grow border-gray-300 focus:ring-1 focus:ring-cyan-300 py-1 transition"
+                       bind:value={allCaps}>
             </div>
+            <Button on:click={generate}>{$_('generate', {default: 'Generate'})}</Button>
         </div>
     </div>
 </main>
