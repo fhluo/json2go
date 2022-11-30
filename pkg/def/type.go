@@ -175,6 +175,7 @@ func (f Field) Code() gen.Code {
 type Struct struct {
 	Fields  []*Field
 	Pointer bool
+	CamelCaseConverter
 }
 
 func (s Struct) String() string {
@@ -190,15 +191,6 @@ func (s Struct) String() string {
 			"\n\t",
 		),
 	)
-}
-
-func (s Struct) Map() Map {
-	return Map{
-		Key: String{},
-		Value: deduce(lo.Map(s.Fields, func(field *Field, _ int) Type {
-			return field.Type
-		})),
-	}
 }
 
 func (s Struct) Nullable() Type {
@@ -227,7 +219,7 @@ func (s Struct) Naming() {
 
 	counter := make(map[string]int)
 	for _, field := range s.Fields {
-		field.Name = ToCamelCase(field.Key)
+		field.Name = s.ToCamelCase(field.Key)
 		if counter[field.Name]++; counter[field.Name] != 1 {
 			field.Name += strconv.Itoa(counter[field.Name])
 		}
@@ -275,171 +267,4 @@ func (a Any) Nullable() Type {
 
 func (a Any) Code() gen.Code {
 	return gen.Any()
-}
-
-func is[T Type](t Type) bool {
-	_, ok := t.(T)
-	return ok
-}
-
-func isInteger(s string) bool {
-	if s == "" {
-		return false
-	}
-	if !(s[0] == '+' || s[0] == '-' || ('0' <= s[0] && s[0] <= '9')) {
-		return false
-	}
-	for i := 1; i < len(s); i++ {
-		if !('0' <= s[0] && s[0] <= '9') {
-			return false
-		}
-	}
-	return true
-}
-
-func all[T Type](types []Type) bool {
-	for _, t := range types {
-		if _, ok := t.(T); !ok {
-			return false
-		}
-	}
-	return true
-}
-
-func remove[T Type](types []Type) []Type {
-	i := 0
-	for j := 0; j < len(types); j++ {
-		if !is[T](types[j]) {
-			if i != j {
-				types[i] = types[j]
-			}
-			i++
-		}
-	}
-	return types[:i]
-}
-
-func deduceStruct(types []Type) Struct {
-	m := make(map[string][]*Field)
-	var keys []string
-
-	for _, t := range types {
-		s := t.(Struct)
-		for _, field := range s.Fields {
-			if _, ok := m[field.Key]; !ok {
-				m[field.Key] = make([]*Field, 0, len(types))
-				keys = append(keys, field.Key)
-			}
-			m[field.Key] = append(m[field.Key], field)
-		}
-	}
-
-	s := Struct{
-		Fields: make([]*Field, 0, len(keys)),
-	}
-	for _, key := range keys {
-		fields := m[key]
-		field := fields[0]
-
-		field.Type = deduce(lo.Map(fields, func(field *Field, _ int) Type {
-			return field.Type
-		}))
-		field.OmitEmpty = len(fields) != len(types)
-		if field.OmitEmpty {
-			field.Type = field.Type.Nullable()
-		}
-
-		s.Fields = append(s.Fields, field)
-	}
-
-	return s
-}
-
-func deduceMap(types []Type) Type {
-	return Map{
-		Key: deduce(lo.Map(types, func(item Type, _ int) Type {
-			return item.(Map).Key
-		})),
-		Value: deduce(lo.Map(types, func(item Type, _ int) Type {
-			return item.(Map).Value
-		})),
-	}
-}
-
-func deduce(types []Type) Type {
-	n := len(types)
-	types = remove[Any](types)
-	nullable := len(types) < n
-
-	switch len(types) {
-	case 0:
-		return Any{}
-	case 1:
-		if nullable {
-			return types[0].Nullable()
-		} else {
-			return types[0]
-		}
-	}
-
-	switch types[0].(type) {
-	case String:
-		if all[String](types) {
-			return String{Pointer: nullable}
-		}
-	case Int:
-		if all[Int](types) {
-			return Int{Pointer: nullable}
-		} else {
-			ok := lo.EveryBy(types, func(item Type) bool {
-				return is[Int](item) || is[Float](item)
-			})
-			if ok {
-				return Float{Pointer: nullable}
-			}
-		}
-	case Float:
-		if all[Float](types) {
-			return Float{Pointer: nullable}
-		}
-	case Bool:
-		if all[Bool](types) {
-			return Bool{Pointer: nullable}
-		}
-	case Array:
-		if all[Array](types) {
-			for i := range types {
-				types[i] = types[i].(Array).Element
-			}
-			return Array{
-				Element: deduce(types),
-			}
-		}
-	case Struct:
-		if all[Struct](types) {
-			if nullable {
-				return deduceStruct(types).Nullable()
-			} else {
-				return deduceStruct(types)
-			}
-		} else {
-			ok := lo.EveryBy(types, func(item Type) bool {
-				return is[Struct](item) || is[Map](item)
-			})
-			if ok {
-				for i := range types {
-					if s, ok := types[i].(Struct); ok {
-						types[i] = s.Map()
-					}
-				}
-				return deduceMap(types)
-			}
-		}
-	case Map:
-		if all[Map](types) {
-			return deduceMap(types)
-		}
-	}
-
-	return Any{}
 }

@@ -15,7 +15,7 @@ var rootCmd = &cobra.Command{
 	Use:   "json2go",
 	Short: "Generating a Go type definition from JSON.",
 	Run: func(cmd *cobra.Command, args []string) {
-		def.SetAcronyms(acronyms...)
+		conv := def.NewDefaultCamelCaseConverter(acronyms)
 
 		paths, err := expand(args)
 		if err != nil {
@@ -39,7 +39,7 @@ var rootCmd = &cobra.Command{
 				base := filepath.Base(path)
 				name := strings.TrimSuffix(base, filepath.Ext(path))
 
-				data, err = Generate(data, output, fmt.Sprintf("Generated from %s", base), def.ToCamelCase(name))
+				data, err = Generate(data, output, fmt.Sprintf("Generated from %s", base), conv.ToCamelCase(name), conv)
 				if err != nil {
 					log.Println(err)
 					return

@@ -27,20 +27,12 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-func (a *App) GetAcronyms() []string {
-	return def.GetAcronyms()
-}
-
-func (a *App) SetAcronyms(acronyms []string) {
-	def.SetAcronyms(acronyms...)
-}
-
-func (a *App) Generate(s string) string {
+func (a *App) Generate(s string, allCaps []string) string {
 	if !json.Valid([]byte(s)) {
 		return "invalid json"
 	}
 
-	statement, err := def.From(s).Declare("t")
+	statement, err := def.From(s, allCaps...).Declare("t")
 	if err != nil {
 		return err.Error()
 	}

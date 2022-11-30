@@ -4,13 +4,19 @@ import (
 	"bytes"
 	gen "github.com/dave/jennifer/jen"
 	"github.com/fhluo/json2go/pkg/def"
+	"github.com/fhluo/json2go/pkg/scanner"
 )
 
-func Generate(data []byte, packageName string, headerComment string, typeName string) ([]byte, error) {
+func Generate(data []byte, packageName string, headerComment string, typeName string, conv def.CamelCaseConverter) ([]byte, error) {
 	file := gen.NewFile(packageName)
 	file.HeaderComment(headerComment)
 
-	t, err := def.FromBytes(data).Declare(typeName)
+	c := def.Context{
+		Scanner:            scanner.New(string(data)),
+		CamelCaseConverter: conv,
+	}
+
+	t, err := c.Declare(typeName)
 	if err != nil {
 		return nil, err
 	}
@@ -18,7 +24,7 @@ func Generate(data []byte, packageName string, headerComment string, typeName st
 	file.Add(t)
 
 	buf := new(bytes.Buffer)
-	if err := file.Render(buf); err != nil {
+	if err = file.Render(buf); err != nil {
 		return nil, err
 	}
 
