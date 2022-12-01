@@ -1,7 +1,11 @@
 {
-  "allCaps": "All caps",
-  "generate": "Generate",
-  "paste": "Paste",
-  "copy": "Copy",
-  "language": "Language"
+  "File": "File",
+  "Edit": "Edit",
+  "All caps": "All caps",
+  "Generate": "Generate",
+  "Paste": "Paste",
+  "Copy": "Copy",
+  "Language": "Language",
+  "en": "English",
+  "zh": "中文"
 }

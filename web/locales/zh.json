@@ -1,7 +1,13 @@
 {
-  "allCaps": "全大写",
-  "generate": "生成",
-  "paste": "粘贴",
-  "copy": "复制",
-  "language": "语言"
+  "File": "文件",
+  "Edit": "编辑",
+  "All caps": "全大写",
+  "Generate": "生成",
+  "Paste": "粘贴",
+  "Copy": "复制",
+  "Language": "语言",
+  "en": "English",
+  "zh": "中文",
+  "Settings": "设置",
+  "Exit": "退出"
 }
