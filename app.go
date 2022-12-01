@@ -5,7 +5,9 @@ import (
 	"context"
 	"encoding/json"
 	"github.com/fhluo/json2go/pkg/def"
+	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"golang.design/x/clipboard"
+	"os"
 )
 
 func init() {
@@ -16,7 +18,8 @@ func init() {
 }
 
 type App struct {
-	ctx context.Context
+	ctx  context.Context
+	exit func()
 }
 
 func NewApp() *App {
@@ -25,6 +28,14 @@ func NewApp() *App {
 
 func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
+
+	runtime.EventsOn(ctx, "exit", func(optionalData ...interface{}) {
+		if a.exit != nil {
+			a.exit()
+		} else {
+			os.Exit(0)
+		}
+	})
 }
 
 func (a *App) Generate(s string, allCaps []string) string {

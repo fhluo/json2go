@@ -2,7 +2,7 @@ package main
 
 import (
 	"embed"
-	"github.com/wailsapp/wails/v2"
+	"github.com/wailsapp/wails/v2/pkg/application"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
@@ -14,7 +14,7 @@ var assets embed.FS
 func main() {
 	app := NewApp()
 
-	err := wails.Run(&options.App{
+	a := application.NewWithOptions(&options.App{
 		Title:  "json2go",
 		Width:  1366,
 		Height: 768,
@@ -33,7 +33,9 @@ func main() {
 		},
 	})
 
-	if err != nil {
+	app.exit = a.Quit
+
+	if err := a.Run(); err != nil {
 		println("Error:", err.Error())
 	}
 }
