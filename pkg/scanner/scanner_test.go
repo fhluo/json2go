@@ -3,12 +3,11 @@ package scanner
 import (
 	"github.com/fhluo/json2go/pkg/token"
 	"github.com/stretchr/testify/assert"
+	"strings"
 	"testing"
 )
 
-func scan(s string) (tokens []token.Token) {
-	scanner := New(s)
-
+func getTokens(scanner Scanner) (tokens []token.Token) {
 	t, _, err := scanner.Scan()
 	if err != nil {
 		return
@@ -25,7 +24,24 @@ func scan(s string) (tokens []token.Token) {
 	return
 }
 
-func TestScanner_Scan(t *testing.T) {
+type Tokens []token.Token
+
+func (tokens Tokens) String() string {
+	var b strings.Builder
+
+	if len(tokens) != 0 {
+		b.WriteString(tokens[0].String())
+	}
+	for i := 1; i < len(tokens); i++ {
+		b.WriteByte(',')
+		b.WriteByte(' ')
+		b.WriteString(tokens[i].String())
+	}
+
+	return b.String()
+}
+
+func testScanner(t *testing.T, newScanner func(s string) Scanner) {
 	json := `[
   {
     "string": "中文",
@@ -39,8 +55,8 @@ func TestScanner_Scan(t *testing.T) {
   }
 ]`
 	assert.Equal(
-		t, scan(json),
-		[]token.Token{
+		t,
+		Tokens([]token.Token{
 			token.LeftBracket,
 			token.LeftBrace,
 			token.String, token.String,
@@ -53,6 +69,15 @@ func TestScanner_Scan(t *testing.T) {
 			token.RightBracket,
 			token.RightBrace,
 			token.RightBracket,
-		},
+		}).String(),
+		Tokens(getTokens(newScanner(json))).String(),
 	)
+}
+
+func TestDefaultScanner(t *testing.T) {
+	testScanner(t, New)
+}
+
+func TestStandardScanner(t *testing.T) {
+	testScanner(t, NewStandard)
 }

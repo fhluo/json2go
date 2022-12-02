@@ -9,7 +9,7 @@ import (
 )
 
 type Context struct {
-	*scanner.Scanner
+	scanner.Scanner
 	CamelCaseConverter
 }
 
@@ -23,7 +23,7 @@ func From(s string, allCaps ...string) *Context {
 func FromBytes(data []byte, allCaps ...string) *Context {
 	c := new(Context)
 	c.CamelCaseConverter = NewDefaultCamelCaseConverter(allCaps)
-	c.Scanner = scanner.New(string(data))
+	c.Scanner = scanner.NewFromBytes(data)
 	return c
 }
 
@@ -88,7 +88,7 @@ func validIntegers(items []string) bool {
 			return false
 		}
 		for i := 1; i < len(s); i++ {
-			if !('0' <= s[0] && s[0] <= '9') {
+			if !('0' <= s[i] && s[i] <= '9') {
 				return false
 			}
 		}

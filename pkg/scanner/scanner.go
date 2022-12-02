@@ -1,15 +1,24 @@
 package scanner
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"github.com/fhluo/json2go/pkg/stack"
 	"github.com/fhluo/json2go/pkg/token"
+	"github.com/pkg/errors"
+	"io"
 	"unicode/utf8"
 )
 
+type Scanner interface {
+	More() bool
+	Scan() (token.Token, string, error)
+}
+
 const eof = -1
 
-type Scanner struct {
+type DefaultScanner struct {
 	source string
 
 	character     rune
@@ -19,15 +28,19 @@ type Scanner struct {
 	stack *stack.Stack[token.Token]
 }
 
-func New(s string) *Scanner {
-	scanner := new(Scanner)
+func New(s string) Scanner {
+	scanner := new(DefaultScanner)
 	scanner.source = s
 	scanner.stack = stack.New[token.Token]()
 	scanner.next()
 	return scanner
 }
 
-func (s *Scanner) next() {
+func NewFromBytes(data []byte) Scanner {
+	return New(string(data))
+}
+
+func (s *DefaultScanner) next() {
 	if s.readingOffset >= len(s.source) {
 		s.character = eof
 		return
@@ -43,20 +56,20 @@ func (s *Scanner) next() {
 	s.readingOffset += size
 }
 
-func (s *Scanner) peek() byte {
+func (s *DefaultScanner) peek() byte {
 	if s.readingOffset >= len(s.source) {
 		return 0
 	}
 	return s.source[s.readingOffset]
 }
 
-func (s *Scanner) skipWhitespace() {
+func (s *DefaultScanner) skipWhitespace() {
 	for s.character == ' ' || s.character == '\n' || s.character == '\r' || s.character == '\t' {
 		s.next()
 	}
 }
 
-func (s *Scanner) scanString() (string, error) {
+func (s *DefaultScanner) scanString() (string, error) {
 	s.next()
 	start := s.offset
 
@@ -78,7 +91,7 @@ func (s *Scanner) scanString() (string, error) {
 	return s.source[start:end], nil
 }
 
-func (s *Scanner) scan(target string) error {
+func (s *DefaultScanner) scan(target string) error {
 	if s.source[s.offset:s.offset+len(target)] != target {
 		return fmt.Errorf("fail to scan %s", target)
 	}
@@ -88,7 +101,7 @@ func (s *Scanner) scan(target string) error {
 	return nil
 }
 
-func (s *Scanner) More() bool {
+func (s *DefaultScanner) More() bool {
 	s.skipWhitespace()
 	if s.character == ',' {
 		s.next()
@@ -98,7 +111,7 @@ func (s *Scanner) More() bool {
 	return s.character != eof && s.character != '}' && s.character != ']'
 }
 
-func (s *Scanner) Scan() (token.Token, string, error) {
+func (s *DefaultScanner) Scan() (token.Token, string, error) {
 scanAgain:
 	s.skipWhitespace()
 
@@ -178,5 +191,75 @@ scanAgain:
 		return token.EOF, "", nil
 	default:
 		return token.Illegal, "", fmt.Errorf("illegal character %c", s.character)
+	}
+}
+
+type StandardScanner struct {
+	*json.Decoder
+}
+
+func NewStandard(s string) Scanner {
+	scanner := StandardScanner{
+		Decoder: json.NewDecoder(bytes.NewBufferString(s)),
+	}
+	scanner.UseNumber()
+	return scanner
+}
+
+func NewStandardFromBytes(data []byte) Scanner {
+	scanner := StandardScanner{
+		Decoder: json.NewDecoder(bytes.NewBuffer(data)),
+	}
+	scanner.UseNumber()
+	return scanner
+}
+
+func (s StandardScanner) Scan() (token.Token, string, error) {
+	t, err := s.Decoder.Token()
+	if err != nil {
+		if errors.Is(err, io.EOF) {
+			return token.EOF, "", nil
+		}
+		return token.Illegal, "", err
+	}
+
+	switch x := t.(type) {
+	case json.Delim:
+		switch x {
+		case '{':
+			return token.LeftBrace, "", nil
+		case '}':
+			return token.RightBrace, "", nil
+		case '[':
+			return token.LeftBracket, "", nil
+		case ']':
+			return token.RightBracket, "", nil
+		default:
+			return token.Illegal, "", fmt.Errorf("invalid delim %s", x)
+		}
+	case bool:
+		return token.Bool, "", nil
+	case json.Number:
+		n := x.String()
+
+		if n == "" {
+			return token.Float, "", nil
+		}
+		if !(n[0] == '+' || n[0] == '-' || ('0' <= n[0] && n[0] <= '9')) {
+			return token.Float, "", nil
+		}
+		for i := 1; i < len(n); i++ {
+			if !('0' <= n[i] && n[i] <= '9') {
+				return token.Float, "", nil
+			}
+		}
+
+		return token.Int, "", nil
+	case string:
+		return token.String, "", nil
+	case nil:
+		return token.Null, "", nil
+	default:
+		return token.Illegal, "", fmt.Errorf("unexpected type")
 	}
 }
