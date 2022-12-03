@@ -1,4 +1,4 @@
-package def
+package conv
 
 import (
 	"github.com/samber/lo"
@@ -25,9 +25,10 @@ func NewDefaultCamelCaseConverter(allCaps []string) DefaultCamelCaseConverter {
 }
 
 var (
-	splitRE       = regexp.MustCompile(`_|\s+`)
+	splitRE       = regexp.MustCompile(`_+|-+|\s+`)
 	allCapsRE     = regexp.MustCompile(`^[A-Z]{2,}\d*$`)
 	capitalizedRE = regexp.MustCompile(`[A-Z][a-z]+\d*`)
+	ToCamelCase   = NewDefaultCamelCaseConverter(nil).ToCamelCase
 )
 
 func (c DefaultCamelCaseConverter) ToCamelCase(s string) string {

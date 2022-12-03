@@ -3,6 +3,7 @@ package def
 import (
 	"fmt"
 	gen "github.com/dave/jennifer/jen"
+	"github.com/fhluo/json2go/pkg/conv"
 	"github.com/samber/lo"
 	"go/format"
 	"golang.org/x/exp/slices"
@@ -175,7 +176,7 @@ func (f Field) Code() gen.Code {
 type Struct struct {
 	Fields  []*Field
 	Pointer bool
-	CamelCaseConverter
+	conv.CamelCaseConverter
 }
 
 func (s Struct) String() string {

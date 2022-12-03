@@ -3,11 +3,12 @@ package cmd
 import (
 	"bytes"
 	gen "github.com/dave/jennifer/jen"
+	"github.com/fhluo/json2go/pkg/conv"
 	"github.com/fhluo/json2go/pkg/def"
 	"github.com/fhluo/json2go/pkg/scanner"
 )
 
-func Generate(data []byte, packageName string, headerComment string, typeName string, conv def.CamelCaseConverter) ([]byte, error) {
+func Generate(data []byte, packageName string, headerComment string, typeName string, conv conv.CamelCaseConverter) ([]byte, error) {
 	file := gen.NewFile(packageName)
 	file.HeaderComment(headerComment)
 

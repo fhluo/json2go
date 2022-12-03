@@ -2,7 +2,7 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/fhluo/json2go/pkg/def"
+	"github.com/fhluo/json2go/pkg/conv"
 	"github.com/spf13/cobra"
 	"log"
 	"os"
@@ -15,7 +15,7 @@ var rootCmd = &cobra.Command{
 	Use:   "json2go",
 	Short: "Generating a Go type definition from JSON.",
 	Run: func(cmd *cobra.Command, args []string) {
-		conv := def.NewDefaultCamelCaseConverter(acronyms)
+		conv := conv.NewDefaultCamelCaseConverter(acronyms)
 
 		paths, err := expand(args)
 		if err != nil {
@@ -45,7 +45,7 @@ var rootCmd = &cobra.Command{
 					return
 				}
 
-				dst := filepath.Join(output, def.ToSnakeCase(name)+".go")
+				dst := filepath.Join(output, conv.ToSnakeCase(name)+".go")
 				err = os.WriteFile(dst, data, os.ModePerm)
 				if err != nil {
 					log.Println(err)

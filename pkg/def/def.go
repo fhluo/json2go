@@ -3,6 +3,7 @@ package def
 import (
 	"fmt"
 	gen "github.com/dave/jennifer/jen"
+	"github.com/fhluo/json2go/pkg/conv"
 	"github.com/fhluo/json2go/pkg/scanner"
 	"github.com/fhluo/json2go/pkg/token"
 	"github.com/samber/lo"
@@ -10,19 +11,19 @@ import (
 
 type Context struct {
 	scanner.Scanner
-	CamelCaseConverter
+	conv.CamelCaseConverter
 }
 
 func From(s string, allCaps ...string) *Context {
 	c := new(Context)
-	c.CamelCaseConverter = NewDefaultCamelCaseConverter(allCaps)
+	c.CamelCaseConverter = conv.NewDefaultCamelCaseConverter(allCaps)
 	c.Scanner = scanner.New(s)
 	return c
 }
 
 func FromBytes(data []byte, allCaps ...string) *Context {
 	c := new(Context)
-	c.CamelCaseConverter = NewDefaultCamelCaseConverter(allCaps)
+	c.CamelCaseConverter = conv.NewDefaultCamelCaseConverter(allCaps)
 	c.Scanner = scanner.NewFromBytes(data)
 	return c
 }
