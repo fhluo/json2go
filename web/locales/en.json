@@ -7,5 +7,10 @@
   "Copy": "Copy",
   "Language": "Language",
   "en": "English",
-  "zh": "中文"
+  "zh": "中文",
+  "Settings": "Settings",
+  "Exit": "Exit",
+  "Close": "Close",
+  "Load from JSON file": "Load from JSON file",
+  "Save to Go source file": "Save to Go source file"
 }

@@ -10,7 +10,7 @@
     "check": "svelte-check --tsconfig ./tsconfig.json"
   },
   "devDependencies": {
-    "@sveltejs/vite-plugin-svelte": "^1.0.1",
+    "@sveltejs/vite-plugin-svelte": "^2.0.2",
     "@tailwindcss/forms": "^0.5.3",
     "@tsconfig/svelte": "^3.0.0",
     "autoprefixer": "^10.4.13",
@@ -18,20 +18,14 @@
     "postcss": "^8.4.19",
     "svelte": "^3.53.1",
     "svelte-check": "^2.10.0",
-    "svelte-preprocess": "^4.10.7",
+    "svelte-preprocess": "^5.0.0",
     "tailwindcss": "^3.2.4",
     "tslib": "^2.4.0",
     "typescript": "^4.9.3",
-    "vite": "^3.2.4"
+    "vite": "^4.0.1"
   },
   "dependencies": {
-    "@codemirror/commands": "^6.1.2",
-    "@codemirror/lang-json": "^6.0.1",
-    "@codemirror/language": "^6.3.1",
-    "@codemirror/legacy-modes": "^6.3.1",
-    "@codemirror/state": "^6.1.4",
-    "@codemirror/view": "^6.6.0",
-    "codemirror": "^6.0.1",
+    "monaco-editor": "^0.34.1",
     "svelte-i18n": "^3.6.0"
   }
 }

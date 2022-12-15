@@ -9,5 +9,8 @@
   "en": "English",
   "zh": "中文",
   "Settings": "设置",
-  "Exit": "退出"
+  "Exit": "退出",
+  "Close": "关闭",
+  "Load from JSON file": "从 JSON 文件中加载",
+  "Save to Go source file": "保存到 Go 源文件"
 }
