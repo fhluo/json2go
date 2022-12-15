@@ -1,13 +1,23 @@
 <script lang="ts">
     import {Generate, ReadClipboard, WriteClipboard} from '../wailsjs/go/main/App.js'
     import "fluent-svelte/theme.css";
-    import {Button, MenuBar, MenuBarItem, MenuFlyoutDivider, MenuFlyoutItem} from "fluent-svelte";
+    import {
+        Button,
+        ContentDialog,
+        MenuBar,
+        MenuBarItem,
+        MenuFlyoutDivider,
+        MenuFlyoutItem,
+        TextBlock,
+        TextBox
+    } from "fluent-svelte";
     import "./i18n"
     import {_, locale, locales} from "svelte-i18n";
     import {EventsEmit} from "../wailsjs/runtime";
     import * as monaco from 'monaco-editor';
     import {editor} from 'monaco-editor';
     import {onMount} from "svelte";
+    import './worker';
     import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
     let jsonEditor: IStandaloneCodeEditor
@@ -16,12 +26,26 @@
     onMount(() => {
         jsonEditor = monaco.editor.create(document.getElementById('json-editor'), {
             value: "",
-            language: 'json'
+            language: 'json',
+            fontFamily: 'Jetbrains Mono, monospace',
+            fontSize: 16,
+            minimap: {
+                enabled: false
+            },
+            lineHeight: 25,
+            automaticLayout: true,
         });
 
         goEditor = monaco.editor.create(document.getElementById('go-editor'), {
             value: "",
-            language: 'go'
+            language: 'go',
+            fontFamily: 'Jetbrains Mono, monospace',
+            fontSize: 16,
+            minimap: {
+                enabled: false
+            },
+            lineHeight: 25,
+            automaticLayout: true,
         });
     })
 
@@ -45,17 +69,34 @@
         WriteClipboard(goEditor.getValue())
     }
 
-    let items = $locales.map(function (value) {
-        return {
-            name: value,
-            value: value,
-        }
-    })
+    function increaseFontSize() {
+        jsonEditor.updateOptions({fontSize: jsonEditor.getOption(monaco.editor.EditorOption.fontSize) + 1})
+        goEditor.updateOptions({fontSize: goEditor.getOption(monaco.editor.EditorOption.fontSize) + 1})
+    }
 
+    function decreaseFontSize() {
+        jsonEditor.updateOptions({fontSize: jsonEditor.getOption(monaco.editor.EditorOption.fontSize) - 1})
+        goEditor.updateOptions({fontSize: goEditor.getOption(monaco.editor.EditorOption.fontSize) - 1})
+    }
+
+    function resetFontSize() {
+        jsonEditor.updateOptions({fontSize: 16})
+        goEditor.updateOptions({fontSize: 16})
+    }
+
+    let openSettingsDialog = false;
 
 </script>
 
 <main class="w-screen h-screen flex flex-col">
+    <ContentDialog bind:open={openSettingsDialog} title={$_('Settings')}>
+        <div class="space-y-1.5 flex flex-col">
+            <TextBlock class="select-none text-lg">{$_('All caps')}</TextBlock>
+            <TextBox id="allCaps" bind:value={allCaps}></TextBox>
+        </div>
+        <Button slot="footer" on:click={()=>{openSettingsDialog=false}}>{$_('Close')}</Button>
+    </ContentDialog>
+
     <MenuBar class="border-b">
         <MenuBarItem>
             {$_('File')}
@@ -63,7 +104,7 @@
                 <MenuFlyoutItem>{$_('Load from JSON file')}</MenuFlyoutItem>
                 <MenuFlyoutItem>{$_('Save to Go source file')}</MenuFlyoutItem>
                 <MenuFlyoutDivider/>
-                <MenuFlyoutItem>{$_('Settings')}</MenuFlyoutItem>
+                <MenuFlyoutItem on:click={()=>{openSettingsDialog=true}}>{$_('Settings')}</MenuFlyoutItem>
                 <MenuFlyoutDivider/>
                 <MenuFlyoutItem on:click={()=> EventsEmit("exit")}>{$_('Exit')}</MenuFlyoutItem>
             </svelte:fragment>
@@ -74,6 +115,14 @@
                 {#each $locales as _locale}
                     <MenuFlyoutItem variant="radio" bind:group={$locale} value={_locale}>{$_(_locale)}</MenuFlyoutItem>
                 {/each}
+            </svelte:fragment>
+        </MenuBarItem>
+        <MenuBarItem>
+            {$_('Font')}
+            <svelte:fragment slot="flyout">
+                <MenuFlyoutItem on:click={increaseFontSize}>{$_('Increase size')}</MenuFlyoutItem>
+                <MenuFlyoutItem on:click={decreaseFontSize}>{$_('Decrease size')}</MenuFlyoutItem>
+                <MenuFlyoutItem on:click={resetFontSize}>{$_('Reset size')}</MenuFlyoutItem>
             </svelte:fragment>
         </MenuBarItem>
     </MenuBar>
@@ -103,4 +152,11 @@
 </main>
 
 <style>
+    @font-face {
+        font-family: "JetBrains Mono";
+        font-style: normal;
+        font-weight: 400;
+        src: local(""), url("assets/fonts/JetBrainsMono-Regular.woff2") format("woff2");;
+    }
+
 </style>

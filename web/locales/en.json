@@ -12,5 +12,9 @@
   "Exit": "Exit",
   "Close": "Close",
   "Load from JSON file": "Load from JSON file",
-  "Save to Go source file": "Save to Go source file"
+  "Save to Go source file": "Save to Go source file",
+  "Font": "Font",
+  "Increase size": "Increase size",
+  "Decrease size": "Decrease size",
+  "Reset size": "Reset size"
 }
