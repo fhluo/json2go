@@ -6,8 +6,16 @@ export function Generate(arg1, arg2) {
   return window['go']['main']['App']['Generate'](arg1, arg2);
 }
 
+export function GetConfig(arg1) {
+  return window['go']['main']['App']['GetConfig'](arg1);
+}
+
 export function ReadClipboard() {
   return window['go']['main']['App']['ReadClipboard']();
+}
+
+export function SetConfig(arg1, arg2) {
+  return window['go']['main']['App']['SetConfig'](arg1, arg2);
 }
 
 export function WriteClipboard(arg1) {

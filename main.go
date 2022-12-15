@@ -2,16 +2,22 @@ package main
 
 import (
 	"embed"
+	"github.com/fhluo/json2go/internal/config"
 	"github.com/wailsapp/wails/v2/pkg/application"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
+	"log"
 )
 
-//go:embed all:web/dist
-var assets embed.FS
+var (
+	//go:embed all:web/dist
+	assets embed.FS
+)
 
 func main() {
+	defer config.Write()
+
 	app := NewApp()
 
 	a := application.NewWithOptions(&options.App{
@@ -33,9 +39,11 @@ func main() {
 		},
 	})
 
-	app.exit = a.Quit
+	app.exit = func() {
+		a.Quit()
+	}
 
 	if err := a.Run(); err != nil {
-		println("Error:", err.Error())
+		log.Fatalln(err)
 	}
 }

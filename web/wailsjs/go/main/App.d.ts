@@ -3,6 +3,10 @@
 
 export function Generate(arg1:string,arg2:Array<string>):Promise<string>;
 
+export function GetConfig(arg1:string):Promise<any>;
+
 export function ReadClipboard():Promise<string>;
+
+export function SetConfig(arg1:string,arg2:any):Promise<void>;
 
 export function WriteClipboard(arg1:string):Promise<void>;

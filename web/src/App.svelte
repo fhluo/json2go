@@ -1,5 +1,5 @@
 <script lang="ts">
-    import {Generate, ReadClipboard, WriteClipboard} from '../wailsjs/go/main/App.js'
+    import {Generate, GetConfig, ReadClipboard, SetConfig, WriteClipboard} from '../wailsjs/go/main/App.js'
     import "fluent-svelte/theme.css";
     import {
         Button,
@@ -23,30 +23,37 @@
     let jsonEditor: IStandaloneCodeEditor
     let goEditor: IStandaloneCodeEditor
 
+    const defaultFontSize = 16
+    let fontSize = defaultFontSize
+
     onMount(() => {
+        GetConfig("font_size").then(result => {
+            fontSize = result
+        })
+
         jsonEditor = monaco.editor.create(document.getElementById('json-editor'), {
             value: "",
             language: 'json',
             fontFamily: 'Jetbrains Mono, monospace',
-            fontSize: 16,
+            fontSize: fontSize,
             minimap: {
                 enabled: false
             },
             lineHeight: 25,
             automaticLayout: true,
-        });
+        })
 
         goEditor = monaco.editor.create(document.getElementById('go-editor'), {
             value: "",
             language: 'go',
             fontFamily: 'Jetbrains Mono, monospace',
-            fontSize: 16,
+            fontSize: fontSize,
             minimap: {
                 enabled: false
             },
             lineHeight: 25,
             automaticLayout: true,
-        });
+        })
     })
 
 
@@ -70,21 +77,32 @@
     }
 
     function increaseFontSize() {
-        jsonEditor.updateOptions({fontSize: jsonEditor.getOption(monaco.editor.EditorOption.fontSize) + 1})
-        goEditor.updateOptions({fontSize: goEditor.getOption(monaco.editor.EditorOption.fontSize) + 1})
+        fontSize++
+        jsonEditor.updateOptions({fontSize})
+        goEditor.updateOptions({fontSize})
     }
 
     function decreaseFontSize() {
-        jsonEditor.updateOptions({fontSize: jsonEditor.getOption(monaco.editor.EditorOption.fontSize) - 1})
-        goEditor.updateOptions({fontSize: goEditor.getOption(monaco.editor.EditorOption.fontSize) - 1})
+        fontSize--
+        jsonEditor.updateOptions({fontSize})
+        goEditor.updateOptions({fontSize})
     }
 
     function resetFontSize() {
-        jsonEditor.updateOptions({fontSize: 16})
-        goEditor.updateOptions({fontSize: 16})
+        jsonEditor.updateOptions({fontSize: defaultFontSize})
+        goEditor.updateOptions({fontSize: defaultFontSize})
     }
 
     let openSettingsDialog = false;
+
+    GetConfig("locale").then(result => {
+        if (result !== "") {
+            $locale = result
+        }
+    })
+
+    $: SetConfig("locale", $locale)
+    $: SetConfig("font_size", fontSize)
 
 </script>
 
@@ -94,7 +112,7 @@
             <TextBlock class="select-none text-lg">{$_('All caps')}</TextBlock>
             <TextBox id="allCaps" bind:value={allCaps}></TextBox>
         </div>
-        <Button slot="footer" on:click={()=>{openSettingsDialog=false}}>{$_('Close')}</Button>
+        <Button slot="footer" on:click={() => {openSettingsDialog = false}}>{$_('Close')}</Button>
     </ContentDialog>
 
     <MenuBar class="border-b">
@@ -104,16 +122,17 @@
                 <MenuFlyoutItem>{$_('Load from JSON file')}</MenuFlyoutItem>
                 <MenuFlyoutItem>{$_('Save to Go source file')}</MenuFlyoutItem>
                 <MenuFlyoutDivider/>
-                <MenuFlyoutItem on:click={()=>{openSettingsDialog=true}}>{$_('Settings')}</MenuFlyoutItem>
+                <MenuFlyoutItem on:click={() => {openSettingsDialog = true}}>{$_('Settings')}</MenuFlyoutItem>
                 <MenuFlyoutDivider/>
-                <MenuFlyoutItem on:click={()=> EventsEmit("exit")}>{$_('Exit')}</MenuFlyoutItem>
+                <MenuFlyoutItem on:click={() => EventsEmit("exit")}>{$_('Exit')}</MenuFlyoutItem>
             </svelte:fragment>
         </MenuBarItem>
         <MenuBarItem>
             {$_('Language')}
             <svelte:fragment slot="flyout">
                 {#each $locales as _locale}
-                    <MenuFlyoutItem variant="radio" bind:group={$locale} value={_locale}>{$_(_locale)}</MenuFlyoutItem>
+                    <MenuFlyoutItem variant="radio" bind:group={$locale} name="locale" value={_locale}
+                                    checked={$locale===_locale}>{$_(_locale)}</MenuFlyoutItem>
                 {/each}
             </svelte:fragment>
         </MenuBarItem>
