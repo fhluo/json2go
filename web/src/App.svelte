@@ -87,7 +87,6 @@
     function pasteJSON() {
         ReadClipboard().then(result => {
             jsonEditor.setValue(result)
-            generate()
         })
     }
 
