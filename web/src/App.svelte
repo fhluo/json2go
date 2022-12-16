@@ -1,5 +1,13 @@
 <script lang="ts">
-    import {Generate, GetConfig, ReadClipboard, SetConfig, WriteClipboard} from '../wailsjs/go/main/App.js'
+    import {
+        Generate,
+        GetConfig,
+        OpenJSONFile,
+        ReadClipboard,
+        SaveGoSourceFile,
+        SetConfig,
+        WriteClipboard
+    } from '../wailsjs/go/main/App.js'
     import "fluent-svelte/theme.css";
     import {
         Button,
@@ -56,12 +64,24 @@
     })
 
 
-    let allCaps: string = "ID"
+    let allCaps: string = "ID,URL"
 
     function generate(): void {
         Generate(jsonEditor.getValue(), allCaps.split(",").map((v) => v.trim())).then(result => {
             goEditor.setValue(result)
         })
+    }
+
+    function openJSONFile(): void {
+        OpenJSONFile().then(result => {
+            if (result !== "") {
+                jsonEditor.setValue(result)
+            }
+        })
+    }
+
+    function saveGoSourceFile(): void {
+        SaveGoSourceFile(goEditor.getValue())
     }
 
     function pasteJSON() {
@@ -105,8 +125,8 @@
         <MenuBarItem>
             {$_('File')}
             <svelte:fragment slot="flyout">
-                <MenuFlyoutItem>{$_('Load from JSON file')}</MenuFlyoutItem>
-                <MenuFlyoutItem>{$_('Save to Go source file')}</MenuFlyoutItem>
+                <MenuFlyoutItem on:click={openJSONFile}>{$_('Open JSON file')}</MenuFlyoutItem>
+                <MenuFlyoutItem on:click={saveGoSourceFile}>{$_('Save Go source file')}</MenuFlyoutItem>
                 <MenuFlyoutDivider/>
                 <MenuFlyoutItem on:click={() => {openSettingsDialog = true}}>{$_('Settings')}</MenuFlyoutItem>
                 <MenuFlyoutDivider/>

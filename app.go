@@ -8,6 +8,8 @@ import (
 	"github.com/fhluo/json2go/pkg/def"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"golang.design/x/clipboard"
+	"os"
+	"strings"
 )
 
 func init() {
@@ -49,17 +51,59 @@ func (a *App) Generate(s string, allCaps []string) string {
 		return "invalid json"
 	}
 
-	statement, err := def.From(s, allCaps...).Declare("t")
+	statement, err := def.From(s, allCaps...).Declare("T")
 	if err != nil {
 		return err.Error()
 	}
 
 	buf := new(bytes.Buffer)
-	if err := statement.Render(buf); err != nil {
+	if err = statement.Render(buf); err != nil {
 		return err.Error()
 	}
 
 	return buf.String()
+}
+
+func (a *App) OpenJSONFile() string {
+	filename, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
+		Title:                "Open JSON File",
+		CanCreateDirectories: true,
+		Filters: []runtime.FileFilter{
+			{DisplayName: "JSON Files(*.json)", Pattern: "*.json"},
+		},
+	})
+	if err != nil {
+		return ""
+	}
+
+	// read file and return string content
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		return ""
+	}
+
+	return string(data)
+}
+
+func (a *App) SaveGoSourceFile(s string) {
+	filename, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
+		Title:                "Save Go Source File",
+		CanCreateDirectories: true,
+		Filters: []runtime.FileFilter{
+			{DisplayName: "Go Source Files(*.go)", Pattern: "*.go"},
+		},
+	})
+	if err != nil {
+		return
+	}
+
+	// if filename doesn't end with .go, append it
+	if !strings.HasSuffix(filename, ".go") {
+		filename += ".go"
+	}
+
+	// write file
+	_ = os.WriteFile(filename, []byte(s), 0664)
 }
 
 func (a *App) WriteClipboard(s string) {

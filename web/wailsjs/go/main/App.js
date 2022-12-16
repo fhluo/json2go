@@ -10,8 +10,16 @@ export function GetConfig(arg1) {
   return window['go']['main']['App']['GetConfig'](arg1);
 }
 
+export function OpenJSONFile() {
+  return window['go']['main']['App']['OpenJSONFile']();
+}
+
 export function ReadClipboard() {
   return window['go']['main']['App']['ReadClipboard']();
+}
+
+export function SaveGoSourceFile(arg1) {
+  return window['go']['main']['App']['SaveGoSourceFile'](arg1);
 }
 
 export function SetConfig(arg1, arg2) {
