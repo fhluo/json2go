@@ -25,12 +25,11 @@
 
     const defaultFontSize = 16
     let fontSize = defaultFontSize
+    GetConfig("font_size").then(result => {
+        fontSize = result
+    })
 
     onMount(() => {
-        GetConfig("font_size").then(result => {
-            fontSize = result
-        })
-
         jsonEditor = monaco.editor.create(document.getElementById('json-editor'), {
             value: "",
             language: 'json',
@@ -76,23 +75,6 @@
         WriteClipboard(goEditor.getValue())
     }
 
-    function increaseFontSize() {
-        fontSize++
-        jsonEditor.updateOptions({fontSize})
-        goEditor.updateOptions({fontSize})
-    }
-
-    function decreaseFontSize() {
-        fontSize--
-        jsonEditor.updateOptions({fontSize})
-        goEditor.updateOptions({fontSize})
-    }
-
-    function resetFontSize() {
-        jsonEditor.updateOptions({fontSize: defaultFontSize})
-        goEditor.updateOptions({fontSize: defaultFontSize})
-    }
-
     let openSettingsDialog = false;
 
     GetConfig("locale").then(result => {
@@ -102,7 +84,11 @@
     })
 
     $: SetConfig("locale", $locale)
-    $: SetConfig("font_size", fontSize)
+    $: {
+        jsonEditor?.updateOptions({fontSize})
+        goEditor?.updateOptions({fontSize})
+        SetConfig("font_size", fontSize)
+    }
 
 </script>
 
@@ -139,9 +125,9 @@
         <MenuBarItem>
             {$_('Font')}
             <svelte:fragment slot="flyout">
-                <MenuFlyoutItem on:click={increaseFontSize}>{$_('Increase size')}</MenuFlyoutItem>
-                <MenuFlyoutItem on:click={decreaseFontSize}>{$_('Decrease size')}</MenuFlyoutItem>
-                <MenuFlyoutItem on:click={resetFontSize}>{$_('Reset size')}</MenuFlyoutItem>
+                <MenuFlyoutItem on:click={()=>fontSize++}>{$_('Increase size')}</MenuFlyoutItem>
+                <MenuFlyoutItem on:click={()=>fontSize--}>{$_('Decrease size')}</MenuFlyoutItem>
+                <MenuFlyoutItem on:click={()=>fontSize=defaultFontSize}>{$_('Reset size')}</MenuFlyoutItem>
             </svelte:fragment>
         </MenuBarItem>
     </MenuBar>
