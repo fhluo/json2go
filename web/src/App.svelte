@@ -69,7 +69,10 @@
     function openJSONFile(): void {
         OpenJSONFile().then(result => {
             if (result !== "") {
-                jsonEditor.setValue(result)
+                jsonEditor.executeEdits("", [{
+                    range: jsonEditor.getModel()!.getFullModelRange(),
+                    text: result,
+                }])
             }
         })
     }
@@ -80,7 +83,10 @@
 
     function pasteJSON() {
         ReadClipboard().then(result => {
-            jsonEditor.setValue(result)
+            jsonEditor.executeEdits("", [{
+                range: jsonEditor.getModel()!.getFullModelRange(),
+                text: result,
+            }])
         })
     }
 
