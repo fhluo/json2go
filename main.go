@@ -21,9 +21,11 @@ func main() {
 	app := NewApp()
 
 	a := application.NewWithOptions(&options.App{
-		Title:  "json2go",
-		Width:  1366,
-		Height: 768,
+		Title:     "json2go",
+		Width:     1200,
+		MinWidth:  900,
+		Height:    800,
+		MinHeight: 600,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
