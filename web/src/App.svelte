@@ -54,8 +54,10 @@
     onMount(() => {
         jsonEditor = createEditor(document.getElementById('json-editor'), 'json', '')
         goEditor = createEditor(document.getElementById('go-editor'), 'go', '')
-        // remeasure fonts after creating editors to avoid rendering issues
-        monaco.editor.remeasureFonts()
+        // remeasure fonts after creating editors and fonts are loaded to avoid rendering issues
+        document.fonts.ready.then(() => {
+            monaco.editor.remeasureFonts()
+        })
     })
 
     let allCaps: string = "ID,URL"
