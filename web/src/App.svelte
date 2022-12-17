@@ -37,32 +37,24 @@
         fontSize = result
     })
 
+    function createEditor(domElement: HTMLElement, language: string, value: string): IStandaloneCodeEditor {
+        return monaco.editor.create(domElement, {
+            value: value,
+            language: language,
+            fontFamily: 'Jetbrains Mono, monospace',
+            fontSize: fontSize,
+            minimap: {
+                enabled: false
+            },
+            lineHeight: 25,
+            automaticLayout: true,
+        })
+    }
+
     onMount(() => {
-        jsonEditor = monaco.editor.create(document.getElementById('json-editor'), {
-            value: "",
-            language: 'json',
-            fontFamily: 'Jetbrains Mono, monospace',
-            fontSize: fontSize,
-            minimap: {
-                enabled: false
-            },
-            lineHeight: 25,
-            automaticLayout: true,
-        })
-
-        goEditor = monaco.editor.create(document.getElementById('go-editor'), {
-            value: "",
-            language: 'go',
-            fontFamily: 'Jetbrains Mono, monospace',
-            fontSize: fontSize,
-            minimap: {
-                enabled: false
-            },
-            lineHeight: 25,
-            automaticLayout: true,
-        })
+        jsonEditor = createEditor(document.getElementById('json-editor'), 'json', '')
+        goEditor = createEditor(document.getElementById('go-editor'), 'go', '')
     })
-
 
     let allCaps: string = "ID,URL"
 
@@ -151,7 +143,8 @@
         </MenuBarItem>
     </MenuBar>
 
-    <div class="columns-2 gap-6 space-y-4 bg-white/25 h-64 grow">
+    <!-- use columns-2 will cause the editor to be rendered incorrectly, so use grid instead -->
+    <div class="grid grid-cols-2 gap-6 bg-white/25 h-64 grow">
         <div class="h-full max-h-full flex flex-col overflow-hidden border-r">
             <div class="w-full bg-white/50 border-b flex flex-row">
                 <span class="py-1 px-4 select-none text-yellow-600 font-mono">JSON</span>
@@ -182,5 +175,4 @@
         font-weight: 400;
         src: local(""), url("assets/fonts/JetBrainsMono-Regular.woff2") format("woff2");;
     }
-
 </style>
