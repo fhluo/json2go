@@ -62,6 +62,8 @@ func (c *config) Set(key string, value any) {
 }
 
 func (c *config) Get(key string) any {
+	c.Lock()
+	defer c.Unlock()
 	return viper.Get(key)
 }
 
