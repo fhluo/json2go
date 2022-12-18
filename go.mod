@@ -4,6 +4,8 @@ go 1.19
 
 require (
 	github.com/dave/jennifer v1.6.0
+	github.com/fatih/color v1.13.0
+	github.com/mattn/go-isatty v0.0.16
 	github.com/pkg/errors v0.9.1
 	github.com/samber/lo v1.37.0
 	github.com/spf13/cobra v1.4.0
@@ -31,7 +33,6 @@ require (
 	github.com/leaanthony/slicer v1.6.0 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
-	github.com/mattn/go-isatty v0.0.16 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
 	github.com/pelletier/go-toml/v2 v2.0.6 // indirect

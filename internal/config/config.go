@@ -8,7 +8,7 @@ import (
 	"sync"
 )
 
-var path = filepath.Join(os.Getenv("LocalAppData"), "json2go")
+var Path = filepath.Join(os.Getenv("LocalAppData"), "json2go")
 
 func init() {
 	viper.SetDefault("locale", "")
@@ -17,7 +17,7 @@ func init() {
 	viper.SetConfigName("config")
 	viper.SetConfigType("toml")
 
-	viper.AddConfigPath(path)
+	viper.AddConfigPath(Path)
 
 	if err := viper.ReadInConfig(); err != nil {
 		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
@@ -27,11 +27,11 @@ func init() {
 }
 
 func createConfigFile() {
-	if err := os.MkdirAll(path, 0666); err != nil {
+	if err := os.MkdirAll(Path, 0666); err != nil {
 		log.Fatalln(err)
 	}
 
-	f, err := os.Create(filepath.Join(path, "config.toml"))
+	f, err := os.Create(filepath.Join(Path, "config.toml"))
 	if err != nil {
 		log.Fatalln(err)
 	}
