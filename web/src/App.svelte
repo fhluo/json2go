@@ -122,7 +122,7 @@
         <Button slot="footer" on:click={() => {openSettingsDialog = false}}>{$_('Close')}</Button>
     </ContentDialog>
 
-    <MenuBar class="border-b">
+    <MenuBar>
         <MenuBarItem>
             {$_('File')}
             <svelte:fragment slot="flyout">
@@ -154,26 +154,24 @@
     </MenuBar>
 
     <!-- use columns-2 will cause the editor to be rendered incorrectly, so use grid instead -->
-    <div class="grid grid-cols-2 gap-6 bg-white/25 h-64 grow">
-        <div class="h-full max-h-full flex flex-col border-r">
-            <div class="w-full bg-white/50 border-b flex flex-row">
-                <span class="py-1 px-4 select-none text-yellow-600 font-mono">JSON</span>
-                <button on:click={pasteJSON}
-                        class="text-sm px-5 py-1 ml-auto text-gray-800 select-none transition hover:bg-gray-300/25">{$_('Paste')}</button>
+    <div class="grid grid-cols-2 h-64 grow border-t border-b">
+        <div id="container-json">
+            <div class="w-full bg-white/50 flex flex-row">
+                <span class="py-1 px-4 select-none text-yellow-700 font-mono">JSON</span>
+                <button on:click={pasteJSON}>{$_('Paste')}</button>
             </div>
             <div class="w-full h-32 grow" id="json-editor"></div>
         </div>
-        <div class="h-full max-h-full flex flex-col border-l">
-            <div class="w-full bg-white/50 border-b flex flex-row">
-                <span class="py-1 px-4 select-none text-purple-600 font-mono">Go</span>
-                <button on:click={copyCode}
-                        class="text-sm px-5 py-1 ml-auto text-gray-800 select-none transition hover:bg-gray-300/25">{$_('Copy')}</button>
+        <div class="border-l" id="container-go">
+            <div class="w-full bg-white/50 flex flex-row">
+                <span class="py-1 px-4 select-none text-purple-700 font-mono">Go</span>
+                <button on:click={copyCode}>{$_('Copy')}</button>
             </div>
             <div class="w-full h-32 grow" id="go-editor"></div>
         </div>
     </div>
 
-    <div class="flex flex-row px-4 py-2 border-t">
+    <div class="flex flex-row px-4 py-2">
         <Button variant="accent" on:click={generate} class="ml-auto mr-2">{$_('Generate')}</Button>
     </div>
 </main>
@@ -184,5 +182,29 @@
         font-style: normal;
         font-weight: 400;
         src: local(""), url("assets/fonts/JetBrainsMono-Regular.woff2") format("woff2");;
+    }
+
+    #container-json, #container-go {
+        @apply h-full max-h-full flex flex-col bg-white;
+    }
+
+    #container-json button, #container-go button {
+        @apply text-sm px-5 py-1 ml-auto text-gray-800 select-none transition;
+    }
+
+    #container-json button:hover, #container-go button:hover {
+        @apply bg-gray-300/25;
+    }
+
+    #container-json span, #container-go span {
+        @apply transition duration-300;
+    }
+
+    #container-json:focus-within span {
+        @apply text-yellow-500;
+    }
+
+    #container-go:focus-within span {
+        @apply text-purple-500;
     }
 </style>
