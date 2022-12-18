@@ -155,21 +155,21 @@
 
     <!-- use columns-2 will cause the editor to be rendered incorrectly, so use grid instead -->
     <div class="grid grid-cols-2 gap-6 bg-white/25 h-64 grow">
-        <div class="h-full max-h-full flex flex-col overflow-hidden border-r">
+        <div class="h-full max-h-full flex flex-col border-r">
             <div class="w-full bg-white/50 border-b flex flex-row">
                 <span class="py-1 px-4 select-none text-yellow-600 font-mono">JSON</span>
                 <button on:click={pasteJSON}
                         class="text-sm px-5 py-1 ml-auto text-gray-800 select-none transition hover:bg-gray-300/25">{$_('Paste')}</button>
             </div>
-            <div class="w-full h-full max-h-full" id="json-editor"></div>
+            <div class="w-full h-32 grow" id="json-editor"></div>
         </div>
-        <div class="h-full max-h-full flex flex-col overflow-hidden border-l">
+        <div class="h-full max-h-full flex flex-col border-l">
             <div class="w-full bg-white/50 border-b flex flex-row">
                 <span class="py-1 px-4 select-none text-purple-600 font-mono">Go</span>
                 <button on:click={copyCode}
                         class="text-sm px-5 py-1 ml-auto text-gray-800 select-none transition hover:bg-gray-300/25">{$_('Copy')}</button>
             </div>
-            <div class="w-full h-full max-h-full" id="go-editor"></div>
+            <div class="w-full h-32 grow" id="go-editor"></div>
         </div>
     </div>
 
