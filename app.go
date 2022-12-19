@@ -90,6 +90,11 @@ func (a *App) OpenJSONFile() string {
 		return ""
 	}
 
+	// cancelled by user
+	if filename == "" {
+		return ""
+	}
+
 	// read file and return string content
 	data, err := os.ReadFile(filename)
 	if err != nil {
@@ -121,6 +126,11 @@ func (a *App) SaveGoSourceFile(s string) {
 		},
 	})
 	if err != nil {
+		return
+	}
+
+	// cancelled by user
+	if filename == "" {
 		return
 	}
 
