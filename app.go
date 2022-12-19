@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"github.com/fhluo/json2go/i18n"
 	"github.com/fhluo/json2go/internal/config"
 	"github.com/fhluo/json2go/pkg/def"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -66,10 +67,23 @@ func (a *App) Generate(s string, allCaps []string) string {
 
 func (a *App) OpenJSONFile() string {
 	filename, err := runtime.OpenFileDialog(a.ctx, runtime.OpenDialogOptions{
-		Title:                "Open JSON File",
+		Title: i18n.MustLocalize(&i18n.LocalizeConfig{
+			DefaultMessage: &i18n.Message{
+				ID:    "Open JSON File",
+				Other: "Open JSON File",
+			},
+		}),
 		CanCreateDirectories: true,
 		Filters: []runtime.FileFilter{
-			{DisplayName: "JSON Files(*.json)", Pattern: "*.json"},
+			{
+				DisplayName: i18n.MustLocalize(&i18n.LocalizeConfig{
+					DefaultMessage: &i18n.Message{
+						ID:    "JSON Files(*.json)",
+						Other: "JSON Files(*.json)",
+					},
+				}),
+				Pattern: "*.json",
+			},
 		},
 	})
 	if err != nil {
@@ -87,10 +101,23 @@ func (a *App) OpenJSONFile() string {
 
 func (a *App) SaveGoSourceFile(s string) {
 	filename, err := runtime.SaveFileDialog(a.ctx, runtime.SaveDialogOptions{
-		Title:                "Save Go Source File",
+		Title: i18n.MustLocalize(&i18n.LocalizeConfig{
+			DefaultMessage: &i18n.Message{
+				ID:    "Save Go Source File",
+				Other: "Save Go Source File",
+			},
+		}),
 		CanCreateDirectories: true,
 		Filters: []runtime.FileFilter{
-			{DisplayName: "Go Source Files(*.go)", Pattern: "*.go"},
+			{
+				DisplayName: i18n.MustLocalize(&i18n.LocalizeConfig{
+					DefaultMessage: &i18n.Message{
+						ID:    "Go Source Files(*.go)",
+						Other: "Go Source Files(*.go)",
+					},
+				}),
+				Pattern: "*.go",
+			},
 		},
 	})
 	if err != nil {

@@ -1,5 +1,6 @@
 build/bin
 node_modules
 web/dist
+translate.*.toml
 
 .idea

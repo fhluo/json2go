@@ -6,6 +6,8 @@ require (
 	github.com/dave/jennifer v1.6.0
 	github.com/fatih/color v1.13.0
 	github.com/mattn/go-isatty v0.0.16
+	github.com/nicksnyder/go-i18n/v2 v2.2.1
+	github.com/pelletier/go-toml/v2 v2.0.6
 	github.com/pkg/errors v0.9.1
 	github.com/samber/lo v1.37.0
 	github.com/spf13/cobra v1.4.0
@@ -14,6 +16,8 @@ require (
 	github.com/wailsapp/wails/v2 v2.2.0
 	golang.design/x/clipboard v0.6.3
 	golang.org/x/exp v0.0.0-20221215174704-0915cd710c24
+	golang.org/x/sys v0.3.0
+	golang.org/x/text v0.5.0
 )
 
 require (
@@ -35,7 +39,6 @@ require (
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pelletier/go-toml v1.9.5 // indirect
-	github.com/pelletier/go-toml/v2 v2.0.6 // indirect
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/rivo/uniseg v0.4.3 // indirect
@@ -53,8 +56,6 @@ require (
 	golang.org/x/image v0.2.0 // indirect
 	golang.org/x/mobile v0.0.0-20221110043201-43a038452099 // indirect
 	golang.org/x/net v0.4.0 // indirect
-	golang.org/x/sys v0.3.0 // indirect
-	golang.org/x/text v0.5.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect

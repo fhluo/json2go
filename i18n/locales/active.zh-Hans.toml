@@ -1,0 +1,15 @@
+["Go Source Files(*.go)"]
+hash = "sha1-31e57741c247f948f90e97eb57079ecf467c8a64"
+other = "Go 源文件(*.go)"
+
+["JSON Files(*.json)"]
+hash = "sha1-0e62f12876571a4bb072a67190de633e7455ec95"
+other = "JSON 文件(*.json)"
+
+["Open JSON File"]
+hash = "sha1-fbad3b785d0f5bcfd5546553190b363da8f64c20"
+other = "打开 JSON 文件"
+
+["Save Go Source File"]
+hash = "sha1-5068d85ba4bc8ca61f44358f835bde931b411a4d"
+other = "保存 Go 源文件"
