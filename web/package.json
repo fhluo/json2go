@@ -25,6 +25,7 @@
     "vite": "^4.0.1"
   },
   "dependencies": {
+    "@monaco-editor/loader": "^1.3.2",
     "monaco-editor": "^0.34.1",
     "svelte-i18n": "^3.6.0"
   }

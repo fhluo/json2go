@@ -22,10 +22,9 @@
     import "./i18n"
     import {_, locale, locales} from "svelte-i18n";
     import {EventsEmit} from "../wailsjs/runtime";
-    import * as monaco from 'monaco-editor';
-    import {editor} from 'monaco-editor';
+    import {editor} from "monaco-editor/esm/vs/editor/editor.api";
     import {onMount} from "svelte";
-    import './worker';
+    import loader from "@monaco-editor/loader";
     import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
     let jsonEditor: IStandaloneCodeEditor
@@ -37,26 +36,60 @@
         fontSize = result
     })
 
-    function createEditor(domElement: HTMLElement, language: string, value: string): IStandaloneCodeEditor {
-        return monaco.editor.create(domElement, {
-            value: value,
-            language: language,
-            fontFamily: 'Jetbrains Mono, monospace',
-            fontSize: fontSize,
-            minimap: {
-                enabled: false
-            },
-            lineHeight: 25,
-            automaticLayout: true,
-        })
+    const monacoLocales = ["en", "de", "es", "fr", "it", "ja", "ko", "ru", "zh-cn", "zh-tw"]
+
+    function getMonacoLocale(locale: string): string {
+        locale = locale.toLowerCase()
+        if (monacoLocales.includes(locale)) {
+            return locale
+        }
+
+        if (locale == "zh") {
+            return "zh-cn"
+        }
+
+        return "en"
     }
 
+    loader.config({paths: {vs: 'monaco-editor/min/vs'}})
+
+    GetConfig("locale").then(result => {
+        if (result !== "") {
+            $locale = result
+        }
+
+        loader.config({
+            'vs/nls': {
+                availableLanguages: {
+                    '*': getMonacoLocale($locale)
+                }
+            }
+        })
+    })
+
     onMount(() => {
-        jsonEditor = createEditor(document.getElementById('json-editor'), 'json', '')
-        goEditor = createEditor(document.getElementById('go-editor'), 'go', '')
-        // remeasure fonts after creating editors and fonts are loaded to avoid rendering issues
-        document.fonts.ready.then(() => {
-            monaco.editor.remeasureFonts()
+        loader.init().then(monaco => {
+            function createEditor(domElement: HTMLElement, language: string, value: string): IStandaloneCodeEditor {
+                return monaco.editor.create(domElement, {
+                    value: value,
+                    language: language,
+                    fontFamily: 'Jetbrains Mono, monospace',
+                    fontSize: fontSize,
+                    minimap: {
+                        enabled: false
+                    },
+                    lineHeight: 25,
+                    automaticLayout: true,
+                })
+            }
+
+            jsonEditor = createEditor(document.getElementById('json-editor')!, 'json', '')
+            goEditor = createEditor(document.getElementById('go-editor')!, 'go', '')
+
+            // remeasure fonts after creating editors and fonts are loaded to avoid rendering issues
+            document.fonts.ready.then(() => {
+                monaco.editor.remeasureFonts()
+            })
         })
     })
 
@@ -97,12 +130,6 @@
     }
 
     let openSettingsDialog = false;
-
-    GetConfig("locale").then(result => {
-        if (result !== "") {
-            $locale = result
-        }
-    })
 
     $: SetConfig("locale", $locale)
     $: {

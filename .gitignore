@@ -1,6 +1,7 @@
 build/bin
 node_modules
 web/dist
+web/public
 translate.*.toml
 
 .idea
