@@ -37,6 +37,10 @@ func (a *App) startup(ctx context.Context) {
 			a.exit()
 		}
 	})
+
+	runtime.EventsOn(ctx, "resize", func(optionalData ...interface{}) {
+		config.SetWindowSize(runtime.WindowGetSize(ctx))
+	})
 }
 
 func (a *App) GetLocale() string {

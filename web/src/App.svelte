@@ -140,6 +140,12 @@
         SetFontSize(fontSize)
     }
 
+    document.defaultView.addEventListener('resize', () => {
+        jsonEditor?.layout()
+        goEditor?.layout()
+        EventsEmit("resize")
+    })
+
 </script>
 
 <main class="w-screen h-screen flex flex-col">

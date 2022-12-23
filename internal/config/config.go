@@ -8,19 +8,23 @@ import (
 	"sync"
 )
 
+const (
+	keyLocale       = "locale"
+	keyFontSize     = "font_size"
+	keyWindowWidth  = "window.width"
+	keyWindowHeight = "window.height"
+)
+
 var (
 	Path = filepath.Join(os.Getenv("LocalAppData"), "json2go")
 	m    = new(sync.Mutex)
 )
 
-const (
-	keyLocale   = "locale"
-	keyFontSize = "font_size"
-)
-
 func init() {
 	viper.SetDefault(keyLocale, "")
 	viper.SetDefault(keyFontSize, 16)
+	viper.SetDefault(keyWindowWidth, 1200)
+	viper.SetDefault(keyWindowHeight, 800)
 
 	viper.SetConfigName("config")
 	viper.SetConfigType("toml")
@@ -83,4 +87,37 @@ func GetFontSize() float64 {
 
 func SetFontSize(size float64) {
 	set(keyFontSize, size)
+}
+
+func GetWindowSize() (int, int) {
+	m.Lock()
+	defer m.Unlock()
+	return viper.GetInt(keyWindowWidth), viper.GetInt(keyWindowHeight)
+}
+
+func SetWindowSize(width, height int) {
+	m.Lock()
+	defer m.Unlock()
+	viper.Set(keyWindowWidth, width)
+	viper.Set(keyWindowHeight, height)
+}
+
+func GetWindowWidth() int {
+	m.Lock()
+	defer m.Unlock()
+	return viper.GetInt(keyWindowWidth)
+}
+
+func SetWindowWidth(width int) {
+	set(keyWindowWidth, width)
+}
+
+func GetWindowHeight() int {
+	m.Lock()
+	defer m.Unlock()
+	return viper.GetInt(keyWindowHeight)
+}
+
+func SetWindowHeight(height int) {
+	set(keyWindowHeight, height)
 }
