@@ -61,17 +61,20 @@ func (a *App) SetFontSize(size float64) {
 
 func (a *App) Generate(s string, allCaps []string) string {
 	if !json.Valid([]byte(s)) {
-		return "invalid json"
+		runtime.EventsEmit(a.ctx, "error", "invalid json")
+		return ""
 	}
 
 	statement, err := def.From(s, allCaps...).Declare("T")
 	if err != nil {
-		return err.Error()
+		runtime.EventsEmit(a.ctx, "error", err.Error())
+		return ""
 	}
 
 	buf := new(bytes.Buffer)
 	if err = statement.Render(buf); err != nil {
-		return err.Error()
+		runtime.EventsEmit(a.ctx, "error", err.Error())
+		return ""
 	}
 
 	return buf.String()

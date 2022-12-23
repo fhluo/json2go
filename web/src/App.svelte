@@ -23,7 +23,7 @@
     } from "fluent-svelte";
     import "./i18n"
     import {_, locale, locales} from "svelte-i18n";
-    import {EventsEmit} from "../wailsjs/runtime";
+    import {EventsEmit, EventsOn} from "../wailsjs/runtime";
     import {editor} from "monaco-editor/esm/vs/editor/editor.api";
     import {onMount} from "svelte";
     import loader from "@monaco-editor/loader";
@@ -95,14 +95,6 @@
         })
     })
 
-    let allCaps: string = "ID,URL"
-
-    function generate(): void {
-        Generate(jsonEditor.getValue(), allCaps.split(",").map((v) => v.trim())).then(result => {
-            goEditor.setValue(result)
-        })
-    }
-
     function openJSONFile(): void {
         OpenJSONFile().then(result => {
             if (result !== "") {
@@ -131,7 +123,18 @@
         WriteClipboard(goEditor.getValue())
     }
 
-    let openSettingsDialog = false;
+    let openSettingsDialog = false
+    let showErrorInfo = false
+    let errorMessage = ""
+    let allCaps = "ID,URL"
+
+    function generate(): void {
+        showErrorInfo = false
+        errorMessage = ""
+        Generate(jsonEditor.getValue(), allCaps.split(",").map((v) => v.trim())).then(result => {
+            goEditor.setValue(result)
+        })
+    }
 
     $: SetLocale($locale)
     $: {
@@ -144,6 +147,11 @@
         jsonEditor?.layout()
         goEditor?.layout()
         EventsEmit("resize")
+    })
+
+    EventsOn("error", (message: string) => {
+        showErrorInfo = true
+        errorMessage = message
     })
 
 </script>
@@ -206,8 +214,25 @@
         </div>
     </div>
 
-    <div class="flex flex-row px-4 py-2">
-        <Button variant="accent" on:click={generate} class="ml-auto mr-2">{$_('Generate')}</Button>
+    <div class="flex flex-row px-4 py-2 justify-end items-center">
+        {#if showErrorInfo}
+            <div class="select-none mx-4 border-red-500 bg-red-500/25 rounded flex flex-row items-center justify-center space-x-1.5">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                     stroke="currentColor" class="w-6 h-6 ml-2 mr-1 text-red-600">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                          d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
+                </svg>
+                <span>{errorMessage}</span>
+                <div class="hover:bg-red-50/25 py-1 px-1 rounded-r transition flex items-center justify-center"
+                     on:click={()=>showErrorInfo=false}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                         stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </div>
+            </div>
+        {/if}
+        <Button variant="accent" on:click={generate} class="mr-2">{$_('Generate')}</Button>
     </div>
 </main>
 
