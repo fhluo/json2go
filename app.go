@@ -39,12 +39,20 @@ func (a *App) startup(ctx context.Context) {
 	})
 }
 
-func (a *App) SetConfig(key string, value any) {
-	config.Set(key, value)
+func (a *App) GetLocale() string {
+	return config.GetLocale()
 }
 
-func (a *App) GetConfig(key string) any {
-	return config.Get(key)
+func (a *App) SetLocale(locale string) {
+	config.SetLocale(locale)
+}
+
+func (a *App) GetFontSize() float64 {
+	return config.GetFontSize()
+}
+
+func (a *App) SetFontSize(size float64) {
+	config.SetFontSize(size)
 }
 
 func (a *App) Generate(s string, allCaps []string) string {

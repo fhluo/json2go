@@ -8,11 +8,19 @@ import (
 	"sync"
 )
 
-var Path = filepath.Join(os.Getenv("LocalAppData"), "json2go")
+var (
+	Path = filepath.Join(os.Getenv("LocalAppData"), "json2go")
+	m    = new(sync.Mutex)
+)
+
+const (
+	keyLocale   = "locale"
+	keyFontSize = "font_size"
+)
 
 func init() {
-	viper.SetDefault("locale", "")
-	viper.SetDefault("font_size", 16)
+	viper.SetDefault(keyLocale, "")
+	viper.SetDefault(keyFontSize, 16)
 
 	viper.SetConfigName("config")
 	viper.SetConfigType("toml")
@@ -51,24 +59,28 @@ func Write() {
 	}
 }
 
-type config struct {
-	sync.Mutex
-}
-
-func (c *config) Set(key string, value any) {
-	c.Lock()
-	defer c.Unlock()
+func set(key string, value any) {
+	m.Lock()
+	defer m.Unlock()
 	viper.Set(key, value)
 }
 
-func (c *config) Get(key string) any {
-	c.Lock()
-	defer c.Unlock()
-	return viper.Get(key)
+func GetLocale() string {
+	m.Lock()
+	defer m.Unlock()
+	return viper.GetString(keyLocale)
 }
 
-var (
-	c   config
-	Set = c.Set
-	Get = c.Get
-)
+func SetLocale(locale string) {
+	set(keyLocale, locale)
+}
+
+func GetFontSize() float64 {
+	m.Lock()
+	defer m.Unlock()
+	return viper.GetFloat64(keyFontSize)
+}
+
+func SetFontSize(size float64) {
+	set(keyFontSize, size)
+}

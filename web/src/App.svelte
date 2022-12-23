@@ -1,11 +1,13 @@
 <script lang="ts">
     import {
         Generate,
-        GetConfig,
+        GetFontSize,
+        GetLocale,
         OpenJSONFile,
         ReadClipboard,
         SaveGoSourceFile,
-        SetConfig,
+        SetFontSize,
+        SetLocale,
         WriteClipboard
     } from '../wailsjs/go/main/App.js'
     import "fluent-svelte/theme.css";
@@ -32,7 +34,7 @@
 
     const defaultFontSize = 16
     let fontSize = defaultFontSize
-    GetConfig("font_size").then(result => {
+    GetFontSize().then(result => {
         fontSize = result
     })
 
@@ -53,7 +55,7 @@
 
     loader.config({paths: {vs: 'monaco-editor/min/vs'}})
 
-    GetConfig("locale").then(result => {
+    GetLocale().then(result => {
         if (result !== "") {
             $locale = result
         }
@@ -131,11 +133,11 @@
 
     let openSettingsDialog = false;
 
-    $: SetConfig("locale", $locale)
+    $: SetLocale($locale)
     $: {
         jsonEditor?.updateOptions({fontSize})
         goEditor?.updateOptions({fontSize})
-        SetConfig("font_size", fontSize)
+        SetFontSize(fontSize)
     }
 
 </script>

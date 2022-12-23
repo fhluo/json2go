@@ -6,8 +6,12 @@ export function Generate(arg1, arg2) {
   return window['go']['main']['App']['Generate'](arg1, arg2);
 }
 
-export function GetConfig(arg1) {
-  return window['go']['main']['App']['GetConfig'](arg1);
+export function GetFontSize() {
+  return window['go']['main']['App']['GetFontSize']();
+}
+
+export function GetLocale() {
+  return window['go']['main']['App']['GetLocale']();
 }
 
 export function OpenJSONFile() {
@@ -22,8 +26,12 @@ export function SaveGoSourceFile(arg1) {
   return window['go']['main']['App']['SaveGoSourceFile'](arg1);
 }
 
-export function SetConfig(arg1, arg2) {
-  return window['go']['main']['App']['SetConfig'](arg1, arg2);
+export function SetFontSize(arg1) {
+  return window['go']['main']['App']['SetFontSize'](arg1);
+}
+
+export function SetLocale(arg1) {
+  return window['go']['main']['App']['SetLocale'](arg1);
 }
 
 export function WriteClipboard(arg1) {
