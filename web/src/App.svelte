@@ -132,7 +132,9 @@
     let allCapsWord = ""
     let allCapsWords = [] as string[]
     GetAllCapsWords().then(result => {
-        allCapsWords = result
+        if (result != null) {
+            allCapsWords = result
+        }
     })
 
     function generate(): void {
@@ -185,7 +187,7 @@
     <ContentDialog bind:open={openSettingsDialog} title={$_('Settings')}>
         <div class="flex flex-col space-y-2">
             <span class="select-none font-semibold mr-3">{$_('All-caps words')}</span>
-            {#if allCapsWords.length > 0}
+            {#if allCapsWords?.length > 0}
                 <div class="flex flex-row flex-wrap space-x-1.5 pb-1.5">
                     {#each allCapsWords as word}
                         <button class="px-3 leading-loose tracking-wide rounded border shadow-sm ml-1 mt-1.5 bg-white hover:bg-gray-50 transition"
