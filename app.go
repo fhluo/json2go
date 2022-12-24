@@ -59,6 +59,14 @@ func (a *App) SetFontSize(size float64) {
 	config.SetFontSize(size)
 }
 
+func (a *App) GetAllCapsWords() []string {
+	return config.GetAllCapsWords()
+}
+
+func (a *App) SetAllCapsWords(words []string) {
+	config.SetAllCapsWords(words)
+}
+
 func (a *App) Generate(s string, allCaps []string) string {
 	if !json.Valid([]byte(s)) {
 		runtime.EventsEmit(a.ctx, "error", "invalid json")

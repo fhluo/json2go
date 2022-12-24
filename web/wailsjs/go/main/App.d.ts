@@ -3,6 +3,8 @@
 
 export function Generate(arg1:string,arg2:Array<string>):Promise<string>;
 
+export function GetAllCapsWords():Promise<Array<string>>;
+
 export function GetFontSize():Promise<number>;
 
 export function GetLocale():Promise<string>;
@@ -12,6 +14,8 @@ export function OpenJSONFile():Promise<string>;
 export function ReadClipboard():Promise<string>;
 
 export function SaveGoSourceFile(arg1:string):Promise<void>;
+
+export function SetAllCapsWords(arg1:Array<string>):Promise<void>;
 
 export function SetFontSize(arg1:number):Promise<void>;
 

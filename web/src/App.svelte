@@ -1,11 +1,13 @@
 <script lang="ts">
     import {
         Generate,
+        GetAllCapsWords,
         GetFontSize,
         GetLocale,
         OpenJSONFile,
         ReadClipboard,
         SaveGoSourceFile,
+        SetAllCapsWords,
         SetFontSize,
         SetLocale,
         WriteClipboard
@@ -18,7 +20,6 @@
         MenuBarItem,
         MenuFlyoutDivider,
         MenuFlyoutItem,
-        TextBlock,
         TextBox
     } from "fluent-svelte";
     import "./i18n"
@@ -126,12 +127,16 @@
     let openSettingsDialog = false
     let showErrorInfo = false
     let errorMessage = ""
-    let allCaps = "ID,URL"
+    let allCapsWord = ""
+    let allCapsWords = [] as string[]
+    GetAllCapsWords().then(result => {
+        allCapsWords = result
+    })
 
     function generate(): void {
         showErrorInfo = false
         errorMessage = ""
-        Generate(jsonEditor.getValue(), allCaps.split(",").map((v) => v.trim())).then(result => {
+        Generate(jsonEditor.getValue(), allCapsWords).then(result => {
             goEditor.setValue(result)
         })
     }
@@ -142,6 +147,7 @@
         goEditor?.updateOptions({fontSize})
         SetFontSize(fontSize)
     }
+    $: SetAllCapsWords(allCapsWords)
 
     document.defaultView.addEventListener('resize', () => {
         jsonEditor?.layout()
@@ -154,13 +160,35 @@
         errorMessage = message
     })
 
+    function addAllCapsWord(): void {
+        console.log(allCapsWord)
+        if (allCapsWord !== "" && !allCapsWords.includes(allCapsWord)) {
+            // append allCapsWord to allCapsWords and update allCapsWords
+            allCapsWords = [...allCapsWords, allCapsWord]
+            allCapsWord = ""
+        }
+    }
+
 </script>
 
 <main class="w-screen h-screen flex flex-col">
     <ContentDialog bind:open={openSettingsDialog} title={$_('Settings')}>
-        <div class="space-y-1.5 flex flex-col">
-            <TextBlock class="select-none text-lg">{$_('All caps')}</TextBlock>
-            <TextBox id="allCaps" bind:value={allCaps}></TextBox>
+        <div class="flex flex-col">
+            <span class="select-none font-semibold mr-3">{$_('List of all-caps words')}</span>
+            {#if allCapsWords.length > 0}
+                <div class="flex flex-row flex-wrap space-x-1.5 border shadow-sm rounded pt-2 pb-3.5 px-3.5 mt-1.5">
+                    {#each allCapsWords as word}
+                        <button class="px-3 leading-loose tracking-wide rounded border shadow-sm ml-1 mt-1.5 bg-white hover:bg-gray-50 transition"
+                                on:dblclick={() => allCapsWords = allCapsWords.filter(w => w !== word)}
+                                on:click={() => allCapsWord = word}>{word}</button>
+                    {/each}
+                </div>
+            {/if}
+            <div class="flex flex-row space-x-1.5 mt-3">
+                <TextBox bind:value={allCapsWord}></TextBox>
+                <Button on:click={addAllCapsWord} class="min-w-fit">{$_('Add')}</Button>
+                <Button on:click={() => allCapsWords = allCapsWords.filter(w => w !== allCapsWord)} class="min-w-fit">{$_('Remove')}</Button>
+            </div>
         </div>
         <Button slot="footer" on:click={() => {openSettingsDialog = false}}>{$_('Close')}</Button>
     </ContentDialog>
@@ -214,22 +242,22 @@
         </div>
     </div>
 
-    <div class="flex flex-row px-4 py-2 justify-end items-center">
+    <div class="flex flex-row px-4 py-2 justify-end items-center h-12">
         {#if showErrorInfo}
-            <div class="select-none mx-4 border-red-500 bg-red-500/25 rounded flex flex-row items-center justify-center space-x-1.5">
+            <div class="select-none mx-4 border bg-white/50 rounded shadow-sm flex flex-row items-center justify-center space-x-1.5">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                      stroke="currentColor" class="w-6 h-6 ml-2 mr-1 text-red-600">
                     <path stroke-linecap="round" stroke-linejoin="round"
                           d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z"/>
                 </svg>
                 <span>{errorMessage}</span>
-                <div class="hover:bg-red-50/25 py-1 px-1 rounded-r transition flex items-center justify-center"
-                     on:click={()=>showErrorInfo=false}>
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                <button class="hover:bg-gray-200/50 py-1 px-1 rounded-r transition flex items-center justify-center"
+                        on:click={()=>showErrorInfo=false}>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1"
                          stroke="currentColor" class="w-6 h-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
                     </svg>
-                </div>
+                </button>
             </div>
         {/if}
         <Button variant="accent" on:click={generate} class="mr-2">{$_('Generate')}</Button>

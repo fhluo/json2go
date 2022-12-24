@@ -13,6 +13,7 @@ const (
 	keyFontSize     = "font_size"
 	keyWindowWidth  = "window.width"
 	keyWindowHeight = "window.height"
+	keyAllCapsWords = "all_caps_words"
 )
 
 var (
@@ -25,6 +26,7 @@ func init() {
 	viper.SetDefault(keyFontSize, 16)
 	viper.SetDefault(keyWindowWidth, 1200)
 	viper.SetDefault(keyWindowHeight, 800)
+	viper.SetDefault(keyAllCapsWords, []string{"ID", "URL", "URI", "JSON", "HTML", "CSS", "API", "HTTP", "SQL"})
 
 	viper.SetConfigName("config")
 	viper.SetConfigType("toml")
@@ -120,4 +122,14 @@ func GetWindowHeight() int {
 
 func SetWindowHeight(height int) {
 	set(keyWindowHeight, height)
+}
+
+func GetAllCapsWords() []string {
+	m.Lock()
+	defer m.Unlock()
+	return viper.GetStringSlice(keyAllCapsWords)
+}
+
+func SetAllCapsWords(words []string) {
+	set(keyAllCapsWords, words)
 }

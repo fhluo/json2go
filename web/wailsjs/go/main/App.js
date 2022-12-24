@@ -6,6 +6,10 @@ export function Generate(arg1, arg2) {
   return window['go']['main']['App']['Generate'](arg1, arg2);
 }
 
+export function GetAllCapsWords() {
+  return window['go']['main']['App']['GetAllCapsWords']();
+}
+
 export function GetFontSize() {
   return window['go']['main']['App']['GetFontSize']();
 }
@@ -24,6 +28,10 @@ export function ReadClipboard() {
 
 export function SaveGoSourceFile(arg1) {
   return window['go']['main']['App']['SaveGoSourceFile'](arg1);
+}
+
+export function SetAllCapsWords(arg1) {
+  return window['go']['main']['App']['SetAllCapsWords'](arg1);
 }
 
 export function SetFontSize(arg1) {

@@ -16,5 +16,8 @@
   "Font": "Font",
   "Increase size": "Increase size",
   "Decrease size": "Decrease size",
-  "Reset size": "Reset size"
+  "Reset size": "Reset size",
+  "List of all-caps words": "List of all-caps words (double click to remove)",
+  "Add": "Add",
+  "Remove": "Remove"
 }

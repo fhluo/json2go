@@ -16,5 +16,8 @@
   "Font": "字体",
   "Increase size": "增大",
   "Decrease size": "减小",
-  "Reset size": "重置大小"
+  "Reset size": "重置大小",
+  "List of all-caps words": "全大写单词列表（双击移除）",
+  "Add": "添加",
+  "Remove": "删除"
 }
