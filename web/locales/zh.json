@@ -17,7 +17,11 @@
   "Increase size": "增大",
   "Decrease size": "减小",
   "Reset size": "重置大小",
-  "List of all-caps words": "全大写单词列表（双击移除）",
+  "All-caps words": "全大写单词",
   "Add": "添加",
-  "Remove": "删除"
+  "Remove": "删除",
+  "tip": {
+    "allCaps": "提示：双击单词可以移除。要添加多个单词，请用英文逗号分隔单词。"
+  },
+  "OK": "确认"
 }

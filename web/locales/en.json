@@ -17,7 +17,11 @@
   "Increase size": "Increase size",
   "Decrease size": "Decrease size",
   "Reset size": "Reset size",
-  "List of all-caps words": "List of all-caps words (double click to remove)",
+  "All-caps words": "All-caps words",
   "Add": "Add",
-  "Remove": "Remove"
+  "Remove": "Remove",
+  "tip": {
+    "allCaps": "Tip: Double click a word to remove it. To add multiple words, separate words with commas."
+  },
+  "OK": "OK"
 }
