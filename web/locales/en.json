@@ -23,5 +23,13 @@
   "tip": {
     "allCaps": "Tip: Double click a word to remove it. To add multiple words, separate words with commas."
   },
-  "OK": "OK"
+  "OK": "OK",
+  "about": {
+    "title": "About",
+    "about": "Generate Go type definitions from JSON",
+    "license": "License: ",
+    "version": "Version: "
+  },
+  "Help": "Help",
+  "Document": "Document"
 }

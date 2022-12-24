@@ -29,6 +29,7 @@
     import {onMount} from "svelte";
     import loader from "@monaco-editor/loader";
     import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
+    import {BrowserOpenURL} from "../wailsjs/runtime/runtime.js";
 
     let jsonEditor: IStandaloneCodeEditor
     let goEditor: IStandaloneCodeEditor
@@ -125,6 +126,7 @@
     }
 
     let openSettingsDialog = false
+    let openAboutDialog = false
     let showErrorInfo = false
     let errorMessage = ""
     let allCapsWord = ""
@@ -205,6 +207,21 @@
         </div>
     </ContentDialog>
 
+    <ContentDialog bind:open={openAboutDialog} title={$_('about.title', {default: 'About'})}>
+        <div class="flex flex-col space-y-2 items-center justify-center">
+            <p class="text-lg font-semibold">JSON2Go</p>
+            <p class="text-gray-900">{$_('about.about', {default: "Generate Go type definitions from JSON"})}</p>
+            <div class="leading-relaxed">
+                <p class="text-gray-900"><span class="font-semibold">{$_('about.license', {default: 'License: '})}</span>MIT</p>
+                <p class="text-gray-900"><span class="font-semibold">{$_('about.version', {default: 'Version: '})}</span>0.1.0</p>
+            </div>
+            <p class="text-gray-900">Copyright © 2022 fhluo</p>
+        </div>
+        <div class="flex justify-end mt-3.5">
+            <Button variant="accent" on:click={() => {openAboutDialog=false}} class="mr-2">{$_('OK')}</Button>
+        </div>
+    </ContentDialog>
+
     <MenuBar>
         <MenuBarItem>
             {$_('File')}
@@ -232,6 +249,14 @@
                 <MenuFlyoutItem on:click={()=>fontSize++}>{$_('Increase size')}</MenuFlyoutItem>
                 <MenuFlyoutItem on:click={()=>fontSize--}>{$_('Decrease size')}</MenuFlyoutItem>
                 <MenuFlyoutItem on:click={()=>fontSize=defaultFontSize}>{$_('Reset size')}</MenuFlyoutItem>
+            </svelte:fragment>
+        </MenuBarItem>
+        <MenuBarItem>
+            {$_('Help')}
+            <svelte:fragment slot="flyout">
+                <MenuFlyoutItem on:click={()=>BrowserOpenURL("https://github.com/fhluo/json2go")}>{$_('Document')}</MenuFlyoutItem>
+                <MenuFlyoutDivider/>
+                <MenuFlyoutItem on:click={()=>openAboutDialog=true}>{$_('about.title', {default: 'About'})}</MenuFlyoutItem>
             </svelte:fragment>
         </MenuBarItem>
     </MenuBar>
