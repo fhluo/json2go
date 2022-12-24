@@ -190,7 +190,7 @@
             {#if allCapsWords?.length > 0}
                 <div class="flex flex-row flex-wrap space-x-1.5 pb-1.5">
                     {#each allCapsWords as word}
-                        <button class="px-3 leading-loose tracking-wide rounded border shadow-sm ml-1 mt-1.5 bg-white hover:bg-gray-50 transition"
+                        <button class="px-3 leading-loose tracking-wide rounded border shadow-sm ml-1 mt-1.5 bg-white hover:bg-gray-50 transition cursor-default"
                                 on:dblclick={() => allCapsWords = allCapsWords.filter(w => w !== word)}
                                 on:click={() => allCapsWord = word}>{word}</button>
                     {/each}
