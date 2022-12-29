@@ -32,5 +32,10 @@
   },
   "Help": "Help",
   "Document": "Document",
-  "View": "View"
+  "View": "View",
+  "Editors": "Editors",
+  "Both": "Both",
+  "Layout": "Layout",
+  "Two Columns": "Two Columns",
+  "Two Rows": "Two Rows"
 }

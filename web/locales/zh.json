@@ -32,5 +32,10 @@
   },
   "Help": "帮助",
   "Document": "文档",
-  "View": "视图"
+  "View": "视图",
+  "Editors": "编辑器",
+  "Both": "两者",
+  "Layout": "布局",
+  "Two Columns": "两列",
+  "Two Rows": "两行"
 }

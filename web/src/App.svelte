@@ -133,6 +133,21 @@
     let errorMessage = ""
     let allCapsWord = ""
     let allCapsWords = [] as string[]
+
+    enum Layout {
+        TwoColumns = "Two Columns",
+        TwoRows = "Two Rows",
+    }
+
+    enum Editors {
+        Both = "Both",
+        JSON = "JSON",
+        Go = "Go",
+    }
+
+    let layout = Layout.TwoColumns
+    let editors = Editors.Both
+
     GetAllCapsWords().then(result => {
         if (result != null) {
             allCapsWords = result
@@ -245,8 +260,26 @@
         <MenuBarItem>
             {$_('View')}
             <svelte:fragment slot="flyout">
-                <MenuFlyoutItem variant="toggle" bind:checked={showJSONContainer}>{$_('JSON')}</MenuFlyoutItem>
-                <MenuFlyoutItem variant="toggle" bind:checked={showGoContainer}>{$_('Go')}</MenuFlyoutItem>
+                <MenuFlyoutItem cascading>
+                    {$_('Editors')}
+                    <svelte:fragment slot="flyout">
+                        <MenuFlyoutItem variant="radio" bind:group={editors} name="editors"
+                                        value={Editors.Both}>{$_(Editors.Both)}</MenuFlyoutItem>
+                        <MenuFlyoutItem variant="radio" bind:group={editors} name="editors"
+                                        value={Editors.JSON}>{$_(Editors.JSON)}</MenuFlyoutItem>
+                        <MenuFlyoutItem variant="radio" bind:group={editors} name="editors"
+                                        value={Editors.Go}>{$_(Editors.Go)}</MenuFlyoutItem>
+                    </svelte:fragment>
+                </MenuFlyoutItem>
+                <MenuFlyoutItem cascading>
+                    {$_('Layout')}
+                    <svelte:fragment slot="flyout">
+                        <MenuFlyoutItem variant="radio" bind:group={layout} name="layout"
+                                        value={Layout.TwoColumns}>{$_(Layout.TwoColumns)}</MenuFlyoutItem>
+                        <MenuFlyoutItem variant="radio" bind:group={layout} name="layout"
+                                        value={Layout.TwoRows}>{$_(Layout.TwoRows)}</MenuFlyoutItem>
+                    </svelte:fragment>
+                </MenuFlyoutItem>
             </svelte:fragment>
         </MenuBarItem>
         <MenuBarItem>
@@ -281,17 +314,22 @@
     </MenuBar>
 
     <!-- use columns-2 will cause the editor to be rendered incorrectly, so use grid instead -->
-    <div class="grid grid-cols-2 h-64 grow border-t border-b">
-        <div id="container-json" class:col-span-2={showJSONContainer &&!showGoContainer}
-             style:display={!showJSONContainer ? "none" : ""}>
+    <div class="grid h-64 grow border-t border-b" class:grid-cols-2={layout===Layout.TwoColumns}
+         class:grid-rows-2={layout===Layout.TwoRows}>
+        <div id="container-json" style:display={editors===Editors.Go ? "none" : ""}
+             class:col-span-2={layout===Layout.TwoColumns && editors===Editors.JSON}
+             class:row-span-2={layout===Layout.TwoRows && editors===Editors.JSON}>
             <div class="w-full bg-white/50 flex flex-row">
                 <span class="py-1 px-4 select-none text-yellow-700 font-mono">JSON</span>
                 <button on:click={pasteJSON}>{$_('Paste')}</button>
             </div>
             <div class="w-full h-32 grow" id="json-editor"></div>
         </div>
-        <div id="container-go" class:col-span-2={showGoContainer && !showJSONContainer}
-             style:display={!showGoContainer ? "none" : ""} class="border-l">
+        <div id="container-go" style:display={editors===Editors.JSON ? "none" : ""}
+             class:col-span-2={layout===Layout.TwoColumns && editors===Editors.Go}
+             class:row-span-2={layout===Layout.TwoRows && editors===Editors.Go}
+             class:border-l={layout===Layout.TwoColumns && editors===Editors.Both}
+             class:border-t={layout===Layout.TwoRows && editors===Editors.Both}>
             <div class="w-full bg-white/50 flex flex-row">
                 <span class="py-1 px-4 select-none text-purple-700 font-mono">Go</span>
                 <button on:click={copyCode}>{$_('Copy')}</button>
