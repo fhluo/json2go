@@ -28,8 +28,8 @@
     import {editor} from "monaco-editor/esm/vs/editor/editor.api";
     import {onMount} from "svelte";
     import loader from "@monaco-editor/loader";
-    import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
     import {BrowserOpenURL} from "../wailsjs/runtime/runtime.js";
+    import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
     let jsonEditor: IStandaloneCodeEditor
     let goEditor: IStandaloneCodeEditor
@@ -128,6 +128,8 @@
     let openSettingsDialog = false
     let openAboutDialog = false
     let showErrorInfo = false
+    let showJSONContainer = true
+    let showGoContainer = true
     let errorMessage = ""
     let allCapsWord = ""
     let allCapsWords = [] as string[]
@@ -214,8 +216,12 @@
             <p class="text-lg font-semibold">JSON2Go</p>
             <p class="text-gray-900">{$_('about.about', {default: "Generate Go type definitions from JSON"})}</p>
             <div class="leading-relaxed">
-                <p class="text-gray-900"><span class="font-semibold">{$_('about.license', {default: 'License: '})}</span>MIT</p>
-                <p class="text-gray-900"><span class="font-semibold">{$_('about.version', {default: 'Version: '})}</span>0.1.0</p>
+                <p class="text-gray-900">
+                    <span class="font-semibold">{$_('about.license', {default: 'License: '})}</span>MIT
+                </p>
+                <p class="text-gray-900">
+                    <span class="font-semibold">{$_('about.version', {default: 'Version: '})}</span>0.1.0
+                </p>
             </div>
             <p class="text-gray-900">Copyright © 2022 fhluo</p>
         </div>
@@ -234,6 +240,13 @@
                 <MenuFlyoutItem on:click={() => {openSettingsDialog = true}}>{$_('Settings')}</MenuFlyoutItem>
                 <MenuFlyoutDivider/>
                 <MenuFlyoutItem on:click={() => EventsEmit("exit")}>{$_('Exit')}</MenuFlyoutItem>
+            </svelte:fragment>
+        </MenuBarItem>
+        <MenuBarItem>
+            {$_('View')}
+            <svelte:fragment slot="flyout">
+                <MenuFlyoutItem variant="toggle" bind:checked={showJSONContainer}>{$_('JSON')}</MenuFlyoutItem>
+                <MenuFlyoutItem variant="toggle" bind:checked={showGoContainer}>{$_('Go')}</MenuFlyoutItem>
             </svelte:fragment>
         </MenuBarItem>
         <MenuBarItem>
@@ -256,23 +269,29 @@
         <MenuBarItem>
             {$_('Help')}
             <svelte:fragment slot="flyout">
-                <MenuFlyoutItem on:click={()=>BrowserOpenURL("https://github.com/fhluo/json2go")}>{$_('Document')}</MenuFlyoutItem>
+                <MenuFlyoutItem on:click={()=>BrowserOpenURL("https://github.com/fhluo/json2go")}>
+                    {$_('Document')}
+                </MenuFlyoutItem>
                 <MenuFlyoutDivider/>
-                <MenuFlyoutItem on:click={()=>openAboutDialog=true}>{$_('about.title', {default: 'About'})}</MenuFlyoutItem>
+                <MenuFlyoutItem on:click={()=>openAboutDialog=true}>
+                    {$_('about.title', {default: 'About'})}
+                </MenuFlyoutItem>
             </svelte:fragment>
         </MenuBarItem>
     </MenuBar>
 
     <!-- use columns-2 will cause the editor to be rendered incorrectly, so use grid instead -->
     <div class="grid grid-cols-2 h-64 grow border-t border-b">
-        <div id="container-json">
+        <div id="container-json" class:col-span-2={showJSONContainer &&!showGoContainer}
+             style:display={!showJSONContainer ? "none" : ""}>
             <div class="w-full bg-white/50 flex flex-row">
                 <span class="py-1 px-4 select-none text-yellow-700 font-mono">JSON</span>
                 <button on:click={pasteJSON}>{$_('Paste')}</button>
             </div>
             <div class="w-full h-32 grow" id="json-editor"></div>
         </div>
-        <div class="border-l" id="container-go">
+        <div id="container-go" class:col-span-2={showGoContainer && !showJSONContainer}
+             style:display={!showGoContainer ? "none" : ""} class="border-l">
             <div class="w-full bg-white/50 flex flex-row">
                 <span class="py-1 px-4 select-none text-purple-700 font-mono">Go</span>
                 <button on:click={copyCode}>{$_('Copy')}</button>
