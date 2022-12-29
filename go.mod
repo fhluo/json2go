@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/dave/jennifer v1.6.0
 	github.com/fatih/color v1.13.0
-	github.com/mattn/go-isatty v0.0.16
+	github.com/mattn/go-isatty v0.0.17
 	github.com/nicksnyder/go-i18n/v2 v2.2.1
 	github.com/pelletier/go-toml/v2 v2.0.6
 	github.com/pkg/errors v0.9.1
@@ -13,7 +13,7 @@ require (
 	github.com/spf13/cobra v1.4.0
 	github.com/spf13/viper v1.14.0
 	github.com/stretchr/testify v1.8.1
-	github.com/wailsapp/wails/v2 v2.2.0
+	github.com/wailsapp/wails/v2 v2.3.0
 	golang.design/x/clipboard v0.6.3
 	golang.org/x/exp v0.0.0-20221227203929-1b447090c38c
 	golang.org/x/sys v0.3.0
