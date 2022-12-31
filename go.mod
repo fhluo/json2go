@@ -13,9 +13,9 @@ require (
 	github.com/spf13/cobra v1.4.0
 	github.com/spf13/viper v1.14.0
 	github.com/stretchr/testify v1.8.1
-	github.com/wailsapp/wails/v2 v2.3.0
+	github.com/wailsapp/wails/v2 v2.3.1
 	golang.design/x/clipboard v0.6.3
-	golang.org/x/exp v0.0.0-20221227203929-1b447090c38c
+	golang.org/x/exp v0.0.0-20221230185412-738e83a70c30
 	golang.org/x/sys v0.3.0
 	golang.org/x/text v0.5.0
 )
@@ -52,7 +52,7 @@ require (
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
 	golang.org/x/crypto v0.4.0 // indirect
-	golang.org/x/exp/shiny v0.0.0-20221227203929-1b447090c38c // indirect
+	golang.org/x/exp/shiny v0.0.0-20221230185412-738e83a70c30 // indirect
 	golang.org/x/image v0.2.0 // indirect
 	golang.org/x/mobile v0.0.0-20221110043201-43a038452099 // indirect
 	golang.org/x/net v0.4.0 // indirect
