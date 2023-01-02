@@ -1,34 +1,23 @@
 <script lang="ts">
     import {
         Generate,
-        GetAllCapsWords,
         GetFontSize,
         GetLocale,
-        OpenJSONFile,
         ReadClipboard,
-        SaveGoSourceFile,
-        SetAllCapsWords,
         SetFontSize,
         SetLocale,
         WriteClipboard
     } from '../wailsjs/go/main/App.js'
     import "fluent-svelte/theme.css";
-    import {
-        Button,
-        ContentDialog,
-        MenuBar,
-        MenuBarItem,
-        MenuFlyoutDivider,
-        MenuFlyoutItem,
-        TextBox
-    } from "fluent-svelte";
+    import {Button} from "fluent-svelte";
     import "./i18n"
-    import {_, locale, locales} from "svelte-i18n";
+    import {_, locale} from "svelte-i18n";
     import {EventsEmit, EventsOn} from "../wailsjs/runtime";
     import {editor} from "monaco-editor/esm/vs/editor/editor.api";
     import {onMount} from "svelte";
     import loader from "@monaco-editor/loader";
-    import {BrowserOpenURL} from "../wailsjs/runtime/runtime.js";
+    import MenuBar from "./MenuBar.svelte";
+    import {Editors, Layout} from "./base";
     import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
     let jsonEditor: IStandaloneCodeEditor
@@ -97,20 +86,6 @@
         })
     })
 
-    function openJSONFile(): void {
-        OpenJSONFile().then(result => {
-            if (result !== "") {
-                jsonEditor.executeEdits("", [{
-                    range: jsonEditor.getModel()!.getFullModelRange(),
-                    text: result,
-                }])
-            }
-        })
-    }
-
-    function saveGoSourceFile(): void {
-        SaveGoSourceFile(goEditor.getValue())
-    }
 
     function pasteJSON() {
         ReadClipboard().then(result => {
@@ -125,34 +100,12 @@
         WriteClipboard(goEditor.getValue())
     }
 
-    let openSettingsDialog = false
-    let openAboutDialog = false
     let showErrorInfo = false
-    let showJSONContainer = true
-    let showGoContainer = true
     let errorMessage = ""
-    let allCapsWord = ""
     let allCapsWords = [] as string[]
-
-    enum Layout {
-        TwoColumns = "Two Columns",
-        TwoRows = "Two Rows",
-    }
-
-    enum Editors {
-        Both = "Both",
-        JSON = "JSON",
-        Go = "Go",
-    }
 
     let layout = Layout.TwoColumns
     let editors = Editors.Both
-
-    GetAllCapsWords().then(result => {
-        if (result != null) {
-            allCapsWords = result
-        }
-    })
 
     function generate(): void {
         showErrorInfo = false
@@ -168,7 +121,6 @@
         goEditor?.updateOptions({fontSize})
         SetFontSize(fontSize)
     }
-    $: SetAllCapsWords(allCapsWords)
 
     document.defaultView.addEventListener('resize', () => {
         jsonEditor?.layout()
@@ -180,139 +132,11 @@
         showErrorInfo = true
         errorMessage = message
     })
-
-    function addAllCapsWord(): void {
-        allCapsWord = allCapsWord.trim()
-        if (allCapsWord === "") {
-            return
-        }
-
-        // if allCapsWord contains a comma, split it and add each word separately
-        allCapsWords = Array.from(new Set(allCapsWords.concat(allCapsWord.split(',').map(word => word.trim()).filter(word => word !== ""))))
-        allCapsWord = ""
-    }
-
-    function onBeforeInput(event: InputEvent): void {
-        // user can only enter letters, space and ','
-        if (event.data !== null && !event.data.match(/[a-zA-Z', ]/)) {
-            event.preventDefault()
-        }
-    }
 </script>
 
 <main class="w-screen h-screen flex flex-col">
-    <ContentDialog bind:open={openSettingsDialog} title={$_('Settings')}>
-        <div class="flex flex-col space-y-2">
-            <span class="select-none font-semibold mr-3">{$_('All-caps words')}</span>
-            {#if allCapsWords?.length > 0}
-                <div class="flex flex-row flex-wrap space-x-1.5 pb-1.5">
-                    {#each allCapsWords as word}
-                        <button class="px-3 leading-loose tracking-wide rounded border shadow-sm ml-1 mt-1.5 bg-white hover:bg-gray-50 transition cursor-default"
-                                on:dblclick={() => allCapsWords = allCapsWords.filter(w => w !== word)}
-                                on:click={() => allCapsWord = word}>{word}</button>
-                    {/each}
-                </div>
-            {/if}
-            <div class="flex flex-row space-x-1.5">
-                <TextBox bind:value={allCapsWord} on:beforeinput={onBeforeInput}></TextBox>
-                <Button on:click={addAllCapsWord} class="min-w-fit">{$_('Add')}</Button>
-                <Button on:click={() => allCapsWords = allCapsWords.filter(w => w !== allCapsWord)}
-                        class="min-w-fit">{$_('Remove')}</Button>
-            </div>
-            <p class="text-sm text-gray-500 leading-relaxed py-2 px-1">{$_('tip.allCaps', {default: "Tip: Double click a word to remove it. To add multiple words, separate words with commas."})}</p>
-        </div>
-        <div class="flex justify-end">
-            <Button variant="accent" on:click={() => {openSettingsDialog = false}} class="mr-2">{$_('OK')}</Button>
-        </div>
-    </ContentDialog>
-
-    <ContentDialog bind:open={openAboutDialog} title={$_('about.title', {default: 'About'})}>
-        <div class="flex flex-col space-y-2 items-center justify-center">
-            <p class="text-lg font-semibold">JSON2Go</p>
-            <p class="text-gray-900">{$_('about.about', {default: "Generate Go type definitions from JSON"})}</p>
-            <div class="leading-relaxed">
-                <p class="text-gray-900">
-                    <span class="font-semibold">{$_('about.license', {default: 'License: '})}</span>MIT
-                </p>
-                <p class="text-gray-900">
-                    <span class="font-semibold">{$_('about.version', {default: 'Version: '})}</span>0.1.0
-                </p>
-            </div>
-            <p class="text-gray-900">Copyright © 2022 fhluo</p>
-        </div>
-        <div class="flex justify-end mt-3.5">
-            <Button variant="accent" on:click={() => {openAboutDialog=false}} class="mr-2">{$_('OK')}</Button>
-        </div>
-    </ContentDialog>
-
-    <MenuBar>
-        <MenuBarItem>
-            {$_('File')}
-            <svelte:fragment slot="flyout">
-                <MenuFlyoutItem on:click={openJSONFile}>{$_('Open JSON file')}</MenuFlyoutItem>
-                <MenuFlyoutItem on:click={saveGoSourceFile}>{$_('Save Go source file')}</MenuFlyoutItem>
-                <MenuFlyoutDivider/>
-                <MenuFlyoutItem on:click={() => {openSettingsDialog = true}}>{$_('Settings')}</MenuFlyoutItem>
-                <MenuFlyoutDivider/>
-                <MenuFlyoutItem on:click={() => EventsEmit("exit")}>{$_('Exit')}</MenuFlyoutItem>
-            </svelte:fragment>
-        </MenuBarItem>
-        <MenuBarItem>
-            {$_('View')}
-            <svelte:fragment slot="flyout">
-                <MenuFlyoutItem cascading>
-                    {$_('Editors')}
-                    <svelte:fragment slot="flyout">
-                        <MenuFlyoutItem variant="radio" bind:group={editors} name="editors"
-                                        value={Editors.Both}>{$_(Editors.Both)}</MenuFlyoutItem>
-                        <MenuFlyoutItem variant="radio" bind:group={editors} name="editors"
-                                        value={Editors.JSON}>{$_(Editors.JSON)}</MenuFlyoutItem>
-                        <MenuFlyoutItem variant="radio" bind:group={editors} name="editors"
-                                        value={Editors.Go}>{$_(Editors.Go)}</MenuFlyoutItem>
-                    </svelte:fragment>
-                </MenuFlyoutItem>
-                <MenuFlyoutItem cascading>
-                    {$_('Layout')}
-                    <svelte:fragment slot="flyout">
-                        <MenuFlyoutItem variant="radio" bind:group={layout} name="layout"
-                                        value={Layout.TwoColumns}>{$_(Layout.TwoColumns)}</MenuFlyoutItem>
-                        <MenuFlyoutItem variant="radio" bind:group={layout} name="layout"
-                                        value={Layout.TwoRows}>{$_(Layout.TwoRows)}</MenuFlyoutItem>
-                    </svelte:fragment>
-                </MenuFlyoutItem>
-            </svelte:fragment>
-        </MenuBarItem>
-        <MenuBarItem>
-            {$_('Language')}
-            <svelte:fragment slot="flyout">
-                {#each $locales as _locale}
-                    <MenuFlyoutItem variant="radio" bind:group={$locale} name="locale" value={_locale}
-                                    checked={$locale===_locale}>{$_(_locale)}</MenuFlyoutItem>
-                {/each}
-            </svelte:fragment>
-        </MenuBarItem>
-        <MenuBarItem>
-            {$_('Font')}
-            <svelte:fragment slot="flyout">
-                <MenuFlyoutItem on:click={()=>fontSize++}>{$_('Increase size')}</MenuFlyoutItem>
-                <MenuFlyoutItem on:click={()=>fontSize--}>{$_('Decrease size')}</MenuFlyoutItem>
-                <MenuFlyoutItem on:click={()=>fontSize=defaultFontSize}>{$_('Reset size')}</MenuFlyoutItem>
-            </svelte:fragment>
-        </MenuBarItem>
-        <MenuBarItem>
-            {$_('Help')}
-            <svelte:fragment slot="flyout">
-                <MenuFlyoutItem on:click={()=>BrowserOpenURL("https://github.com/fhluo/json2go")}>
-                    {$_('Document')}
-                </MenuFlyoutItem>
-                <MenuFlyoutDivider/>
-                <MenuFlyoutItem on:click={()=>openAboutDialog=true}>
-                    {$_('about.title', {default: 'About'})}
-                </MenuFlyoutItem>
-            </svelte:fragment>
-        </MenuBarItem>
-    </MenuBar>
-
+    <MenuBar bind:layout={layout} bind:editors={editors} bind:fontSize={fontSize} bind:jsonEditor={jsonEditor}
+             bind:goEditor={goEditor}></MenuBar>
     <!-- use columns-2 will cause the editor to be rendered incorrectly, so use grid instead -->
     <div class="grid h-64 grow border-t border-b" class:grid-cols-2={layout===Layout.TwoColumns}
          class:grid-rows-2={layout===Layout.TwoRows}>
