@@ -42,8 +42,12 @@ jobs:
 
       - name: Set up UPX
         run: |
-          go run ./tools/setup-upx --token ${{ secrets.GITHUB_TOKEN }}
           $env:Path += ";" + (Get-Location).Path
+          Write-Output "Added $((Get-Location).Path) to PATH"
+          go run ./tools/setup-upx --token ${{ secrets.GITHUB_TOKEN }}
+          if (!(Test-Path -Path "upx.exe")) {
+            Throw "Set up UPX failed"
+          }
 
       - name: Install frontend dependencies
         run: |
