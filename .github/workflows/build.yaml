@@ -33,6 +33,13 @@ jobs:
         with:
           node-version: 19
 
+      - name: Set up NSIS
+        run: |
+          cd ..
+          go run ./json2go/tools/setup-nsis
+          $env:Path += ";" + (Get-ChildItem -Directory | Where-Object { $_.Name -match "^nsis-" }).FullName + "\Bin"
+          cd json2go
+
       - name: Install frontend dependencies
         run: |
           cd web
@@ -43,7 +50,7 @@ jobs:
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
       - name: Build
-        run: wails build
+        run: wails build -nsis
 
       - name: Test
         run: go test -v ./...
