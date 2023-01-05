@@ -21,6 +21,7 @@
     export let jsonEditor: IStandaloneCodeEditor
     export let goEditor: IStandaloneCodeEditor
 
+    export let allCapsWords = [] as string[]
 
     function openJSONFile(): void {
         OpenJSONFile().then(result => {
@@ -38,7 +39,7 @@
     }
 </script>
 
-<SettingsDialog bind:open={openSettingsDialog}></SettingsDialog>
+<SettingsDialog bind:open={openSettingsDialog} bind:allCapsWords></SettingsDialog>
 <AboutDialog bind:open={openAboutDialog}></AboutDialog>
 <MenuBar>
     <MenuBarItem>

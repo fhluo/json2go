@@ -136,7 +136,7 @@
 
 <main class="w-screen h-screen flex flex-col">
     <MenuBar bind:layout={layout} bind:editors={editors} bind:fontSize={fontSize} bind:jsonEditor={jsonEditor}
-             bind:goEditor={goEditor}></MenuBar>
+             bind:goEditor={goEditor} bind:allCapsWords></MenuBar>
     <!-- use columns-2 will cause the editor to be rendered incorrectly, so use grid instead -->
     <div class="grid h-64 grow border-t border-b" class:grid-cols-2={layout===Layout.TwoColumns}
          class:grid-rows-2={layout===Layout.TwoRows}>
