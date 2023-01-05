@@ -5,6 +5,7 @@ go 1.19
 require (
 	github.com/dave/jennifer v1.6.0
 	github.com/fatih/color v1.13.0
+	github.com/google/go-github/v49 v49.0.0
 	github.com/mattn/go-isatty v0.0.17
 	github.com/mholt/archiver/v4 v4.0.0-alpha.7
 	github.com/nicksnyder/go-i18n/v2 v2.2.1
@@ -29,6 +30,7 @@ require (
 	github.com/fsnotify/fsnotify v1.6.0 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
+	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/imdario/mergo v0.3.13 // indirect
