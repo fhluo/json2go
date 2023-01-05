@@ -22,4 +22,8 @@
 </samp>
 </div>
 
+<p align="center">
+
 ![json2go](assets/images/json2go.zh-Hans.png)
+
+</p>
