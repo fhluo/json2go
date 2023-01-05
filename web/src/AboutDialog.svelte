@@ -14,7 +14,7 @@
                 <span class="font-semibold">{$_('about.license', {default: 'License: '})}</span>MIT
             </p>
             <p class="text-gray-900">
-                <span class="font-semibold">{$_('about.version', {default: 'Version: '})}</span>0.1.0
+                <span class="font-semibold">{$_('about.version', {default: 'Version: '})}</span>0.2.0
             </p>
         </div>
         <p class="text-gray-900">Copyright © 2022 fhluo</p>
