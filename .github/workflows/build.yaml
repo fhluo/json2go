@@ -33,6 +33,12 @@ jobs:
         with:
           node-version: 19
 
+      - name: Install frontend dependencies
+        run: |
+          cd web
+          npm install
+          cd ..
+
       - name: Install Wails
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
