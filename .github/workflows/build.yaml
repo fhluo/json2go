@@ -40,6 +40,11 @@ jobs:
           $env:Path += ";" + (Get-ChildItem -Directory | Where-Object { $_.Name -match "^nsis-" }).FullName + "\Bin"
           cd json2go
 
+      - name: Set up UPX
+        run: |
+          go run ./tools/setup-upx
+          $env:Path += ";" + (Get-Location).Path
+
       - name: Install frontend dependencies
         run: |
           cd web
@@ -50,7 +55,7 @@ jobs:
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
       - name: Build
-        run: wails build -nsis
+        run: wails build -nsis -upx
 
       - name: Test
         run: go test -v ./...
