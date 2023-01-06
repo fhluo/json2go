@@ -35,13 +35,12 @@ jobs:
 
       - name: Set up UPX and NSIS
         run: |
-          go run ./tools/setup-upx --token ${{ secrets.GITHUB_TOKEN }} --path ./build/bin
-          $env:Path += ";" + (Resolve-Path -Path .\build\bin).Path
-          
-          cd ..
-          go run github.com/fhluo/json2go/tools/setup-nsis@latest
-          $env:Path += ";" + (Get-ChildItem -Directory | Where-Object { $_.Name -match "^nsis-" }).FullName + "\Bin"
-          cd json2go
+          go build ./tools/setup
+          ./setup nsis --path ./build/tools
+          ./setup upx --path ./build/tools --token ${{ secrets.GITHUB_TOKEN }}
+
+          $env:Path = (Get-ChildItem -Directory -Path .\build\tools\ | Where-Object { $_.Name -match "^nsis-" }).FullName + "\Bin" + ";" + $env:Path
+          $env:Path = (Get-ChildItem -Directory -Path .\build\tools\ | Where-Object { $_.Name -match "^upx-" }).FullName + ";" + $env:Path
           Write-Output $env:Path
 
       - name: Install frontend dependencies
