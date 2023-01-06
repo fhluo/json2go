@@ -11,6 +11,7 @@ import (
 	"golang.org/x/oauth2"
 	"net/http"
 	"os"
+	"path/filepath"
 	"strings"
 )
 
@@ -41,17 +42,34 @@ var rootCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
-		if err = util.ExtractOne(filename, "upx.exe", "upx.exe"); err != nil {
-			slog.Error("failed to extract files", err, "filename", filename)
-			os.Exit(1)
+		if path != "" {
+			// make dir
+			if err = os.MkdirAll(path, 0660); err != nil {
+				slog.Error("failed to create dir", err)
+				os.Exit(1)
+			}
+
+			if err = util.ExtractOne(filename, "upx.exe", filepath.Join(path, "upx.exe")); err != nil {
+				slog.Error("failed to extract files", err, "filename", filename)
+				os.Exit(1)
+			}
+		} else {
+			if err = util.ExtractOne(filename, "upx.exe", "upx.exe"); err != nil {
+				slog.Error("failed to extract files", err, "filename", filename)
+				os.Exit(1)
+			}
 		}
 	},
 }
 
-var token string
+var (
+	token string
+	path  string
+)
 
 func init() {
 	rootCmd.PersistentFlags().StringVarP(&token, "token", "t", "", "github token")
+	rootCmd.PersistentFlags().StringVarP(&path, "path", "p", "", "path to extract")
 }
 
 func getDownloadURLAndFilename(githubToken string) (downloadURL string, filename string, err error) {
