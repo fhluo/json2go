@@ -103,6 +103,13 @@ func (c *Context) objectType() (Type, error) {
 		return nil, err
 	}
 
+	if len(keys) == 0 {
+		return Map{
+			Key:   String{},
+			Value: Any{},
+		}, nil
+	}
+
 	if !validNames(keys) {
 		m := Map{Value: c.deduce(types)}
 		if validIntegers(keys) {
