@@ -1,4 +1,5 @@
 *.exe*
+build/tools
 build/windows/installer/tmp
 node_modules
 web/dist

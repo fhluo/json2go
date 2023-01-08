@@ -1,83 +1,94 @@
 package cmd
 
 import (
-	"fmt"
-	"github.com/fhluo/json2go/pkg/conv"
+	"bytes"
+	gen "github.com/dave/jennifer/jen"
+	"github.com/fhluo/json2go/pkg/def"
 	"github.com/spf13/cobra"
+	"golang.org/x/exp/slog"
+	"io"
 	"log"
 	"os"
 	"path/filepath"
-	"strings"
-	"sync"
 )
 
 var rootCmd = &cobra.Command{
 	Use:   "json2go",
-	Short: "Generating a Go type definition from JSON.",
+	Short: "Generate Go type definitions from JSON",
 	Run: func(cmd *cobra.Command, args []string) {
-		camelCaseConverter := conv.NewDefaultCamelCaseConverter(acronyms)
+		// read input
+		var (
+			data []byte
+			err  error
+		)
 
-		paths, err := expand(args)
+		if input == "" {
+			data, err = io.ReadAll(os.Stdin)
+		} else {
+			data, err = os.ReadFile(input)
+		}
+
 		if err != nil {
-			log.Fatalln(err)
+			slog.Error("failed to read input file", err)
+			os.Exit(1)
 		}
 
-		var wg sync.WaitGroup
-		wg.Add(len(paths))
+		// generate code
+		file := gen.NewFile(packageName)
 
-		_ = os.MkdirAll(output, os.ModePerm)
+		stmt, err := def.FromBytes(data, acronyms...).Declare(typeName)
+		if err != nil {
+			slog.Error("failed to declare type", err)
+			os.Exit(1)
+		}
+		file.Add(stmt)
 
-		for _, path := range paths {
-			path := path
-			go func() {
-				data, err := os.ReadFile(path)
-				if err != nil {
-					log.Println(err)
-					return
-				}
-
-				base := filepath.Base(path)
-				name := strings.TrimSuffix(base, filepath.Ext(path))
-
-				data, err = Generate(data, output, fmt.Sprintf("Generated from %s", base), camelCaseConverter.ToCamelCase(name), camelCaseConverter)
-				if err != nil {
-					log.Println(err)
-					return
-				}
-
-				dst := filepath.Join(output, conv.ToSnakeCase(name)+".go")
-				err = os.WriteFile(dst, data, os.ModePerm)
-				if err != nil {
-					log.Println(err)
-					return
-				}
-
-				fmt.Printf("generated: %s => %s\n", path, dst)
-				wg.Done()
-			}()
+		buffer := new(bytes.Buffer)
+		if err = file.Render(buffer); err != nil {
+			slog.Error("failed to render file", err)
+			os.Exit(1)
 		}
 
-		wg.Wait()
+		// write output
+		if output == "" {
+			_, _ = io.Copy(os.Stdout, buffer)
+		} else {
+			// make sure output directory exists
+			_ = os.MkdirAll(filepath.Dir(output), os.ModePerm)
+
+			err = os.WriteFile(output, buffer.Bytes(), os.ModePerm)
+		}
+
+		if err != nil {
+			slog.Error("failed to write output file", err)
+			os.Exit(1)
+		}
 	},
 }
 
 var (
-	output   string
-	acronyms []string
+	input       string
+	output      string
+	packageName string
+	typeName    string
+	acronyms    []string
 )
 
 func init() {
-	rootCmd.Flags().StringVarP(&output, "output", "o", "", "output folder")
+	rootCmd.Flags().StringVarP(&input, "input", "i", "", "input file (default: stdin)")
+	rootCmd.Flags().StringVarP(&output, "output", "o", "", "output file (default: stdout)")
+	rootCmd.Flags().StringVarP(&packageName, "package", "p", "main", "package name")
+	rootCmd.Flags().StringVarP(&typeName, "type", "t", "T", "type name")
 	rootCmd.Flags().StringSliceVarP(&acronyms, "acronyms", "a", nil, "specify acronyms")
 
-	err := rootCmd.MarkFlagDirname("output")
-	if err != nil {
-		log.Fatalln(err)
+	if err := rootCmd.MarkFlagFilename("input", "json"); err != nil {
+		slog.Error("failed to mark input flag filename", err)
+		os.Exit(1)
 	}
 
-	err = rootCmd.MarkFlagRequired("output")
-	if err != nil {
-		log.Fatalln(err)
+	if err := rootCmd.MarkFlagFilename("output", "go"); err != nil {
+		slog.Error("failed to mark input flag filename", err)
+		os.Exit(1)
 	}
 }
 
@@ -85,16 +96,4 @@ func Execute() {
 	if err := rootCmd.Execute(); err != nil {
 		log.Fatalln(err)
 	}
-}
-
-func expand(paths []string) ([]string, error) {
-	result := make([]string, 0, len(paths))
-	for _, path := range paths {
-		matches, err := filepath.Glob(path)
-		if err != nil {
-			return nil, err
-		}
-		result = append(result, matches...)
-	}
-	return result, nil
 }
