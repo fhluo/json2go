@@ -23,15 +23,13 @@ jobs:
         with:
           go-version-file: go.mod
 
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.11'
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 19
+
+      - name: Install copy-monaco
+        run: go install .\tools\copy-monaco
 
       - name: Set up UPX and NSIS
         run: |

@@ -9,6 +9,7 @@ require (
 	github.com/mattn/go-isatty v0.0.17
 	github.com/mholt/archiver/v4 v4.0.0-alpha.7
 	github.com/nicksnyder/go-i18n/v2 v2.2.1
+	github.com/otiai10/copy v1.9.0
 	github.com/pelletier/go-toml/v2 v2.0.6
 	github.com/pkg/errors v0.9.1
 	github.com/samber/lo v1.37.0
@@ -17,7 +18,7 @@ require (
 	github.com/stretchr/testify v1.8.1
 	github.com/wailsapp/wails/v2 v2.3.1
 	golang.design/x/clipboard v0.6.3
-	golang.org/x/exp v0.0.0-20221230185412-738e83a70c30
+	golang.org/x/exp v0.0.0-20230108222341-4b8118a2686a
 	golang.org/x/oauth2 v0.4.0
 	golang.org/x/sys v0.4.0
 	golang.org/x/text v0.6.0
@@ -65,9 +66,9 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
-	golang.org/x/crypto v0.4.0 // indirect
-	golang.org/x/exp/shiny v0.0.0-20221230185412-738e83a70c30 // indirect
-	golang.org/x/image v0.2.0 // indirect
+	golang.org/x/crypto v0.5.0 // indirect
+	golang.org/x/exp/shiny v0.0.0-20230108222341-4b8118a2686a // indirect
+	golang.org/x/image v0.3.0 // indirect
 	golang.org/x/mobile v0.0.0-20221110043201-43a038452099 // indirect
 	golang.org/x/net v0.5.0 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
