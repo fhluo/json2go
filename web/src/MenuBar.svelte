@@ -4,7 +4,12 @@
     import {BrowserOpenURL, EventsEmit} from "../wailsjs/runtime";
     import SettingsDialog from "./SettingsDialog.svelte";
     import AboutDialog from "./AboutDialog.svelte";
-    import {OpenJSONFile, SaveGoSourceFile} from "../wailsjs/go/main/App";
+    import {
+        GetOptionsValidJSONBeforeGeneration,
+        OpenJSONFile,
+        SaveGoSourceFile,
+        SetOptionsValidJSONBeforeGeneration
+    } from "../wailsjs/go/main/App";
     import {Editors, Layout} from "./base.js";
     import {editor} from "monaco-editor/esm/vs/editor/editor.api";
     import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
@@ -22,6 +27,14 @@
     export let goEditor: IStandaloneCodeEditor
 
     export let allCapsWords = [] as string[]
+
+    export let optionsValidJSONBeforeGeneration = false
+
+    GetOptionsValidJSONBeforeGeneration().then((valid) => {
+        optionsValidJSONBeforeGeneration = valid
+    })
+
+    $: SetOptionsValidJSONBeforeGeneration(optionsValidJSONBeforeGeneration)
 
     function openJSONFile(): void {
         OpenJSONFile().then(result => {
@@ -51,6 +64,14 @@
             <MenuFlyoutItem on:click={() => {openSettingsDialog = true}}>{$_('Settings')}</MenuFlyoutItem>
             <MenuFlyoutDivider/>
             <MenuFlyoutItem on:click={() => EventsEmit("exit")}>{$_('Exit')}</MenuFlyoutItem>
+        </svelte:fragment>
+    </MenuBarItem>
+    <MenuBarItem>
+        {$_('Options')}
+        <svelte:fragment slot="flyout">
+            <MenuFlyoutItem variant="toggle" bind:checked={optionsValidJSONBeforeGeneration}>
+                {$_("Validate JSON before generation")}
+            </MenuFlyoutItem>
         </svelte:fragment>
     </MenuBarItem>
     <MenuBarItem>
@@ -108,6 +129,3 @@
         </svelte:fragment>
     </MenuBarItem>
 </MenuBar>
-
-<style>
-</style>

@@ -67,8 +67,16 @@ func (a *App) SetAllCapsWords(words []string) {
 	config.SetAllCapsWords(words)
 }
 
+func (a *App) GetOptionsValidJSONBeforeGeneration() bool {
+	return config.GetOptionsValidJSONBeforeGeneration()
+}
+
+func (a *App) SetOptionsValidJSONBeforeGeneration(valid bool) {
+	config.SetOptionsValidJSONBeforeGeneration(valid)
+}
+
 func (a *App) Generate(s string, allCaps []string) string {
-	if !json.Valid([]byte(s)) {
+	if config.GetOptionsValidJSONBeforeGeneration() && !json.Valid([]byte(s)) {
 		runtime.EventsEmit(a.ctx, "error", "invalid json")
 		return ""
 	}

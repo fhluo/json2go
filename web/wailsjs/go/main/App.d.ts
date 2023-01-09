@@ -9,6 +9,8 @@ export function GetFontSize():Promise<number>;
 
 export function GetLocale():Promise<string>;
 
+export function GetOptionsValidJSONBeforeGeneration():Promise<boolean>;
+
 export function OpenJSONFile():Promise<string>;
 
 export function ReadClipboard():Promise<string>;
@@ -20,5 +22,7 @@ export function SetAllCapsWords(arg1:Array<string>):Promise<void>;
 export function SetFontSize(arg1:number):Promise<void>;
 
 export function SetLocale(arg1:string):Promise<void>;
+
+export function SetOptionsValidJSONBeforeGeneration(arg1:boolean):Promise<void>;
 
 export function WriteClipboard(arg1:string):Promise<void>;

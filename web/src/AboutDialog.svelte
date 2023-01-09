@@ -23,6 +23,3 @@
         <Button variant="accent" on:click={() => {open=false}} class="mr-2">{$_('OK')}</Button>
     </div>
 </ContentDialog>
-
-<style>
-</style>

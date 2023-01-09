@@ -18,6 +18,10 @@ export function GetLocale() {
   return window['go']['main']['App']['GetLocale']();
 }
 
+export function GetOptionsValidJSONBeforeGeneration() {
+  return window['go']['main']['App']['GetOptionsValidJSONBeforeGeneration']();
+}
+
 export function OpenJSONFile() {
   return window['go']['main']['App']['OpenJSONFile']();
 }
@@ -40,6 +44,10 @@ export function SetFontSize(arg1) {
 
 export function SetLocale(arg1) {
   return window['go']['main']['App']['SetLocale'](arg1);
+}
+
+export function SetOptionsValidJSONBeforeGeneration(arg1) {
+  return window['go']['main']['App']['SetOptionsValidJSONBeforeGeneration'](arg1);
 }
 
 export function WriteClipboard(arg1) {
