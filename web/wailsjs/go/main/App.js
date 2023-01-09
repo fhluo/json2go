@@ -10,6 +10,10 @@ export function GetAllCapsWords() {
   return window['go']['main']['App']['GetAllCapsWords']();
 }
 
+export function GetExamples() {
+  return window['go']['main']['App']['GetExamples']();
+}
+
 export function GetFontSize() {
   return window['go']['main']['App']['GetFontSize']();
 }

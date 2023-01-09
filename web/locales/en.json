@@ -47,5 +47,6 @@
     "newVersion": "A new version is available: ",
     "failed": "Unable to check for updates.",
     "checking": "Checking for updates..."
-  }
+  },
+  "Examples": "Examples"
 }

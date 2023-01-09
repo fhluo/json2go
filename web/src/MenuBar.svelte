@@ -5,6 +5,7 @@
     import SettingsDialog from "./SettingsDialog.svelte"
     import AboutDialog from "./AboutDialog.svelte"
     import {
+        GetExamples,
         GetOptionsValidJSONBeforeGeneration,
         OpenJSONFile,
         SaveGoSourceFile,
@@ -13,7 +14,9 @@
     import {Editors, Layout} from "./base.js"
     import {editor} from "monaco-editor/esm/vs/editor/editor.api"
     import CheckForUpdatesDialog from "./CheckForUpdatesDialog.svelte"
-    import IStandaloneCodeEditor = editor.IStandaloneCodeEditor
+    import {examples} from "../wailsjs/go/models";
+    import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
+    import Example = examples.Example;
 
     let openSettingsDialog = false
     let openAboutDialog = false
@@ -37,6 +40,11 @@
     })
 
     $: SetOptionsValidJSONBeforeGeneration(optionsValidJSONBeforeGeneration)
+
+    let examples_: Example[]
+    GetExamples().then((r) => {
+        examples_ = r
+    })
 
     function openJSONFile(): void {
         OpenJSONFile().then(result => {
@@ -116,6 +124,19 @@
             {#each $locales as _locale}
                 <MenuFlyoutItem variant="radio" bind:group={$locale} name="locale" value={_locale}
                                 checked={$locale===_locale}>{$_(_locale)}</MenuFlyoutItem>
+            {/each}
+        </svelte:fragment>
+    </MenuBarItem>
+    <MenuBarItem>
+        {$_('Examples')}
+        <svelte:fragment slot="flyout">
+            {#each examples_ as e}
+                <MenuFlyoutItem on:click={() => {
+                    jsonEditor.executeEdits("", [{
+                        range: jsonEditor.getModel().getFullModelRange(),
+                        text: e.content,
+                    }])
+                }}>{$_(e.title)}</MenuFlyoutItem>
             {/each}
         </svelte:fragment>
     </MenuBarItem>

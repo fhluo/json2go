@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"github.com/fhluo/json2go/i18n"
 	"github.com/fhluo/json2go/internal/config"
+	"github.com/fhluo/json2go/internal/examples"
 	"github.com/fhluo/json2go/internal/updates"
 	"github.com/fhluo/json2go/pkg/def"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
@@ -89,6 +90,10 @@ func (a *App) GetLatestVersion() string {
 	}
 
 	return v.String()
+}
+
+func (a *App) GetExamples() []examples.Example {
+	return examples.Examples
 }
 
 func (a *App) Generate(s string, allCaps []string) string {
