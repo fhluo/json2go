@@ -14,12 +14,20 @@ export function GetFontSize() {
   return window['go']['main']['App']['GetFontSize']();
 }
 
+export function GetLatestVersion() {
+  return window['go']['main']['App']['GetLatestVersion']();
+}
+
 export function GetLocale() {
   return window['go']['main']['App']['GetLocale']();
 }
 
 export function GetOptionsValidJSONBeforeGeneration() {
   return window['go']['main']['App']['GetOptionsValidJSONBeforeGeneration']();
+}
+
+export function GetVersion() {
+  return window['go']['main']['App']['GetVersion']();
 }
 
 export function OpenJSONFile() {

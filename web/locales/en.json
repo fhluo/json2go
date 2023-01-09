@@ -39,5 +39,13 @@
   "Two Columns": "Two Columns",
   "Two Rows": "Two Rows",
   "Options": "Options",
-  "Validate JSON before generation": "Validate JSON before generation"
+  "Validate JSON before generation": "Validate JSON before generation",
+  "Check for updates": "Check for updates",
+  "checkForUpdates": {
+    "title": "Check for updates",
+    "upToDate": "You are using the latest version.",
+    "newVersion": "A new version is available: ",
+    "failed": "Unable to check for updates.",
+    "checking": "Checking for updates..."
+  }
 }

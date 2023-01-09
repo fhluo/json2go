@@ -1,21 +1,23 @@
 <script lang="ts">
-    import {MenuBar, MenuBarItem, MenuFlyoutDivider, MenuFlyoutItem} from "fluent-svelte";
-    import {_, locale, locales} from "svelte-i18n";
-    import {BrowserOpenURL, EventsEmit} from "../wailsjs/runtime";
-    import SettingsDialog from "./SettingsDialog.svelte";
-    import AboutDialog from "./AboutDialog.svelte";
+    import {MenuBar, MenuBarItem, MenuFlyoutDivider, MenuFlyoutItem} from "fluent-svelte"
+    import {_, locale, locales} from "svelte-i18n"
+    import {BrowserOpenURL, EventsEmit} from "../wailsjs/runtime"
+    import SettingsDialog from "./SettingsDialog.svelte"
+    import AboutDialog from "./AboutDialog.svelte"
     import {
         GetOptionsValidJSONBeforeGeneration,
         OpenJSONFile,
         SaveGoSourceFile,
         SetOptionsValidJSONBeforeGeneration
-    } from "../wailsjs/go/main/App";
-    import {Editors, Layout} from "./base.js";
-    import {editor} from "monaco-editor/esm/vs/editor/editor.api";
-    import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
+    } from "../wailsjs/go/main/App"
+    import {Editors, Layout} from "./base.js"
+    import {editor} from "monaco-editor/esm/vs/editor/editor.api"
+    import CheckForUpdatesDialog from "./CheckForUpdatesDialog.svelte"
+    import IStandaloneCodeEditor = editor.IStandaloneCodeEditor
 
     let openSettingsDialog = false
     let openAboutDialog = false
+    let openCheckForUpdatesDialog = false
 
     export let layout: Layout
     export let editors: Editors
@@ -54,6 +56,7 @@
 
 <SettingsDialog bind:open={openSettingsDialog} bind:allCapsWords></SettingsDialog>
 <AboutDialog bind:open={openAboutDialog}></AboutDialog>
+<CheckForUpdatesDialog bind:open={openCheckForUpdatesDialog}></CheckForUpdatesDialog>
 <MenuBar>
     <MenuBarItem>
         {$_('File')}
@@ -122,6 +125,8 @@
             <MenuFlyoutItem on:click={()=>BrowserOpenURL("https://github.com/fhluo/json2go")}>
                 {$_('Document')}
             </MenuFlyoutItem>
+            <MenuFlyoutDivider/>
+            <MenuFlyoutItem on:click={()=>openCheckForUpdatesDialog=true}>{$_('Check for updates')}</MenuFlyoutItem>
             <MenuFlyoutDivider/>
             <MenuFlyoutItem on:click={()=>openAboutDialog=true}>
                 {$_('about.title', {default: 'About'})}

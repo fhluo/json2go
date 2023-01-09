@@ -1,8 +1,14 @@
 <script lang="ts">
-    import {Button, ContentDialog} from "fluent-svelte";
-    import {_} from "svelte-i18n";
+    import {Button, ContentDialog} from "fluent-svelte"
+    import {_} from "svelte-i18n"
+    import {GetVersion} from "../wailsjs/go/main/App"
 
-    export let open = false;
+    export let open = false
+
+    let version: string
+    GetVersion().then((v) => {
+        version = v
+    })
 </script>
 
 <ContentDialog bind:open={open} title={$_('about.title', {default: 'About'})}>
@@ -14,7 +20,7 @@
                 <span class="font-semibold">{$_('about.license', {default: 'License: '})}</span>MIT
             </p>
             <p class="text-gray-900">
-                <span class="font-semibold">{$_('about.version', {default: 'Version: '})}</span>0.2.0
+                <span class="font-semibold">{$_('about.version', {default: 'Version: '})}</span>{version}
             </p>
         </div>
         <p class="text-gray-900">Copyright © 2022 fhluo</p>

@@ -8,17 +8,17 @@
         SetLocale,
         WriteClipboard
     } from '../wailsjs/go/main/App.js'
-    import "fluent-svelte/theme.css";
-    import {Button} from "fluent-svelte";
+    import "fluent-svelte/theme.css"
+    import {Button} from "fluent-svelte"
     import "./i18n"
-    import {_, locale} from "svelte-i18n";
-    import {EventsEmit, EventsOn} from "../wailsjs/runtime";
-    import {editor} from "monaco-editor/esm/vs/editor/editor.api";
-    import {onMount} from "svelte";
-    import loader from "@monaco-editor/loader";
-    import MenuBar from "./MenuBar.svelte";
-    import {Editors, Layout} from "./base";
-    import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
+    import {_, locale} from "svelte-i18n"
+    import {EventsEmit, EventsOn} from "../wailsjs/runtime"
+    import {editor} from "monaco-editor/esm/vs/editor/editor.api"
+    import {onMount} from "svelte"
+    import loader from "@monaco-editor/loader"
+    import MenuBar from "./MenuBar.svelte"
+    import {Editors, Layout} from "./base"
+    import IStandaloneCodeEditor = editor.IStandaloneCodeEditor
 
     let jsonEditor: IStandaloneCodeEditor
     let goEditor: IStandaloneCodeEditor

@@ -7,9 +7,13 @@ export function GetAllCapsWords():Promise<Array<string>>;
 
 export function GetFontSize():Promise<number>;
 
+export function GetLatestVersion():Promise<string>;
+
 export function GetLocale():Promise<string>;
 
 export function GetOptionsValidJSONBeforeGeneration():Promise<boolean>;
+
+export function GetVersion():Promise<string>;
 
 export function OpenJSONFile():Promise<string>;
 
