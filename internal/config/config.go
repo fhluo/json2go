@@ -16,6 +16,7 @@ const (
 	keyAllCapsWords = "all_caps_words"
 
 	keyOptionsValidJSONBeforeGeneration = "options.valid_json_before_generation"
+	keyOptionsGenerateInRealTime        = "options.generate_in_real_time"
 )
 
 var (
@@ -29,7 +30,8 @@ func init() {
 	viper.SetDefault(keyWindowWidth, 1200)
 	viper.SetDefault(keyWindowHeight, 800)
 	viper.SetDefault(keyAllCapsWords, []string{"ID", "URL", "URI", "JSON", "HTML", "CSS", "API", "HTTP", "SQL"})
-	viper.SetDefault(keyOptionsValidJSONBeforeGeneration, false)
+	viper.SetDefault(keyOptionsValidJSONBeforeGeneration, true)
+	viper.SetDefault(keyOptionsGenerateInRealTime, true)
 
 	viper.SetConfigName("config")
 	viper.SetConfigType("toml")
@@ -145,4 +147,14 @@ func GetOptionsValidJSONBeforeGeneration() bool {
 
 func SetOptionsValidJSONBeforeGeneration(valid bool) {
 	set(keyOptionsValidJSONBeforeGeneration, valid)
+}
+
+func GetOptionsGenerateInRealTime() bool {
+	m.Lock()
+	defer m.Unlock()
+	return viper.GetBool(keyOptionsGenerateInRealTime)
+}
+
+func SetOptionsGenerateInRealTime(b bool) {
+	set(keyOptionsGenerateInRealTime, b)
 }

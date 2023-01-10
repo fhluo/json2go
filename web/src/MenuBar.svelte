@@ -6,9 +6,11 @@
     import AboutDialog from "./AboutDialog.svelte"
     import {
         GetExamples,
+        GetOptionsGenerateInRealTime,
         GetOptionsValidJSONBeforeGeneration,
         OpenJSONFile,
         SaveGoSourceFile,
+        SetOptionsGenerateInRealTime,
         SetOptionsValidJSONBeforeGeneration
     } from "../wailsjs/go/main/App"
     import {Editors, Layout} from "./base.js"
@@ -34,12 +36,17 @@
     export let allCapsWords = [] as string[]
 
     export let optionsValidJSONBeforeGeneration = false
+    export let optionsGenerateInRealTime = false
 
     GetOptionsValidJSONBeforeGeneration().then((valid) => {
         optionsValidJSONBeforeGeneration = valid
     })
-
     $: SetOptionsValidJSONBeforeGeneration(optionsValidJSONBeforeGeneration)
+
+    GetOptionsGenerateInRealTime().then((b) => {
+        optionsGenerateInRealTime = b
+    })
+    $: SetOptionsGenerateInRealTime(optionsGenerateInRealTime)
 
     let examples_: Example[]
     GetExamples().then((r) => {
@@ -82,6 +89,9 @@
         <svelte:fragment slot="flyout">
             <MenuFlyoutItem variant="toggle" bind:checked={optionsValidJSONBeforeGeneration}>
                 {$_("Validate JSON before generation")}
+            </MenuFlyoutItem>
+            <MenuFlyoutItem variant="toggle" bind:checked={optionsGenerateInRealTime}>
+                {$_("Generate in real time")}
             </MenuFlyoutItem>
         </svelte:fragment>
     </MenuBarItem>

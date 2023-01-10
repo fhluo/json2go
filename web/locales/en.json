@@ -48,5 +48,6 @@
     "failed": "Unable to check for updates.",
     "checking": "Checking for updates..."
   },
-  "Examples": "Examples"
+  "Examples": "Examples",
+  "Generate in real time": "Generate in real time"
 }

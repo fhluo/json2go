@@ -18,7 +18,7 @@
     import loader from "@monaco-editor/loader"
     import MenuBar from "./MenuBar.svelte"
     import {Editors, Layout} from "./base"
-    import IStandaloneCodeEditor = editor.IStandaloneCodeEditor
+    import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 
     let jsonEditor: IStandaloneCodeEditor
     let goEditor: IStandaloneCodeEditor
@@ -60,6 +60,8 @@
         })
     })
 
+    let optionsGenerateInRealTime = false
+
     onMount(() => {
         loader.init().then(monaco => {
             function createEditor(domElement: HTMLElement, language: string, value: string): IStandaloneCodeEditor {
@@ -78,6 +80,12 @@
 
             jsonEditor = createEditor(document.getElementById('json-editor')!, 'json', '')
             goEditor = createEditor(document.getElementById('go-editor')!, 'go', '')
+
+            jsonEditor.getModel().onDidChangeContent(() => {
+                if (optionsGenerateInRealTime) {
+                    generate()
+                }
+            })
 
             // remeasure fonts after creating editors and fonts are loaded to avoid rendering issues
             document.fonts.ready.then(() => {
@@ -136,7 +144,7 @@
 
 <main class="w-screen h-screen flex flex-col">
     <MenuBar bind:layout={layout} bind:editors={editors} bind:fontSize={fontSize} bind:jsonEditor={jsonEditor}
-             bind:goEditor={goEditor} bind:allCapsWords></MenuBar>
+             bind:goEditor={goEditor} bind:allCapsWords bind:optionsGenerateInRealTime></MenuBar>
     <!-- use columns-2 will cause the editor to be rendered incorrectly, so use grid instead -->
     <div class="grid h-64 grow border-t border-b" class:grid-cols-2={layout===Layout.TwoColumns}
          class:grid-rows-2={layout===Layout.TwoRows}>

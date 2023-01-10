@@ -77,6 +77,14 @@ func (a *App) SetOptionsValidJSONBeforeGeneration(valid bool) {
 	config.SetOptionsValidJSONBeforeGeneration(valid)
 }
 
+func (a *App) GetOptionsGenerateInRealTime() bool {
+	return config.GetOptionsGenerateInRealTime()
+}
+
+func (a *App) SetOptionsGenerateInRealTime(b bool) {
+	config.SetOptionsGenerateInRealTime(b)
+}
+
 func (a *App) GetVersion() string {
 	return version.Get().String()
 }

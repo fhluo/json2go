@@ -14,6 +14,8 @@ export function GetLatestVersion():Promise<string>;
 
 export function GetLocale():Promise<string>;
 
+export function GetOptionsGenerateInRealTime():Promise<boolean>;
+
 export function GetOptionsValidJSONBeforeGeneration():Promise<boolean>;
 
 export function GetVersion():Promise<string>;
@@ -29,6 +31,8 @@ export function SetAllCapsWords(arg1:Array<string>):Promise<void>;
 export function SetFontSize(arg1:number):Promise<void>;
 
 export function SetLocale(arg1:string):Promise<void>;
+
+export function SetOptionsGenerateInRealTime(arg1:boolean):Promise<void>;
 
 export function SetOptionsValidJSONBeforeGeneration(arg1:boolean):Promise<void>;
 

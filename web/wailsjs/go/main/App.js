@@ -26,6 +26,10 @@ export function GetLocale() {
   return window['go']['main']['App']['GetLocale']();
 }
 
+export function GetOptionsGenerateInRealTime() {
+  return window['go']['main']['App']['GetOptionsGenerateInRealTime']();
+}
+
 export function GetOptionsValidJSONBeforeGeneration() {
   return window['go']['main']['App']['GetOptionsValidJSONBeforeGeneration']();
 }
@@ -56,6 +60,10 @@ export function SetFontSize(arg1) {
 
 export function SetLocale(arg1) {
   return window['go']['main']['App']['SetLocale'](arg1);
+}
+
+export function SetOptionsGenerateInRealTime(arg1) {
+  return window['go']['main']['App']['SetOptionsGenerateInRealTime'](arg1);
 }
 
 export function SetOptionsValidJSONBeforeGeneration(arg1) {
