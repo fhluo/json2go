@@ -1,4 +1,4 @@
-package updates
+package version
 
 import (
 	"fmt"
@@ -11,6 +11,12 @@ import (
 	"regexp"
 	"sort"
 )
+
+const version = "0.2.0"
+
+func Get() *semver.Version {
+	return lo.Must(semver.NewVersion(version))
+}
 
 func GetReleasesVersions() ([]*semver.Version, error) {
 	resp, err := http.Get("https://github.com/fhluo/json2go/releases")

@@ -7,7 +7,7 @@ import (
 	"github.com/fhluo/json2go/i18n"
 	"github.com/fhluo/json2go/internal/config"
 	"github.com/fhluo/json2go/internal/examples"
-	"github.com/fhluo/json2go/internal/updates"
+	"github.com/fhluo/json2go/internal/version"
 	"github.com/fhluo/json2go/pkg/def"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"golang.design/x/clipboard"
@@ -21,8 +21,6 @@ func init() {
 		panic(err)
 	}
 }
-
-const Version = "0.2.0"
 
 type App struct {
 	ctx  context.Context
@@ -80,11 +78,11 @@ func (a *App) SetOptionsValidJSONBeforeGeneration(valid bool) {
 }
 
 func (a *App) GetVersion() string {
-	return Version
+	return version.Get().String()
 }
 
 func (a *App) GetLatestVersion() string {
-	v, err := updates.GetLatestReleaseVersion()
+	v, err := version.GetLatestReleaseVersion()
 	if err != nil {
 		return ""
 	}
