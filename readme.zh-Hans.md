@@ -22,8 +22,67 @@
 </samp>
 </div>
 
-<p align="center">
+<div align="center">
 
 ![json2go](assets/images/json2go.zh-Hans.png)
 
-</p>
+</div>
+
+## 构建
+
+### Windows
+
+1. 安装 [Go](https://go.dev/dl/)
+2. 安装 [Node.js](https://nodejs.org/zh-cn/)
+3. 安装 [Wails CLI](https://wails.io/docs/gettingstarted/installation)
+
+    ```PowerShell
+    go install github.com/wailsapp/wails/v2/cmd/wails@latest
+    ```
+
+4. 获取 [json2go](https://github.com/fhluo/json2go) 的源码
+
+   ```PowerShell
+   git clone https://github.com/fhluo/json2go.git
+   cd json2go
+   ```
+
+5. 安装前端依赖
+
+   ```PowerShell
+   cd web
+   npm install
+   cd ..
+   ```
+
+6. 构建
+
+   ```PowerShell
+   wails build
+   ```
+
+#### 可选
+
+##### 手动安装 NSIS 和 UPX
+
+- 安装 [NSIS](https://nsis.sourceforge.io/Download) 并将 NSIS 的 `Bin` 目录加入 `Path` 环境变量
+- 安装 [UPX](https://github.com/upx/upx/releases/latest) 并将其目录加入 `Path` 环境变量
+
+##### 使用安装工具安装 NSIS 和 UPX
+
+```PowerShell
+go run .\tools\setup --upx --nsis
+```
+
+临时将 NSIS 的 `Bin` 目录和 UPX 安装目录加入环境变量（PowerShell）
+
+```PowerShell
+ $env:Path = (Get-ChildItem -Directory -Path .\build\tools\ | Where-Object { $_.Name -match "^nsis-" }).FullName + "\Bin" + ";" + $env:Path
+ $env:Path = (Get-ChildItem -Directory -Path .\build\tools\ | Where-Object { $_.Name -match "^upx-" }).FullName + ";" + $env:Path
+```
+
+##### 构建
+
+```PowerShell
+wails build -nsis -upx
+```
