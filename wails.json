@@ -12,12 +12,12 @@
     "email": "20843637+fhluo@users.noreply.github.com"
   },
   "preBuildHooks": {
-    "*/*": "copy-monaco"
+    "*/*": "go run ../../tools/copy-monaco"
   },
   "info": {
     "companyName": "",
     "productName": "json2go",
-    "productVersion": "0.2.0",
+    "productVersion": "0.3.0",
     "copyright": "Copyright © 2022 fhluo",
     "comments": "Generate Go type definitions from JSON"
   }

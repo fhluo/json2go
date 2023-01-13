@@ -28,12 +28,9 @@ jobs:
         with:
           node-version: 19
 
-      - name: Install copy-monaco
-        run: go install .\tools\copy-monaco
-
       - name: Set up UPX and NSIS
         run: |
-          go run .\tools\setup\ --upx --nsis --token ${{ secrets.GITHUB_TOKEN }}
+          go run .\tools\setup --upx --nsis --token ${{ secrets.GITHUB_TOKEN }}
 
           $env:Path = (Get-ChildItem -Directory -Path .\build\tools\ | Where-Object { $_.Name -match "^nsis-" }).FullName + "\Bin" + ";" + $env:Path
           $env:Path = (Get-ChildItem -Directory -Path .\build\tools\ | Where-Object { $_.Name -match "^upx-" }).FullName + ";" + $env:Path
