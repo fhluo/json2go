@@ -2,11 +2,12 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"github.com/fhluo/json2go/pkg/downloaders"
 	"github.com/mholt/archiver/v4"
 	"github.com/spf13/cobra"
 	"golang.org/x/exp/slog"
 	"io"
-	"net/http"
 	"os"
 	"path/filepath"
 )
@@ -16,8 +17,44 @@ var rootCmd = &cobra.Command{
 	Short: "setup tools",
 	Args:  cobra.ExactArgs(0),
 	Run: func(cmd *cobra.Command, args []string) {
+		wd, err := os.Getwd()
+		if err != nil {
+			slog.Error("failed to get current directory", err)
+			os.Exit(1)
+		}
 
+		dir := wd
+		for filepath.Base(dir) != "json2go" && filepath.Dir(dir) != dir {
+			dir = filepath.Dir(dir)
+		}
+
+		if filepath.Dir(dir) == dir {
+			slog.Error("", fmt.Errorf("failed to find json2go directory"), "working directory", wd)
+			os.Exit(1)
+		}
+
+		installPath := filepath.Join(dir, "build", "tools")
+
+		if upx {
+			installUPX("", githubToken, installPath)
+		}
+		if nsis {
+			installNSIS("", installPath)
+		}
 	},
+}
+
+var (
+	upx         bool
+	nsis        bool
+	githubToken string
+)
+
+func init() {
+	rootCmd.Flags().BoolVar(&upx, "upx", false, "install upx")
+	rootCmd.Flags().BoolVar(&nsis, "nsis", false, "install nsis")
+
+	rootCmd.PersistentFlags().StringVarP(&githubToken, "token", "t", "", "github token")
 }
 
 func Execute() {
@@ -25,35 +62,6 @@ func Execute() {
 		slog.Error("failed to execute root command", err)
 		os.Exit(1)
 	}
-}
-
-func download(url string, filename string) error {
-	resp, err := http.Get(url)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err := resp.Body.Close(); err != nil {
-			slog.Warn("failed to close response body", err)
-		}
-	}()
-
-	out, err := os.Create(filename)
-	if err != nil {
-		return err
-	}
-	defer func() {
-		if err := out.Close(); err != nil {
-			slog.Warn("failed to close file", err)
-		}
-	}()
-
-	_, err = io.Copy(out, resp.Body)
-	if err != nil {
-		return err
-	}
-
-	return nil
 }
 
 func extract(ctx context.Context, filename string, dst string) error {
@@ -96,4 +104,17 @@ func extract(ctx context.Context, filename string, dst string) error {
 		_, err = io.Copy(out, r)
 		return err
 	})
+}
+
+func install(downloader downloaders.Downloader, installPath string) {
+	packagePath, err := downloader.DownloadToTempDir()
+	if err != nil {
+		slog.Error("failed to download NSIS", err, "url", downloader.DownloadURL(), "packagePath", packagePath)
+		os.Exit(1)
+	}
+
+	if err := extract(context.Background(), packagePath, installPath); err != nil {
+		slog.Error("failed to extract files", err, "packagePath", packagePath, "installPath", installPath)
+		os.Exit(1)
+	}
 }

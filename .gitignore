@@ -1,9 +1,11 @@
-*.exe*
-build/tools
-build/windows/installer/tmp
-node_modules
-web/dist
-web/public
-translate.*.toml
+/build/tools/
+/build/windows/installer/tmp/
 
-.idea
+/web/dist/
+/web/public/monaco-editor/
+
+.idea/
+node_modules/
+
+*.exe*
+translate.*.toml
