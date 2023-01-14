@@ -3,9 +3,9 @@ package def
 import (
 	"fmt"
 	gen "github.com/dave/jennifer/jen"
-	"github.com/fhluo/json2go/pkg/conv"
-	"github.com/fhluo/json2go/pkg/scanner"
-	"github.com/fhluo/json2go/pkg/token"
+	"github.com/fhluo/json2go/pkg/json2go/conv"
+	"github.com/fhluo/json2go/pkg/json2go/scanner"
+	"github.com/fhluo/json2go/pkg/json2go/token"
 	"github.com/samber/lo"
 )
 

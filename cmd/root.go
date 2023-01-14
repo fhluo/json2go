@@ -3,7 +3,7 @@ package cmd
 import (
 	"bytes"
 	gen "github.com/dave/jennifer/jen"
-	"github.com/fhluo/json2go/pkg/def"
+	"github.com/fhluo/json2go/pkg/json2go"
 	"github.com/spf13/cobra"
 	"golang.org/x/exp/slog"
 	"io"
@@ -36,12 +36,16 @@ var rootCmd = &cobra.Command{
 		// generate code
 		file := gen.NewFile(packageName)
 
-		stmt, err := def.FromBytes(data, acronyms...).Declare(typeName)
+		code, err := json2go.Options{
+			TypeName:     typeName,
+			AllCapsWords: acronyms,
+		}.GenerateCodeFromBytes(data)
+
 		if err != nil {
 			slog.Error("failed to declare type", err)
 			os.Exit(1)
 		}
-		file.Add(stmt)
+		file.Add(code)
 
 		buffer := new(bytes.Buffer)
 		if err = file.Render(buffer); err != nil {

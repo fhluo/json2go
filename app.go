@@ -1,14 +1,13 @@
 package main
 
 import (
-	"bytes"
 	"context"
 	"encoding/json"
 	"github.com/fhluo/json2go/i18n"
 	"github.com/fhluo/json2go/internal/config"
 	"github.com/fhluo/json2go/internal/examples"
 	"github.com/fhluo/json2go/internal/version"
-	"github.com/fhluo/json2go/pkg/def"
+	"github.com/fhluo/json2go/pkg/json2go"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"golang.design/x/clipboard"
 	"os"
@@ -108,19 +107,17 @@ func (a *App) Generate(s string, allCaps []string) string {
 		return ""
 	}
 
-	statement, err := def.From(s, allCaps...).Declare("T")
+	result, err := json2go.Options{
+		TypeName:     "T",
+		AllCapsWords: allCaps,
+	}.Generate(s)
+
 	if err != nil {
 		runtime.EventsEmit(a.ctx, "error", err.Error())
 		return ""
 	}
 
-	buf := new(bytes.Buffer)
-	if err = statement.Render(buf); err != nil {
-		runtime.EventsEmit(a.ctx, "error", err.Error())
-		return ""
-	}
-
-	return buf.String()
+	return result
 }
 
 func (a *App) OpenJSONFile() string {

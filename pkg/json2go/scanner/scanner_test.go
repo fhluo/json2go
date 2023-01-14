@@ -1,7 +1,7 @@
 package scanner
 
 import (
-	"github.com/fhluo/json2go/pkg/token"
+	"github.com/fhluo/json2go/pkg/json2go/token"
 	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
