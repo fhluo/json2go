@@ -45,7 +45,10 @@ jobs:
       - name: Install Wails
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
-      - name: Build
+      - name: Build CLI
+        run: go build -o ./build/bin/json2go-cli.exe ./cmd/json2go
+
+      - name: Build GUI
         run: wails build -nsis -upx
 
       - name: Test
