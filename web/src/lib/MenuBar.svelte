@@ -1,7 +1,7 @@
 <script lang="ts">
     import {MenuBar, MenuBarItem, MenuFlyoutDivider, MenuFlyoutItem} from "fluent-svelte"
     import {_, locale, locales} from "svelte-i18n"
-    import {BrowserOpenURL, EventsEmit} from "../wailsjs/runtime"
+    import {BrowserOpenURL, EventsEmit} from "../../wailsjs/runtime"
     import SettingsDialog from "./SettingsDialog.svelte"
     import AboutDialog from "./AboutDialog.svelte"
     import {
@@ -12,11 +12,11 @@
         SaveGoSourceFile,
         SetOptionsGenerateInRealTime,
         SetOptionsValidJSONBeforeGeneration
-    } from "../wailsjs/go/main/App"
-    import {Editors, Layout} from "./base.js"
+    } from "../../wailsjs/go/main/App"
+    import {Layout, View} from "./types.ts"
     import {editor} from "monaco-editor/esm/vs/editor/editor.api"
     import CheckForUpdatesDialog from "./CheckForUpdatesDialog.svelte"
-    import {examples} from "../wailsjs/go/models";
+    import {examples} from "../../wailsjs/go/models";
     import IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
     import Example = examples.Example;
 
@@ -25,7 +25,7 @@
     let openCheckForUpdatesDialog = false
 
     export let layout: Layout
-    export let editors: Editors
+    export let view: View
 
     export let defaultFontSize = 16
     export let fontSize: number
@@ -101,12 +101,12 @@
             <MenuFlyoutItem cascading>
                 {$_('Editors')}
                 <svelte:fragment slot="flyout">
-                    <MenuFlyoutItem variant="radio" bind:group={editors} name="editors"
-                                    value={Editors.Both}>{$_(Editors.Both)}</MenuFlyoutItem>
-                    <MenuFlyoutItem variant="radio" bind:group={editors} name="editors"
-                                    value={Editors.JSON}>{$_(Editors.JSON)}</MenuFlyoutItem>
-                    <MenuFlyoutItem variant="radio" bind:group={editors} name="editors"
-                                    value={Editors.Go}>{$_(Editors.Go)}</MenuFlyoutItem>
+                    <MenuFlyoutItem variant="radio" bind:group={view} name="editors"
+                                    value={View.JSONAndGo}>{$_(View.JSONAndGo)}</MenuFlyoutItem>
+                    <MenuFlyoutItem variant="radio" bind:group={view} name="editors"
+                                    value={View.JSONOnly}>{$_(View.JSONOnly)}</MenuFlyoutItem>
+                    <MenuFlyoutItem variant="radio" bind:group={view} name="editors"
+                                    value={View.GoOnly}>{$_(View.GoOnly)}</MenuFlyoutItem>
                 </svelte:fragment>
             </MenuFlyoutItem>
             <MenuFlyoutItem cascading>

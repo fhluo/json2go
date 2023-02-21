@@ -1,8 +1,8 @@
 <script lang="ts">
     import {Button, ContentDialog} from "fluent-svelte"
     import {_} from "svelte-i18n"
-    import {GetLatestVersion, GetVersion} from "../wailsjs/go/main/App"
-    import {BrowserOpenURL} from "../wailsjs/runtime"
+    import {GetLatestVersion, GetVersion} from "../../wailsjs/go/main/App"
+    import {BrowserOpenURL} from "../../wailsjs/runtime"
 
     export let open = false
 

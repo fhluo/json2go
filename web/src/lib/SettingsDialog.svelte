@@ -1,7 +1,7 @@
 <script lang="ts">
     import {Button, ContentDialog, TextBox} from "fluent-svelte"
     import {_} from "svelte-i18n"
-    import {GetAllCapsWords, SetAllCapsWords} from "../wailsjs/go/main/App"
+    import {GetAllCapsWords, SetAllCapsWords} from "../../wailsjs/go/main/App"
 
     export let open = false;
 
