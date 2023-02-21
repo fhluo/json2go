@@ -45,9 +45,9 @@ func main() {
 
 	a := application.NewWithOptions(&options.App{
 		Title:     "json2go",
-		Width:     config.GetWindowWidth(),
+		Width:     800,
 		MinWidth:  800,
-		Height:    config.GetWindowHeight(),
+		Height:    600,
 		MinHeight: 600,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
