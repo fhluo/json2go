@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"github.com/fhluo/json2go/pkg/downloaders"
 	"github.com/mholt/archiver/v4"
 	"github.com/spf13/cobra"
@@ -19,7 +18,7 @@ var rootCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		wd, err := os.Getwd()
 		if err != nil {
-			slog.Error("failed to get current directory", err)
+			slog.Error("failed to get current directory", "err", err)
 			os.Exit(1)
 		}
 
@@ -29,7 +28,7 @@ var rootCmd = &cobra.Command{
 		}
 
 		if filepath.Dir(dir) == dir {
-			slog.Error("", fmt.Errorf("failed to find json2go directory"), "working directory", wd)
+			slog.Error("failed to find json2go directory", "working directory", wd)
 			os.Exit(1)
 		}
 
@@ -59,7 +58,7 @@ func init() {
 
 func Execute() {
 	if err := rootCmd.Execute(); err != nil {
-		slog.Error("failed to execute root command", err)
+		slog.Error("failed to execute root command", "err", err)
 		os.Exit(1)
 	}
 }
@@ -109,12 +108,12 @@ func extract(ctx context.Context, filename string, dst string) error {
 func install(downloader downloaders.Downloader, installPath string) {
 	packagePath, err := downloader.DownloadToTempDir()
 	if err != nil {
-		slog.Error("failed to download NSIS", err, "url", downloader.DownloadURL(), "packagePath", packagePath)
+		slog.Error("failed to download NSIS", "err", err, "url", downloader.DownloadURL(), "packagePath", packagePath)
 		os.Exit(1)
 	}
 
 	if err := extract(context.Background(), packagePath, installPath); err != nil {
-		slog.Error("failed to extract files", err, "packagePath", packagePath, "installPath", installPath)
+		slog.Error("failed to extract files", "err", err, "packagePath", packagePath, "installPath", installPath)
 		os.Exit(1)
 	}
 }

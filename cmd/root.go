@@ -29,7 +29,7 @@ var rootCmd = &cobra.Command{
 		}
 
 		if err != nil {
-			slog.Error("failed to read input file", err)
+			slog.Error("failed to read input file", "err", err)
 			os.Exit(1)
 		}
 
@@ -42,14 +42,14 @@ var rootCmd = &cobra.Command{
 		}.GenerateCodeFromBytes(data)
 
 		if err != nil {
-			slog.Error("failed to declare type", err)
+			slog.Error("failed to declare type", "err", err)
 			os.Exit(1)
 		}
 		file.Add(code)
 
 		buffer := new(bytes.Buffer)
 		if err = file.Render(buffer); err != nil {
-			slog.Error("failed to render file", err)
+			slog.Error("failed to render file", "err", err)
 			os.Exit(1)
 		}
 
@@ -64,7 +64,7 @@ var rootCmd = &cobra.Command{
 		}
 
 		if err != nil {
-			slog.Error("failed to write output file", err)
+			slog.Error("failed to write output file", "err", err)
 			os.Exit(1)
 		}
 	},
@@ -86,12 +86,12 @@ func init() {
 	rootCmd.Flags().StringSliceVarP(&acronyms, "acronyms", "a", nil, "specify acronyms")
 
 	if err := rootCmd.MarkFlagFilename("input", "json"); err != nil {
-		slog.Error("failed to mark input flag filename", err)
+		slog.Error("failed to mark input flag filename", "err", err)
 		os.Exit(1)
 	}
 
 	if err := rootCmd.MarkFlagFilename("output", "go"); err != nil {
-		slog.Error("failed to mark input flag filename", err)
+		slog.Error("failed to mark input flag filename", "err", err)
 		os.Exit(1)
 	}
 }

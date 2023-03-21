@@ -10,7 +10,7 @@ import (
 	"strings"
 )
 
-const DefaultUPXVersion = "4.0.1"
+const DefaultUPXVersion = "4.0.2"
 
 type UPXDownloader struct {
 	version     string

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"fmt"
 	"golang.org/x/exp/slog"
+	"log"
 	"os"
 	"path/filepath"
 
@@ -10,12 +10,12 @@ import (
 )
 
 func init() {
-	slog.SetDefault(slog.New(slog.NewTextHandler(os.Stderr)))
+	log.SetFlags(0)
 }
 
 func Copy(src string, dst string) {
 	if err := cp.Copy(src, dst); err != nil {
-		slog.Error("failed to copy", err, "src", src, "dst", dst)
+		slog.Error("failed to copy", "err", err, "src", src, "dst", dst)
 		os.Exit(1)
 	} else {
 		slog.Info("copied", "src", src, "dst", dst)
@@ -25,7 +25,7 @@ func Copy(src string, dst string) {
 func main() {
 	wd, err := os.Getwd()
 	if err != nil {
-		slog.Error("failed to get current directory", err)
+		slog.Error("failed to get current directory", "err", err)
 		os.Exit(1)
 	}
 
@@ -35,7 +35,7 @@ func main() {
 	}
 
 	if filepath.Dir(dir) == dir {
-		slog.Error("", fmt.Errorf("failed to find json2go directory"), "working directory", wd)
+		slog.Error("failed to find json2go directory", "working directory", wd)
 		os.Exit(1)
 	}
 
