@@ -1,0 +1,31 @@
+version: 3
+
+tasks:
+  install-wails-cli:
+    cmds:
+      - go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+  copy-monaco:
+    cmds:
+      - go run ./tools/copy-monaco
+
+  build-cli:
+    cmds:
+      - go build -o ./build/bin/json2go-cli.exe ./cmd/json2go
+
+  build-gui:
+    deps:
+      - copy-monaco
+    cmds:
+      - wails build
+
+  build:
+    deps:
+      - build-gui
+      - build-cli
+
+  dev:
+    deps:
+      - copy-monaco
+    cmds:
+      - wails dev

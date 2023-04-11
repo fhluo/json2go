@@ -11,9 +11,6 @@
     "name": "fhluo",
     "email": "20843637+fhluo@users.noreply.github.com"
   },
-  "preBuildHooks": {
-    "*/*": "go run ../../tools/copy-monaco"
-  },
   "info": {
     "companyName": "",
     "productName": "json2go",
