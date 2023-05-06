@@ -14,7 +14,7 @@
     !define INFO_PRODUCTNAME "json2go"
 !endif
 !ifndef INFO_PRODUCTVERSION
-    !define INFO_PRODUCTVERSION "0.3.1"
+    !define INFO_PRODUCTVERSION "0.3.2"
 !endif
 !ifndef INFO_COPYRIGHT
     !define INFO_COPYRIGHT "Copyright © 2022 fhluo"
@@ -132,6 +132,14 @@ RequestExecutionLevel "${REQUEST_EXECUTION_LEVEL}"
 
     SetRegView 64
     DeleteRegKey HKLM "${UNINST_KEY}"
+!macroend
+
+!macro wails.setShellContext
+    ${If} ${REQUEST_EXECUTION_LEVEL} == "admin"
+        SetShellVarContext all
+    ${else}
+        SetShellVarContext current
+    ${EndIf}
 !macroend
 
 # Install webview2 by launching the bootstrapper
