@@ -6,14 +6,16 @@ tasks:
       - go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
   copy-monaco:
+    dir: ./tools
     cmds:
-      - go run ./tools/copy-monaco
+      - go run ./copy-monaco
 
   build-cli:
     cmds:
-      - go build -o ./build/bin/json2go-cli.exe ./cmd/json2go
+      - go build -o ./app/build/bin/json2go-cli.exe ./cmd/json2go
 
   build-gui:
+    dir: ./app
     deps:
       - copy-monaco
     cmds:

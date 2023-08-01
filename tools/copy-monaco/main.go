@@ -22,13 +22,16 @@ func Copy(src string, dst string) {
 	}
 }
 
-func main() {
+// findJSON2GoDir finds the json2go directory.
+func findJSON2GoDir() string {
+	// Get working directory
 	wd, err := os.Getwd()
 	if err != nil {
 		slog.Error("failed to get current directory", "err", err)
 		os.Exit(1)
 	}
 
+	// Find json2go directory
 	dir := wd
 	for filepath.Base(dir) != "json2go" && filepath.Dir(dir) != dir {
 		dir = filepath.Dir(dir)
@@ -39,8 +42,14 @@ func main() {
 		os.Exit(1)
 	}
 
-	src := filepath.Join(dir, "web/node_modules/monaco-editor/min/vs")
-	dst := filepath.Join(dir, "web/public/monaco-editor/min/vs")
+	return dir
+}
+
+func main() {
+	dir := findJSON2GoDir()
+
+	src := filepath.Join(dir, "app/ui/node_modules/monaco-editor/min/vs")
+	dst := filepath.Join(dir, "app/ui/public/monaco-editor/min/vs")
 
 	_ = os.MkdirAll(dst, 0660)
 

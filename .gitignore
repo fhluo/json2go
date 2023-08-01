@@ -1,8 +1,8 @@
-/build/tools/
-/build/windows/installer/tmp/
+/app/build/tools/
+/app/build/windows/installer/tmp/
 
-/web/dist/
-/web/public/monaco-editor/
+/app/ui/dist/
+/app/ui/public/monaco-editor/
 
 .idea/
 node_modules/
