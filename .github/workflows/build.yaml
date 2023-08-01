@@ -26,35 +26,32 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 19
+          node-version: 20
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 7.27.1
+          version: 8.6.11
+
+      - name: Set up Task
+        run: go install github.com/go-task/task/v3/cmd/task@latest
 
       - name: Set up UPX and NSIS
         run: |
           go run github.com/fhluo/tools/setup@latest --upx --nsis --token ${{ secrets.GITHUB_TOKEN }}
 
-          $env:Path = (Get-ChildItem -Directory -Path .\build\tools\ | Where-Object { $_.Name -match "^nsis-" }).FullName + "\Bin" + ";" + $env:Path
-          $env:Path = (Get-ChildItem -Directory -Path .\build\tools\ | Where-Object { $_.Name -match "^upx-" }).FullName + ";" + $env:Path
+          $env:Path = (Get-ChildItem -Directory -Path .\app\build\tools\ | Where-Object { $_.Name -match "^nsis-" }).FullName + "\Bin" + ";" + $env:Path
+          $env:Path = (Get-ChildItem -Directory -Path .\app\build\tools\ | Where-Object { $_.Name -match "^upx-" }).FullName + ";" + $env:Path
           Write-Output $env:Path
-
-      - name: Install frontend dependencies
-        run: |
-          cd web
-          pnpm install
-          cd ..
 
       - name: Install Wails
         run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
-      - name: Build CLI
-        run: go build -o ./build/bin/json2go-cli.exe ./cmd/json2go
+      - name: Install web dependencies
+        run: task install-web-deps
 
-      - name: Build GUI
-        run: wails build -nsis -upx
+      - name: Build
+        run: task build
 
       - name: Test
         run: go test -v ./...

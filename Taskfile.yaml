@@ -5,6 +5,11 @@ tasks:
     cmds:
       - go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
+  install-web-deps:
+    dir: ./app/ui
+    cmds:
+      - pnpm install
+
   copy-monaco:
     dir: ./tools
     cmds:
