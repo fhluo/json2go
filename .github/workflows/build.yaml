@@ -37,12 +37,7 @@ jobs:
         run: go install github.com/go-task/task/v3/cmd/task@latest
 
       - name: Set up UPX and NSIS
-        run: |
-          task install-tools
-
-          $nsisPath = Join-Path -Path $PWD -ChildPath 'app\build\tools\nsis\Bin'
-          $upxPath = Join-Path -Path $PWD -ChildPath 'app\build\tools\upx'
-          $env:Path = $nsisPath + ";" + $upxPath + ";" + $env:Path
+        run: task install-tools
 
       - name: Install Wails
         run: task install-wails-cli
@@ -52,8 +47,9 @@ jobs:
 
       - name: Build
         run: |
-          tree
-          echo $env:Path
+          $nsisPath = Join-Path -Path $PWD -ChildPath 'app\build\tools\nsis\Bin'
+          $upxPath = Join-Path -Path $PWD -ChildPath 'app\build\tools\upx'
+          $env:Path = $nsisPath + ";" + $upxPath + ";" + $env:Path
           task build-with-upx-and-nsis
 
       - name: Test
