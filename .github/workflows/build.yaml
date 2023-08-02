@@ -44,8 +44,6 @@ jobs:
           $upxPath = Join-Path -Path $PWD -ChildPath 'app\build\tools\upx'
           $env:Path = $nsisPath + ";" + $upxPath + ";" + $env:Path
 
-          Write-Output $env:Path
-
       - name: Install Wails
         run: task install-wails-cli
 
@@ -53,7 +51,10 @@ jobs:
         run: task install-web-deps
 
       - name: Build
-        run: task build-with-upx-and-nsis
+        run: |
+          tree
+          echo $env:Path
+          task build-with-upx-and-nsis
 
       - name: Test
         run: go test -v ./...
