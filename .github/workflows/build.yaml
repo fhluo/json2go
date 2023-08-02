@@ -38,20 +38,22 @@ jobs:
 
       - name: Set up UPX and NSIS
         run: |
-          go run github.com/fhluo/tools/setup@latest --upx --nsis --token ${{ secrets.GITHUB_TOKEN }}
+          task install-tools
 
-          $env:Path = (Get-ChildItem -Directory -Path .\app\build\tools\ | Where-Object { $_.Name -match "^nsis-" }).FullName + "\Bin" + ";" + $env:Path
-          $env:Path = (Get-ChildItem -Directory -Path .\app\build\tools\ | Where-Object { $_.Name -match "^upx-" }).FullName + ";" + $env:Path
+          $nsisPath = Join-Path -Path $PWD -ChildPath 'app\build\tools\nsis\Bin'
+          $upxPath = Join-Path -Path $PWD -ChildPath 'app\build\tools\upx'
+          $env:Path = $nsisPath + ";" + $upxPath + ";" + $env:Path
+
           Write-Output $env:Path
 
       - name: Install Wails
-        run: go install github.com/wailsapp/wails/v2/cmd/wails@latest
+        run: task install-wails-cli
 
       - name: Install web dependencies
         run: task install-web-deps
 
       - name: Build
-        run: task build
+        run: task build-with-upx-and-nsis
 
       - name: Test
         run: go test -v ./...

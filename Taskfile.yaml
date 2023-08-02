@@ -5,6 +5,19 @@ tasks:
     cmds:
       - go install github.com/wailsapp/wails/v2/cmd/wails@latest
 
+  install-upx:
+    cmds:
+      - go run github.com/fhluo/tools/setup-upx@latest app/build/tools
+
+  install-nsis:
+    cmds:
+      - go run github.com/fhluo/tools/setup-nsis@latest app/build/tools
+
+  install-tools:
+    deps:
+      - install-upx
+      - install-nsis
+
   install-web-deps:
     dir: ./app/ui
     cmds:
@@ -26,9 +39,21 @@ tasks:
     cmds:
       - wails build
 
+  build-gui-with-upx-and-nsis:
+    dir: ./app
+    deps:
+      - copy-monaco
+    cmds:
+      - wails build -upx -nsis
+
   build:
     deps:
       - build-gui
+      - build-cli
+
+  build-with-upx-and-nsis:
+    deps:
+      - build-gui-with-upx-and-nsis
       - build-cli
 
   dev:
