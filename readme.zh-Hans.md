@@ -30,10 +30,10 @@
 
 1. 安装 [Go](https://go.dev/dl/)
 2. 安装 [Node.js](https://nodejs.org/zh-cn/)
-3. 安装 [Wails CLI](https://wails.io/docs/gettingstarted/installation)
+3. 安装 [Task](https://taskfile.dev/installation/)
 
     ```PowerShell
-    go install github.com/wailsapp/wails/v2/cmd/wails@latest
+    go install github.com/go-task/task/v3/cmd/task@latest
     ```
 
 4. 获取 [json2go](https://github.com/fhluo/json2go) 的源码
@@ -43,18 +43,22 @@
    cd json2go
    ```
 
-5. 安装前端依赖
+5. 安装 [Wails CLI](https://wails.io/docs/gettingstarted/installation)
+
+    ```PowerShell
+    task install-wails-cli
+    ```
+
+6. 安装前端依赖
 
    ```PowerShell
-   cd web
-   npm install
-   cd ..
+   task install-web-deps
    ```
 
-6. 构建
+7. 构建
 
    ```PowerShell
-   wails build
+   task build
    ```
 
 #### 可选
