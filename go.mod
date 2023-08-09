@@ -1,10 +1,10 @@
 module github.com/fhluo/json2go
 
-go 1.20
+go 1.21
 
 require (
 	github.com/Masterminds/semver v1.5.0
-	github.com/dave/jennifer v1.6.1
+	github.com/dave/jennifer v1.7.0
 	github.com/fatih/color v1.15.0
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/mattn/go-isatty v0.0.19
@@ -18,9 +18,8 @@ require (
 	github.com/stretchr/testify v1.8.4
 	github.com/wailsapp/wails/v2 v2.5.1
 	golang.design/x/clipboard v0.7.0
-	golang.org/x/exp v0.0.0-20230801115018-d63ba01acd4b
-	golang.org/x/sys v0.10.0
-	golang.org/x/text v0.11.0
+	golang.org/x/sys v0.11.0
+	golang.org/x/text v0.12.0
 )
 
 require (
@@ -53,11 +52,12 @@ require (
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
-	golang.org/x/crypto v0.11.0 // indirect
-	golang.org/x/exp/shiny v0.0.0-20230801115018-d63ba01acd4b // indirect
-	golang.org/x/image v0.9.0 // indirect
+	golang.org/x/crypto v0.12.0 // indirect
+	golang.org/x/exp v0.0.0-20230809150735-7b3493d9a819 // indirect
+	golang.org/x/exp/shiny v0.0.0-20230809150735-7b3493d9a819 // indirect
+	golang.org/x/image v0.11.0 // indirect
 	golang.org/x/mobile v0.0.0-20230531173138-3c911d8e3eda // indirect
-	golang.org/x/net v0.12.0 // indirect
+	golang.org/x/net v0.14.0 // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

@@ -5,9 +5,9 @@ import (
 	gen "github.com/dave/jennifer/jen"
 	"github.com/fhluo/json2go/pkg/json2go"
 	"github.com/spf13/cobra"
-	"golang.org/x/exp/slog"
 	"io"
 	"log"
+	"log/slog"
 	"os"
 	"path/filepath"
 )
