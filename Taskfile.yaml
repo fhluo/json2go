@@ -1,24 +1,16 @@
 version: 3
 
+env:
+  Path: "{{.PWD}}/app/build/tools/nsis/Bin;{{.PWD}}/app/build/tools/upx;{{.PATH}}"
+
 tasks:
-  install-wails-cli:
+  setup:
     cmds:
       - go install github.com/wailsapp/wails/v2/cmd/wails@latest
-
-  install-upx:
-    cmds:
       - go run github.com/fhluo/tools/setup-upx@latest app/build/tools
-
-  install-nsis:
-    cmds:
       - go run github.com/fhluo/tools/setup-nsis@latest app/build/tools
 
-  install-tools:
-    deps:
-      - install-upx
-      - install-nsis
-
-  install-web-deps:
+  setup-web:
     dir: ./app/ui
     cmds:
       - pnpm install
@@ -37,23 +29,11 @@ tasks:
     deps:
       - copy-monaco
     cmds:
-      - wails build
-
-  build-gui-with-upx-and-nsis:
-    dir: ./app
-    deps:
-      - copy-monaco
-    cmds:
-      - wails build -upx -nsis
+      - go run github.com/fhluo/tools/wails-build@latest --upx --path='./build/tools/upx' --nsis --path='./build/tools/nsis/Bin'
 
   build:
     deps:
       - build-gui
-      - build-cli
-
-  build-with-upx-and-nsis:
-    deps:
-      - build-gui-with-upx-and-nsis
       - build-cli
 
   dev:
