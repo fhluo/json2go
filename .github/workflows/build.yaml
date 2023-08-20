@@ -47,3 +47,12 @@ jobs:
 
       - name: Test
         run: go test -v ./...
+
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: |
+            app/build/bin/json2go.exe
+            app/build/bin/json2go-amd64-installer.exe
+            app/build/bin/json2go-cli.exe
