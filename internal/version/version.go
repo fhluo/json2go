@@ -12,7 +12,7 @@ import (
 	"sort"
 )
 
-const version = "0.3.3"
+const version = "0.3.4"
 
 func Get() *semver.Version {
 	return lo.Must(semver.NewVersion(version))
