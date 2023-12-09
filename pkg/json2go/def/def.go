@@ -2,6 +2,7 @@ package def
 
 import (
 	"fmt"
+
 	gen "github.com/dave/jennifer/jen"
 	"github.com/fhluo/json2go/pkg/json2go/conv"
 	"github.com/fhluo/json2go/pkg/json2go/scanner"

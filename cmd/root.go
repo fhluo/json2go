@@ -2,14 +2,15 @@ package cmd
 
 import (
 	"bytes"
-	gen "github.com/dave/jennifer/jen"
-	"github.com/fhluo/json2go/pkg/json2go"
-	"github.com/spf13/cobra"
 	"io"
 	"log"
 	"log/slog"
 	"os"
 	"path/filepath"
+
+	gen "github.com/dave/jennifer/jen"
+	"github.com/fhluo/json2go/pkg/json2go"
+	"github.com/spf13/cobra"
 )
 
 var rootCmd = &cobra.Command{

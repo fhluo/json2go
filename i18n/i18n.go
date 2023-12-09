@@ -2,15 +2,16 @@ package i18n
 
 import (
 	"embed"
+	"io/fs"
+	"log"
+	"strings"
+
 	"github.com/fhluo/json2go/internal/config"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/pelletier/go-toml/v2"
 	"github.com/samber/lo"
 	"golang.org/x/sys/windows"
 	"golang.org/x/text/language"
-	"io/fs"
-	"log"
-	"strings"
 )
 
 type (

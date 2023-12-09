@@ -1,8 +1,9 @@
 package main
 
 import (
-	"github.com/fhluo/json2go/cmd"
 	"log"
+
+	"github.com/fhluo/json2go/cmd"
 )
 
 func init() {

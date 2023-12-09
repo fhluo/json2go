@@ -3,6 +3,9 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"os"
+	"strings"
+
 	"github.com/fhluo/json2go/i18n"
 	"github.com/fhluo/json2go/internal/config"
 	"github.com/fhluo/json2go/internal/examples"
@@ -10,8 +13,6 @@ import (
 	"github.com/fhluo/json2go/pkg/json2go"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"golang.design/x/clipboard"
-	"os"
-	"strings"
 )
 
 func init() {

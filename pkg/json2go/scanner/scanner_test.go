@@ -1,10 +1,11 @@
 package scanner
 
 import (
-	"github.com/fhluo/json2go/pkg/json2go/token"
-	"github.com/stretchr/testify/assert"
 	"strings"
 	"testing"
+
+	"github.com/fhluo/json2go/pkg/json2go/token"
+	"github.com/stretchr/testify/assert"
 )
 
 func getTokens(scanner Scanner) (tokens []token.Token) {

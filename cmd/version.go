@@ -1,9 +1,10 @@
 package cmd
 
 import (
+	"os"
+
 	"github.com/fhluo/json2go/internal/version"
 	"github.com/spf13/cobra"
-	"os"
 )
 
 var versionCmd = &cobra.Command{

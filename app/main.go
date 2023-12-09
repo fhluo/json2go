@@ -2,6 +2,10 @@ package main
 
 import (
 	"embed"
+	"log"
+	"os"
+	"path/filepath"
+
 	"github.com/fhluo/json2go/internal/config"
 	"github.com/fhluo/json2go/internal/logger"
 	"github.com/mattn/go-isatty"
@@ -9,9 +13,6 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
 	"github.com/wailsapp/wails/v2/pkg/options/windows"
-	"log"
-	"os"
-	"path/filepath"
 )
 
 var (

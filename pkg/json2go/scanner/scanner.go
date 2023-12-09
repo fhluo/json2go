@@ -4,11 +4,12 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"io"
+	"unicode/utf8"
+
 	"github.com/fhluo/json2go/pkg/json2go/stack"
 	"github.com/fhluo/json2go/pkg/json2go/token"
 	"github.com/pkg/errors"
-	"io"
-	"unicode/utf8"
 )
 
 type Scanner interface {

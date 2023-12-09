@@ -1,9 +1,10 @@
 package conv
 
 import (
-	"github.com/samber/lo"
 	"regexp"
 	"strings"
+
+	"github.com/samber/lo"
 )
 
 type CamelCaseConverter interface {

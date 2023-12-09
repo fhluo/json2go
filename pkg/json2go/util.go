@@ -2,6 +2,7 @@ package json2go
 
 import (
 	"bytes"
+
 	"github.com/dave/jennifer/jen"
 )
 

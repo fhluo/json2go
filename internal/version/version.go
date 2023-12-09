@@ -2,14 +2,15 @@ package version
 
 import (
 	"fmt"
-	"github.com/Masterminds/semver"
-	"github.com/hashicorp/go-multierror"
-	"github.com/samber/lo"
 	"io"
 	"log/slog"
 	"net/http"
 	"regexp"
 	"sort"
+
+	"github.com/Masterminds/semver"
+	"github.com/hashicorp/go-multierror"
+	"github.com/samber/lo"
 )
 
 const version = "0.3.4"

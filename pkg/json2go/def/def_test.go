@@ -2,8 +2,9 @@ package def
 
 import (
 	"bytes"
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestFrom(t *testing.T) {
