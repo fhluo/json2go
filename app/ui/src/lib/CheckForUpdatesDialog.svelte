@@ -13,10 +13,10 @@
 
     let failed = false
     GetLatestVersion().then(v => {
-        if (latestVersion === "") {
-            failed = true
-        } else {
+        if (v) {
             latestVersion = v
+        } else {
+            failed = true
         }
     })
 </script>
