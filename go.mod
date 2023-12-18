@@ -10,13 +10,13 @@ require (
 	github.com/mattn/go-isatty v0.0.20
 	github.com/nicksnyder/go-i18n/v2 v2.3.0
 	github.com/otiai10/copy v1.14.0
-	github.com/pelletier/go-toml/v2 v2.1.0
+	github.com/pelletier/go-toml/v2 v2.1.1
 	github.com/pkg/errors v0.9.1
 	github.com/samber/lo v1.39.0
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/viper v1.18.1
 	github.com/stretchr/testify v1.8.4
-	github.com/wailsapp/wails/v2 v2.7.0
+	github.com/wailsapp/wails/v2 v2.7.1
 	golang.design/x/clipboard v0.7.0
 	golang.org/x/sys v0.15.0
 	golang.org/x/text v0.14.0
@@ -28,7 +28,7 @@ require (
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
-	github.com/google/uuid v1.4.0 // indirect
+	github.com/google/uuid v1.5.0 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/hcl v1.0.0 // indirect
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
@@ -59,8 +59,8 @@ require (
 	github.com/wailsapp/mimetype v1.4.1 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
 	golang.org/x/crypto v0.16.0 // indirect
-	golang.org/x/exp v0.0.0-20231206192017-f3f8817b8deb // indirect
-	golang.org/x/exp/shiny v0.0.0-20231206192017-f3f8817b8deb // indirect
+	golang.org/x/exp v0.0.0-20231214170342-aacd6d4b4611 // indirect
+	golang.org/x/exp/shiny v0.0.0-20231214170342-aacd6d4b4611 // indirect
 	golang.org/x/image v0.14.0 // indirect
 	golang.org/x/mobile v0.0.0-20231127183840-76ac6878050a // indirect
 	golang.org/x/net v0.19.0 // indirect
