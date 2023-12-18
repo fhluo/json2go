@@ -37,6 +37,7 @@ tasks:
       - build-cli
 
   dev:
+    dir: ./app
     deps:
       - copy-monaco
     cmds:
