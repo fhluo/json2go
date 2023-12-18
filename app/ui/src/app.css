@@ -1,4 +1,30 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@font-face {
+    font-family: "JetBrains Mono";
+    font-style: normal;
+    font-weight: 400;
+    src: local(""), url("./assets/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+}
 
+#container-json, #container-go {
+    @apply h-full max-h-full flex flex-col bg-white;
+}
+
+#container-json button, #container-go button {
+    @apply text-sm px-5 py-1 ml-auto text-gray-800 select-none transition;
+}
+
+#container-json button:hover, #container-go button:hover {
+    @apply bg-gray-300/25;
+}
+
+#container-json span, #container-go span {
+    @apply transition duration-300;
+}
+
+#container-json:focus-within span:first-child {
+    @apply text-yellow-500;
+}
+
+#container-go:focus-within span:first-child {
+    @apply text-purple-500;
+}
