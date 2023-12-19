@@ -102,7 +102,7 @@ func (a *App) GetExamples() []examples.Example {
 	return examples.Examples
 }
 
-func (a *App) Generate(s string, allCaps []string) string {
+func (a *App) Generate(s string) string {
 	if config.GetOptionsValidJSONBeforeGeneration() && !json.Valid([]byte(s)) {
 		runtime.EventsEmit(a.ctx, "error", "invalid json")
 		return ""
@@ -110,7 +110,7 @@ func (a *App) Generate(s string, allCaps []string) string {
 
 	result, err := json2go.Options{
 		TypeName:     "T",
-		AllCapsWords: allCaps,
+		AllCapsWords: a.GetAllCapsWords(),
 	}.Generate(s)
 
 	if err != nil {

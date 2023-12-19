@@ -8,7 +8,6 @@
   "Language": "Language",
   "en": "English",
   "zh": "中文",
-  "Settings": "Settings",
   "Exit": "Exit",
   "Close": "Close",
   "Open JSON file": "Open JSON file",
@@ -17,11 +16,13 @@
   "Increase size": "Increase size",
   "Decrease size": "Decrease size",
   "Reset size": "Reset size",
-  "All-caps words": "All-caps words",
-  "Add": "Add",
-  "Remove": "Remove",
-  "tip": {
-    "allCaps": "Tip: Double click a word to remove it. To add multiple words, separate words with commas."
+
+  "settings": {
+    "title": "Settings",
+    "all-caps": "All-caps words",
+    "tip": "Tip: Double click a word to remove it. To add multiple words, separate words with commas.",
+    "add": "Add",
+    "remove": "Remove"
   },
   "OK": "OK",
   "about": {

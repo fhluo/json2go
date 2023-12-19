@@ -8,7 +8,6 @@
   "Language": "语言",
   "en": "English",
   "zh": "中文",
-  "Settings": "设置",
   "Exit": "退出",
   "Close": "关闭",
   "Open JSON file": "打开 JSON 文件",
@@ -17,11 +16,12 @@
   "Increase size": "增大",
   "Decrease size": "减小",
   "Reset size": "重置大小",
-  "All-caps words": "全大写单词",
-  "Add": "添加",
-  "Remove": "删除",
-  "tip": {
-    "allCaps": "提示：双击单词可以移除。要添加多个单词，请用英文逗号分隔单词。"
+  "settings": {
+    "title": "设置",
+    "all-caps": "全大写单词",
+    "tip": "提示：双击单词可以移除。要添加多个单词，请用英文逗号分隔单词。",
+    "add": "添加",
+    "remove": "删除"
   },
   "OK": "确认",
   "about": {
