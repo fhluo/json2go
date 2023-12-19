@@ -56,6 +56,8 @@
     "checking": "Checking for updates..."
   },
   "Download": "Download",
-  "Examples": "Examples",
-  "Generate in real time": "Generate in real time"
+  "Generate in real time": "Generate in real time",
+  "examples": {
+    "title": "Examples"
+  }
 }

@@ -57,6 +57,8 @@
   },
   "Download": "下载",
   ".": "。",
-  "Examples": "示例",
-  "Generate in real time": "实时生成"
+  "Generate in real time": "实时生成",
+  "examples": {
+    "title": "示例"
+  }
 }
