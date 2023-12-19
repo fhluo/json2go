@@ -1,5 +1,4 @@
 {
-  "File": "File",
   "Edit": "Edit",
   "All caps": "All caps",
   "Generate": "Generate",
@@ -8,15 +7,18 @@
   "Language": "Language",
   "en": "English",
   "zh": "中文",
-  "Exit": "Exit",
   "Close": "Close",
-  "Open JSON file": "Open JSON file",
-  "Save Go source file": "Save Go source file",
   "Font": "Font",
   "Increase size": "Increase size",
   "Decrease size": "Decrease size",
   "Reset size": "Reset size",
-
+  "file": {
+    "title": "File",
+    "openJSON": "Open JSON file",
+    "saveGo": "Save Go source file",
+    "settings": "Settings",
+    "exit": "Exit"
+  },
   "settings": {
     "title": "Settings",
     "all-caps": "All-caps words",

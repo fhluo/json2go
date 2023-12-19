@@ -1,5 +1,4 @@
 {
-  "File": "文件",
   "Edit": "编辑",
   "All caps": "全大写",
   "Generate": "生成",
@@ -8,14 +7,18 @@
   "Language": "语言",
   "en": "English",
   "zh": "中文",
-  "Exit": "退出",
   "Close": "关闭",
-  "Open JSON file": "打开 JSON 文件",
-  "Save Go source file": "保存 Go 源文件",
   "Font": "字体",
   "Increase size": "增大",
   "Decrease size": "减小",
   "Reset size": "重置大小",
+  "file": {
+    "title": "文件",
+    "openJSON": "打开 JSON 文件",
+    "saveGo": "保存 Go 源文件",
+    "settings": "设置",
+    "exit": "退出"
+  },
   "settings": {
     "title": "设置",
     "all-caps": "全大写单词",
