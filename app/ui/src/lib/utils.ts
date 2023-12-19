@@ -23,6 +23,10 @@ export function getMonacoLocale(locale: string): string {
     return "en"
 }
 
+export function openHomePage() {
+    BrowserOpenURL("https://github.com/fhluo/json2go")
+}
+
 export function openRelease(version: string) {
     BrowserOpenURL(`https://github.com/fhluo/json2go/releases/tag/v${version}`)
 }

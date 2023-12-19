@@ -29,6 +29,7 @@
   "OK": "确认",
   "about": {
     "title": "关于",
+    "tip": "双击以在 Github.com 上访问 json2go",
     "description": "从 JSON 生成 Go 类型定义",
     "license": "许可协议：",
     "version": "版本："

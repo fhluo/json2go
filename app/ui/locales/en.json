@@ -29,6 +29,7 @@
   "OK": "OK",
   "about": {
     "title": "About",
+    "tip": "Double-click to visit json2go on Github.com",
     "description": "Generate Go type definitions from JSON",
     "license": "License: ",
     "version": "Version: "

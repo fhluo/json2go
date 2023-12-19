@@ -3,6 +3,8 @@ import {Button} from "@/components/ui/button.tsx"
 import {useEffect, useState} from "react"
 import {GetVersion} from "../../../wailsjs/go/main/App"
 import {useTranslation} from "react-i18next"
+import {openHomePage} from "@/lib/utils.ts"
+import {Tooltip, TooltipContent, TooltipProvider, TooltipTrigger} from "@/components/ui/tooltip.tsx"
 
 export default function () {
     const {t} = useTranslation()
@@ -17,14 +19,25 @@ export default function () {
             <DialogHeader>
                 <DialogTitle>{t("about.title", "About")}</DialogTitle>
             </DialogHeader>
-            <div className="flex flex-col space-y-2 items-center justify-center text-gray-900">
-                <p className="text-lg font-semibold">json2go</p>
-                <p className="leading-relaxed">{t("about.description", "Generate Go type definitions from JSON")}</p>
-                <div className="leading-relaxed">
-                    <p><span className="font-semibold select-none">{t("about.license", "License: ")}</span>MIT</p>
-                    <p><span className="font-semibold select-none">{t("about.version", "Version: ")}</span>{version}</p>
+            <div className="flex flex-col items-center justify-center space-y-2 text-gray-900">
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <p className="text-lg font-semibold" onDoubleClick={openHomePage}>json2go</p>
+                        </TooltipTrigger>
+                        <TooltipContent className="bg-transparent text-slate-600">
+                            <p>{t("about.tip", "Double-click to visit json2go on Github.com")}</p>
+                        </TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+                <p className="text-sm leading-relaxed text-muted-foreground">
+                    {t("about.description", "Generate Go type definitions from JSON")}
+                </p>
+                <div className="leading-relaxed text-sm">
+                    <p><span className="select-none">{t("about.license", "License: ")}</span>MIT</p>
+                    <p><span className="select-none">{t("about.version", "Version: ")}</span>{version}</p>
                 </div>
-                <p>Copyright © 2022 fhluo</p>
+                <p className="text-sm">Copyright © 2022 fhluo</p>
             </div>
             <DialogFooter>
                 <DialogClose asChild>
