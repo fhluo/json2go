@@ -1,9 +1,9 @@
 import {DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle,} from "@/components/ui/dialog.tsx"
 import {useEffect, useState} from "react"
-import {GetLatestVersion, GetVersion} from "../../wailsjs/go/main/App"
+import {GetLatestVersion, GetVersion} from "../../../wailsjs/go/main/App"
 import {Button} from "@/components/ui/button.tsx"
 import {useTranslation} from "react-i18next"
-import {OpenRelease} from "@/lib/utils.ts"
+import {openRelease} from "@/lib/utils.ts"
 
 export default function () {
     const {t} = useTranslation()
@@ -40,7 +40,7 @@ export default function () {
             <p className="text-gray-900 leading-relaxed">{message}</p>
             <DialogFooter>
                 {version && latestVersion && version !== latestVersion &&
-                  <Button variant="secondary" onClick={() => OpenRelease(latestVersion)}>
+                  <Button variant="secondary" onClick={() => openRelease(latestVersion)}>
                       {t("Download")}
                   </Button>
                 }

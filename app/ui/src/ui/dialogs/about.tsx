@@ -1,7 +1,7 @@
 import {DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle,} from "@/components/ui/dialog.tsx"
 import {Button} from "@/components/ui/button.tsx"
 import {useEffect, useState} from "react"
-import {GetVersion} from "../../wailsjs/go/main/App"
+import {GetVersion} from "../../../wailsjs/go/main/App"
 import {useTranslation} from "react-i18next"
 
 export default function () {

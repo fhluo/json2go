@@ -2,7 +2,7 @@ import {DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle,} fr
 import {FormEvent, useEffect, useState} from "react"
 import {Button} from "@/components/ui/button.tsx"
 import {Input} from "@/components/ui/input.tsx"
-import {GetAllCapsWords, SetAllCapsWords} from "../../wailsjs/go/main/App"
+import {GetAllCapsWords, SetAllCapsWords} from "../../../wailsjs/go/main/App"
 import {useTranslation} from "react-i18next"
 
 function onBeforeInput(event: FormEvent<HTMLInputElement>) {
