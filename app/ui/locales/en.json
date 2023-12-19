@@ -26,7 +26,7 @@
   "OK": "OK",
   "about": {
     "title": "About",
-    "about": "Generate Go type definitions from JSON",
+    "description": "Generate Go type definitions from JSON",
     "license": "License: ",
     "version": "Version: "
   },
