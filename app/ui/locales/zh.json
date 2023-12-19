@@ -41,13 +41,14 @@
   "Options": "选项",
   "Validate JSON before generation": "在生成之前验证 JSON",
   "Check for updates": "检查更新",
-  "checkForUpdates": {
+  "updates": {
     "title": "检查更新",
-    "upToDate": "已经是最新版本。",
-    "newVersion": "发现新版本：",
+    "none": "已是最新版本。",
+    "available": "发现新版本：",
     "failed": "检查更新失败。",
     "checking": "正在检查更新……"
   },
+  "Download": "下载",
   ".": "。",
   "Examples": "示例",
   "Generate in real time": "实时生成"

@@ -41,13 +41,14 @@
   "Options": "Options",
   "Validate JSON before generation": "Validate JSON before generation",
   "Check for updates": "Check for updates",
-  "checkForUpdates": {
+  "updates": {
     "title": "Check for updates",
-    "upToDate": "You are using the latest version.",
-    "newVersion": "A new version is available: ",
+    "none": "You are using the latest version.",
+    "available": "A new version is available: ",
     "failed": "Unable to check for updates.",
     "checking": "Checking for updates..."
   },
+  "Download": "Download",
   "Examples": "Examples",
   "Generate in real time": "Generate in real time"
 }

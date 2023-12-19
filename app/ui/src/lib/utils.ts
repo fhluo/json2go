@@ -1,5 +1,6 @@
 import {type ClassValue, clsx} from "clsx"
 import {twMerge} from "tailwind-merge"
+import {BrowserOpenURL} from "../../wailsjs/runtime"
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -18,4 +19,8 @@ export function getMonacoLocale(locale: string): string {
     }
 
     return "en"
+}
+
+export function OpenRelease(version: string) {
+    BrowserOpenURL(`https://github.com/fhluo/json2go/releases/tag/v${version}`)
 }
