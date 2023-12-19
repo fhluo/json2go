@@ -34,7 +34,11 @@
     "license": "License: ",
     "version": "Version: "
   },
-  "Help": "Help",
+  "help": {
+    "title": "Help",
+    "updates": "Check for updates",
+    "about": "About"
+  },
   "Document": "Document",
   "View": "View",
   "Editors": "Editors",
@@ -44,7 +48,6 @@
   "Two Rows": "Two Rows",
   "Options": "Options",
   "Validate JSON before generation": "Validate JSON before generation",
-  "Check for updates": "Check for updates",
   "updates": {
     "title": "Check for updates",
     "none": "You are using the latest version.",

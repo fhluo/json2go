@@ -34,7 +34,11 @@
     "license": "许可协议：",
     "version": "版本："
   },
-  "Help": "帮助",
+  "help": {
+    "title": "帮助",
+    "updates": "检查更新",
+    "about": "关于"
+  },
   "Document": "文档",
   "View": "视图",
   "Editors": "编辑器",
@@ -44,7 +48,6 @@
   "Two Rows": "两行",
   "Options": "选项",
   "Validate JSON before generation": "在生成之前验证 JSON",
-  "Check for updates": "检查更新",
   "updates": {
     "title": "检查更新",
     "none": "已是最新版本。",
