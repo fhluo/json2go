@@ -8,10 +8,12 @@
   "en": "English",
   "zh": "中文",
   "Close": "关闭",
-  "Font": "字体",
-  "Increase size": "增大",
-  "Decrease size": "减小",
-  "Reset size": "重置大小",
+  "font": {
+    "title": "字体",
+    "increase": "增大",
+    "decrease": "减小",
+    "reset": "重置大小"
+  },
   "file": {
     "title": "文件",
     "openJSON": "打开 JSON 文件",

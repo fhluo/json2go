@@ -8,10 +8,12 @@
   "en": "English",
   "zh": "中文",
   "Close": "Close",
-  "Font": "Font",
-  "Increase size": "Increase size",
-  "Decrease size": "Decrease size",
-  "Reset size": "Reset size",
+  "font": {
+    "title": "Font",
+    "increase": "Increase size",
+    "decrease": "Decrease size",
+    "reset": "Reset size"
+  },
   "file": {
     "title": "File",
     "openJSON": "Open JSON file",
