@@ -24,7 +24,7 @@ export default function ({replaceContent}: Props) {
             <MenubarTrigger>{t("examples.title", "Examples")}</MenubarTrigger>
             <MenubarContent>
                 {exampleList.map(example =>
-                    <MenubarItem onClick={() => replaceContent(example.content)}>
+                    <MenubarItem key={example.title} onClick={() => replaceContent(example.content)}>
                         {example.title}
                     </MenubarItem>
                 )}

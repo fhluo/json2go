@@ -27,7 +27,7 @@ export default function () {
             <MenubarContent>
                 <MenubarRadioGroup value={language} onValueChange={value => setLanguage(value)}>
                     {languages.map(language =>
-                        <MenubarRadioItem value={language}>
+                        <MenubarRadioItem key={language} value={language}>
                             {t(`language.${language}`)}
                         </MenubarRadioItem>
                     )}
