@@ -43,13 +43,14 @@
     "updates": "检查更新",
     "about": "关于"
   },
-  "Document": "文档",
-  "View": "视图",
-  "Editors": "编辑器",
-  "Both": "JSON 和 Go",
-  "Layout": "布局",
-  "Two Columns": "两列",
-  "Two Rows": "两行",
+  "view": {
+    "title": "视图",
+    "editors": "编辑器",
+    "both": "JSON 和 Go",
+    "layout": "布局",
+    "columns": "两列",
+    "rows": "两行"
+  },
   "options": {
     "title": "选项",
     "valid": "在生成之前验证 JSON",

@@ -43,13 +43,14 @@
     "updates": "Check for updates",
     "about": "About"
   },
-  "Document": "Document",
-  "View": "View",
-  "Editors": "Editors",
-  "Both": "Both",
-  "Layout": "Layout",
-  "Two Columns": "Two Columns",
-  "Two Rows": "Two Rows",
+  "view": {
+    "title": "View",
+    "editors": "Editors",
+    "both": "Both",
+    "layout": "Layout",
+    "columns": "Two Columns",
+    "rows": "Two Rows"
+  },
   "options": {
     "title": "Options",
     "valid": "Validate JSON before generation",
