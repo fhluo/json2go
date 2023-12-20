@@ -4,12 +4,15 @@
   "Generate": "生成",
   "Paste": "粘贴",
   "Copy": "复制",
+  "Download": "下载",
+  "OK": "确认",
+  "Close": "关闭",
+  ".": "。",
   "language": {
     "title": "语言",
     "en": "English",
     "zh": "中文"
   },
-  "Close": "关闭",
   "font": {
     "title": "字体",
     "increase": "增大",
@@ -30,7 +33,6 @@
     "add": "添加",
     "remove": "删除"
   },
-  "OK": "确认",
   "about": {
     "title": "关于",
     "tip": "双击以在 Github.com 上访问 json2go",
@@ -63,8 +65,6 @@
     "failed": "检查更新失败。",
     "checking": "正在检查更新……"
   },
-  "Download": "下载",
-  ".": "。",
   "examples": {
     "title": "示例"
   }

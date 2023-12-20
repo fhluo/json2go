@@ -4,12 +4,14 @@
   "Generate": "Generate",
   "Paste": "Paste",
   "Copy": "Copy",
+  "Download": "Download",
+  "OK": "OK",
+  "Close": "Close",
   "language": {
     "title": "Language",
     "en": "English",
     "zh": "中文"
   },
-  "Close": "Close",
   "font": {
     "title": "Font",
     "increase": "Increase size",
@@ -30,7 +32,6 @@
     "add": "Add",
     "remove": "Remove"
   },
-  "OK": "OK",
   "about": {
     "title": "About",
     "tip": "Double-click to visit json2go on Github.com",
@@ -63,7 +64,6 @@
     "failed": "Unable to check for updates.",
     "checking": "Checking for updates..."
   },
-  "Download": "Download",
   "examples": {
     "title": "Examples"
   }
