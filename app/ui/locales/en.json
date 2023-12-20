@@ -50,8 +50,11 @@
   "Layout": "Layout",
   "Two Columns": "Two Columns",
   "Two Rows": "Two Rows",
-  "Options": "Options",
-  "Validate JSON before generation": "Validate JSON before generation",
+  "options": {
+    "title": "Options",
+    "valid": "Validate JSON before generation",
+    "realTime": "Generate in real time"
+  },
   "updates": {
     "title": "Check for updates",
     "none": "You are using the latest version.",
@@ -60,7 +63,6 @@
     "checking": "Checking for updates..."
   },
   "Download": "Download",
-  "Generate in real time": "Generate in real time",
   "examples": {
     "title": "Examples"
   }

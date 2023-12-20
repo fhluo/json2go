@@ -50,8 +50,11 @@
   "Layout": "布局",
   "Two Columns": "两列",
   "Two Rows": "两行",
-  "Options": "选项",
-  "Validate JSON before generation": "在生成之前验证 JSON",
+  "options": {
+    "title": "选项",
+    "valid": "在生成之前验证 JSON",
+    "realTime": "实时生成"
+  },
   "updates": {
     "title": "检查更新",
     "none": "已是最新版本。",
@@ -61,7 +64,6 @@
   },
   "Download": "下载",
   ".": "。",
-  "Generate in real time": "实时生成",
   "examples": {
     "title": "示例"
   }
