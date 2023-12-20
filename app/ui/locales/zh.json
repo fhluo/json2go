@@ -4,9 +4,11 @@
   "Generate": "生成",
   "Paste": "粘贴",
   "Copy": "复制",
-  "Language": "语言",
-  "en": "English",
-  "zh": "中文",
+  "language": {
+    "title": "语言",
+    "en": "English",
+    "zh": "中文"
+  },
   "Close": "关闭",
   "font": {
     "title": "字体",

@@ -4,9 +4,11 @@
   "Generate": "Generate",
   "Paste": "Paste",
   "Copy": "Copy",
-  "Language": "Language",
-  "en": "English",
-  "zh": "中文",
+  "language": {
+    "title": "Language",
+    "en": "English",
+    "zh": "中文"
+  },
   "Close": "Close",
   "font": {
     "title": "Font",

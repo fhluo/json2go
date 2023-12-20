@@ -12,6 +12,8 @@ const resources = {
     }
 }
 
+const languages = Object.keys(resources)
+
 void i18n.use(initReactI18next).init({
     resources,
     lng: "en",
@@ -20,4 +22,7 @@ void i18n.use(initReactI18next).init({
     }
 })
 
-export default i18n
+export {
+    i18n,
+    languages
+}
