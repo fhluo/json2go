@@ -13,7 +13,7 @@ import (
 	"github.com/samber/lo"
 )
 
-const version = "0.3.4"
+const version = "0.4.0"
 
 func Get() *semver.Version {
 	return lo.Must(semver.NewVersion(version))
