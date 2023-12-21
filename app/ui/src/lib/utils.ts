@@ -25,6 +25,17 @@ export function getMonacoLocale(locale: string): string {
     return "en"
 }
 
+export function loaderConfig(language: string) {
+    return {
+        paths: {vs: "monaco-editor/min/vs"},
+        "vs/nls": {
+            availableLanguages: {
+                "*": getMonacoLocale(language)
+            }
+        }
+    }
+}
+
 export function openHomePage() {
     BrowserOpenURL("https://github.com/fhluo/json2go")
 }

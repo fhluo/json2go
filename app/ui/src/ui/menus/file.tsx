@@ -3,9 +3,10 @@ import {DialogTrigger} from "@/components/ui/dialog.tsx"
 import Settings from "@/ui/dialogs/settings.tsx"
 import {EventsEmit} from "../../../wailsjs/runtime"
 import {useTranslation} from "react-i18next"
+import {ReactNode} from "react"
 
 interface Props {
-    setDialog: (element: JSX.Element) => void
+    setDialog: (element: ReactNode) => void
     openJSON: () => void
     saveGo: () => void
 }

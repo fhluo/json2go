@@ -3,9 +3,10 @@ import {DialogTrigger} from "@/components/ui/dialog.tsx"
 import Updates from "@/ui/dialogs/updates.tsx"
 import About from "@/ui/dialogs/about.tsx"
 import {useTranslation} from "react-i18next"
+import {ReactNode} from "react"
 
 interface Props {
-    setDialog: (element: JSX.Element) => void
+    setDialog: (element: ReactNode) => void
 }
 
 export default function ({setDialog}: Props) {
