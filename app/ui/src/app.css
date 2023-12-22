@@ -20,11 +20,3 @@
 #container-json span, #container-go span {
     @apply transition duration-300;
 }
-
-#container-json:focus-within span:first-child {
-    @apply text-yellow-500;
-}
-
-#container-go:focus-within span:first-child {
-    @apply text-purple-500;
-}
