@@ -1,161 +1,39 @@
 package config
 
 import (
-	"log"
+	"github.com/fhluo/pkg/config"
 	"os"
 	"path/filepath"
-	"sync"
-
-	"github.com/spf13/viper"
-)
-
-const (
-	keyLocale       = "locale"
-	keyFontSize     = "font_size"
-	keyWindowWidth  = "window.width"
-	keyWindowHeight = "window.height"
-	keyAllCapsWords = "all_caps_words"
-
-	keyOptionsValidJSONBeforeGeneration = "options.valid_json_before_generation"
-	keyOptionsGenerateInRealTime        = "options.generate_in_real_time"
 )
 
 var (
 	Path = filepath.Join(os.Getenv("LocalAppData"), "json2go")
-	m    = new(sync.Mutex)
+
+	Locale       = config.NewItem("locale", "")
+	FontSize     = config.NewItem("font_size", 16.0)
+	WindowWidth  = config.NewItem("window.width", 1200)
+	WindowHeight = config.NewItem("window.height", 800)
+	AllCapsWords = config.NewItem(
+		"all_caps_words",
+		[]string{"ID", "URL", "URI", "JSON", "HTML", "CSS", "API", "HTTP", "SQL"},
+	)
+	OptionsValidJSONBeforeGeneration = config.NewItem("options.valid_json_before_generation", true)
+	OptionsGenerateInRealTime        = config.NewItem("options.generate_in_real_time", true)
 )
 
 func init() {
-	viper.SetDefault(keyLocale, "")
-	viper.SetDefault(keyFontSize, 16)
-	viper.SetDefault(keyWindowWidth, 1200)
-	viper.SetDefault(keyWindowHeight, 800)
-	viper.SetDefault(keyAllCapsWords, []string{"ID", "URL", "URI", "JSON", "HTML", "CSS", "API", "HTTP", "SQL"})
-	viper.SetDefault(keyOptionsValidJSONBeforeGeneration, true)
-	viper.SetDefault(keyOptionsGenerateInRealTime, true)
-
-	viper.SetConfigName("config")
-	viper.SetConfigType("toml")
-
-	viper.AddConfigPath(Path)
-
-	if err := viper.ReadInConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); ok {
-			createConfigFile()
-		}
-	}
-}
-
-func createConfigFile() {
-	if err := os.MkdirAll(Path, 0666); err != nil {
-		log.Fatalln(err)
-	}
-
-	f, err := os.Create(filepath.Join(Path, "config.toml"))
-	if err != nil {
-		log.Fatalln(err)
-	}
-
-	if err = f.Close(); err != nil {
-		log.Println(err)
-	}
-}
-
-func Write() {
-	if err := viper.WriteConfig(); err != nil {
-		if _, ok := err.(viper.ConfigFileNotFoundError); !ok {
-			log.Fatalln(err)
-		} else {
-			log.Println(err)
-		}
-	}
-}
-
-func set(key string, value any) {
-	m.Lock()
-	defer m.Unlock()
-	viper.Set(key, value)
-}
-
-func GetLocale() string {
-	m.Lock()
-	defer m.Unlock()
-	return viper.GetString(keyLocale)
-}
-
-func SetLocale(locale string) {
-	set(keyLocale, locale)
-}
-
-func GetFontSize() float64 {
-	m.Lock()
-	defer m.Unlock()
-	return viper.GetFloat64(keyFontSize)
-}
-
-func SetFontSize(size float64) {
-	set(keyFontSize, size)
+	config.Init(filepath.Join(Path, "config.toml"))
 }
 
 func GetWindowSize() (int, int) {
-	m.Lock()
-	defer m.Unlock()
-	return viper.GetInt(keyWindowWidth), viper.GetInt(keyWindowHeight)
+	return WindowWidth.Get(), WindowHeight.Get()
 }
 
 func SetWindowSize(width, height int) {
-	m.Lock()
-	defer m.Unlock()
-	viper.Set(keyWindowWidth, width)
-	viper.Set(keyWindowHeight, height)
+	WindowWidth.Set(width)
+	WindowHeight.Set(height)
 }
 
-func GetWindowWidth() int {
-	m.Lock()
-	defer m.Unlock()
-	return viper.GetInt(keyWindowWidth)
-}
-
-func SetWindowWidth(width int) {
-	set(keyWindowWidth, width)
-}
-
-func GetWindowHeight() int {
-	m.Lock()
-	defer m.Unlock()
-	return viper.GetInt(keyWindowHeight)
-}
-
-func SetWindowHeight(height int) {
-	set(keyWindowHeight, height)
-}
-
-func GetAllCapsWords() []string {
-	m.Lock()
-	defer m.Unlock()
-	return viper.GetStringSlice(keyAllCapsWords)
-}
-
-func SetAllCapsWords(words []string) {
-	set(keyAllCapsWords, words)
-}
-
-func GetOptionsValidJSONBeforeGeneration() bool {
-	m.Lock()
-	defer m.Unlock()
-	return viper.GetBool(keyOptionsValidJSONBeforeGeneration)
-}
-
-func SetOptionsValidJSONBeforeGeneration(valid bool) {
-	set(keyOptionsValidJSONBeforeGeneration, valid)
-}
-
-func GetOptionsGenerateInRealTime() bool {
-	m.Lock()
-	defer m.Unlock()
-	return viper.GetBool(keyOptionsGenerateInRealTime)
-}
-
-func SetOptionsGenerateInRealTime(b bool) {
-	set(keyOptionsGenerateInRealTime, b)
+func Save() {
+	config.Save()
 }

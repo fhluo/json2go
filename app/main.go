@@ -25,7 +25,7 @@ func init() {
 }
 
 func main() {
-	defer config.Write()
+	defer config.Save()
 
 	app := NewApp()
 

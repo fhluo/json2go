@@ -50,7 +50,7 @@ func init() {
 
 	var languages []string
 
-	lang := config.GetLocale()
+	lang := config.Locale.Get()
 	if lang != "" {
 		languages = append(languages, lang)
 	} else {

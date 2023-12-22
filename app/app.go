@@ -46,43 +46,43 @@ func (a *App) startup(ctx context.Context) {
 }
 
 func (a *App) GetLocale() string {
-	return config.GetLocale()
+	return config.Locale.Get()
 }
 
 func (a *App) SetLocale(locale string) {
-	config.SetLocale(locale)
+	config.Locale.Set(locale)
 }
 
 func (a *App) GetFontSize() float64 {
-	return config.GetFontSize()
+	return config.FontSize.Get()
 }
 
 func (a *App) SetFontSize(size float64) {
-	config.SetFontSize(size)
+	config.FontSize.Set(size)
 }
 
 func (a *App) GetAllCapsWords() []string {
-	return config.GetAllCapsWords()
+	return config.AllCapsWords.Get()
 }
 
 func (a *App) SetAllCapsWords(words []string) {
-	config.SetAllCapsWords(words)
+	config.AllCapsWords.Set(words)
 }
 
 func (a *App) GetOptionsValidJSONBeforeGeneration() bool {
-	return config.GetOptionsValidJSONBeforeGeneration()
+	return config.OptionsValidJSONBeforeGeneration.Get()
 }
 
 func (a *App) SetOptionsValidJSONBeforeGeneration(valid bool) {
-	config.SetOptionsValidJSONBeforeGeneration(valid)
+	config.OptionsValidJSONBeforeGeneration.Set(valid)
 }
 
 func (a *App) GetOptionsGenerateInRealTime() bool {
-	return config.GetOptionsGenerateInRealTime()
+	return config.OptionsGenerateInRealTime.Get()
 }
 
 func (a *App) SetOptionsGenerateInRealTime(b bool) {
-	config.SetOptionsGenerateInRealTime(b)
+	config.OptionsGenerateInRealTime.Set(b)
 }
 
 func (a *App) GetVersion() string {
@@ -103,7 +103,7 @@ func (a *App) GetExamples() []examples.Example {
 }
 
 func (a *App) Generate(s string) string {
-	if config.GetOptionsValidJSONBeforeGeneration() && !json.Valid([]byte(s)) {
+	if a.GetOptionsValidJSONBeforeGeneration() && !json.Valid([]byte(s)) {
 		runtime.EventsEmit(a.ctx, "error", "invalid json")
 		return ""
 	}
