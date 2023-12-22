@@ -3,12 +3,12 @@ package main
 import (
 	"embed"
 	"log"
+	"log/slog"
 	"os"
 	"path/filepath"
 
 	"github.com/fhluo/json2go/internal/config"
 	"github.com/fhluo/json2go/internal/logger"
-	"github.com/mattn/go-isatty"
 	"github.com/wailsapp/wails/v2/pkg/application"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"
@@ -17,32 +17,43 @@ import (
 
 var (
 	//go:embed all:ui/dist
-	assets embed.FS
+	assets  embed.FS
+	logFile *os.File
 )
 
 func init() {
 	log.SetFlags(0)
+
+	var err error
+
+	logFile = os.Stderr
+	if os.Getenv("json2go_dev") != "true" {
+		logFile, err = os.OpenFile(filepath.Join(config.Path, "log.txt"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			slog.Error(err.Error())
+			os.Exit(1)
+		}
+	}
+
+	level := slog.LevelInfo
+	if os.Getenv("json2go_debug") == "true" {
+		level = slog.LevelDebug
+	}
+
+	slog.SetDefault(slog.New(slog.NewTextHandler(logFile, &slog.HandlerOptions{
+		Level: level,
+	})))
 }
 
 func main() {
-	defer config.Save()
+	defer func() {
+		if err := logFile.Close(); err != nil {
+			log.Println(err)
+		}
+		config.Save()
+	}()
 
 	app := NewApp()
-
-	out := os.Stderr
-	if !isatty.IsTerminal(os.Stderr.Fd()) {
-		file, err := os.OpenFile(filepath.Join(config.Path, "log.txt"), os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-		if err != nil {
-			log.Fatalln(err)
-		}
-		defer func() {
-			if err = file.Close(); err != nil {
-				log.Println(err)
-			}
-		}()
-
-		out = file
-	}
 
 	a := application.NewWithOptions(&options.App{
 		Title:     "json2go",
@@ -63,7 +74,7 @@ func main() {
 			WindowIsTranslucent:  true,
 			BackdropType:         windows.Mica,
 		},
-		Logger: logger.New(out),
+		Logger: logger.New(logFile),
 	})
 
 	app.exit = func() {
@@ -71,6 +82,6 @@ func main() {
 	}
 
 	if err := a.Run(); err != nil {
-		log.Fatalln(err)
+		slog.Error(err.Error())
 	}
 }

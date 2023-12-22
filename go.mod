@@ -6,9 +6,8 @@ require (
 	github.com/Masterminds/semver v1.5.0
 	github.com/dave/jennifer v1.7.0
 	github.com/fatih/color v1.16.0
-	github.com/fhluo/pkg v0.0.0-20231222053859-3f4aab900dd0
+	github.com/fhluo/pkg v0.0.0-20231222091306-8995d1d5af88
 	github.com/hashicorp/go-multierror v1.1.1
-	github.com/mattn/go-isatty v0.0.20
 	github.com/nicksnyder/go-i18n/v2 v2.3.0
 	github.com/otiai10/copy v1.14.0
 	github.com/pelletier/go-toml/v2 v2.1.1
@@ -41,6 +40,7 @@ require (
 	github.com/leaanthony/u v1.1.1 // indirect
 	github.com/magiconair/properties v1.8.7 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
+	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pmezard/go-difflib v1.0.1-0.20181226105442-5d4384ee4fb2 // indirect

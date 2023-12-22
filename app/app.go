@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"encoding/json"
+	"log/slog"
 	"os"
 	"strings"
 
@@ -46,26 +47,32 @@ func (a *App) startup(ctx context.Context) {
 }
 
 func (a *App) GetLocale() string {
+	slog.Debug("GetLocale", "locale", config.Locale.Get())
 	return config.Locale.Get()
 }
 
 func (a *App) SetLocale(locale string) {
+	slog.Debug("SetLocale", "locale", locale)
 	config.Locale.Set(locale)
 }
 
 func (a *App) GetFontSize() float64 {
+	slog.Debug("GetFontSize", "size", config.FontSize.Get())
 	return config.FontSize.Get()
 }
 
 func (a *App) SetFontSize(size float64) {
+	slog.Debug("SetFontSize", "size", size)
 	config.FontSize.Set(size)
 }
 
 func (a *App) GetAllCapsWords() []string {
+	slog.Debug("GetAllCapsWords", "words", config.AllCapsWords.Get())
 	return config.AllCapsWords.Get()
 }
 
 func (a *App) SetAllCapsWords(words []string) {
+	slog.Debug("SetAllCapsWords", "words", config.AllCapsWords.Get())
 	config.AllCapsWords.Set(words)
 }
 

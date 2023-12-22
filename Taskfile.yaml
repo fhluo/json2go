@@ -37,6 +37,9 @@ tasks:
       - build-cli
 
   dev:
+    env:
+      json2go_dev: true
+      json2go_debug: true
     dir: ./app
     deps:
       - copy-monaco
