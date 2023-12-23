@@ -3,16 +3,13 @@ import {DialogTrigger} from "@/components/ui/dialog.tsx"
 import Settings from "@/ui/dialogs/settings.tsx"
 import {EventsEmit} from "../../../wailsjs/runtime"
 import {useTranslation} from "react-i18next"
-import {ReactNode} from "react"
+import {useEditorsStore} from "@/store/editors.ts"
+import {useDialogStore} from "@/store/dialog.ts"
 
-interface Props {
-    setDialog: (element: ReactNode) => void
-    openJSON: () => void
-    saveGo: () => void
-}
-
-export default function ({setDialog, openJSON, saveGo}: Props) {
+export default function () {
     const {t} = useTranslation()
+    const setDialog = useDialogStore(state => state.setDialog)
+    const {openJSON, saveGo} = useEditorsStore()
 
     return (
         <MenubarMenu>

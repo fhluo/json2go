@@ -2,8 +2,8 @@ import {DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle,} fr
 import {FormEvent, useEffect, useState} from "react"
 import {Button} from "@/components/ui/button.tsx"
 import {Input} from "@/components/ui/input.tsx"
-import {GetAllCapsWords, SetAllCapsWords} from "../../../wailsjs/go/main/App"
 import {useTranslation} from "react-i18next"
+import {useAllCapsWordsStore} from "@/lib/store.ts"
 
 function onBeforeInput(event: FormEvent<HTMLInputElement>) {
     // user can only enter letters, space and ','
@@ -16,26 +16,12 @@ function onBeforeInput(event: FormEvent<HTMLInputElement>) {
 export default function () {
     const {t} = useTranslation()
 
-    const [words, setWords] = useState([] as string[])
+    const {words, init, add, remove} = useAllCapsWordsStore()
     useEffect(() => {
-        GetAllCapsWords().then(value => setWords(value))
+        init()
     }, [])
-    useEffect(() => void SetAllCapsWords(words), [words])
 
-    const [word, setWord] = useState("")
-
-    // if word contains a comma, split it and add each word separately
-    const add = (word: string) => {
-        word = word.trim()
-        if (word !== "" && !words.includes(word)) {
-            setWords(Array.from(new Set(words.concat(
-                word.split(",").map(word => word.trim()).filter(word => word !== "")
-            ))))
-            setWord("")
-        }
-    }
-
-    const remove = (word: string) => setWords(words.filter(w => w !== word))
+    const [input, setInput] = useState("")
 
     return (
         <DialogContent>
@@ -50,8 +36,8 @@ export default function () {
                   <div className="flex flex-row flex-wrap space-x-1.5 pb-1.5">
                       {words.map(value =>
                           <Button size="sm" variant={"outline"}
-                                  onClick={() => setWord(value)}
-                                  onDoubleClick={() => remove(word)}
+                                  onClick={() => setInput(value)}
+                                  onDoubleClick={() => remove(input)}
                                   className="ml-1 mt-1.5 hover:bg-gray-50 transition cursor-default">
                               {value}
                           </Button>
@@ -59,10 +45,15 @@ export default function () {
                   </div>
                 }
                 <div>
-                    <Input value={word}
+                    <Input value={input}
                            onBeforeInput={onBeforeInput}
-                           onChange={event => setWord(event.currentTarget.value)}
-                           onKeyDown={event => event.key == "Enter" && add(word)}/>
+                           onChange={event => setInput(event.currentTarget.value)}
+                           onKeyDown={event => {
+                               if (event.key == "Enter") {
+                                   add(input)
+                                   setInput("")
+                               }
+                           }}/>
                     <p className="text-sm text-gray-500 leading-relaxed py-2 px-1 select-none">
                         {t(
                             "settings.tip",
@@ -72,10 +63,16 @@ export default function () {
                 </div>
             </div>
             <DialogFooter>
-                <Button variant="secondary" className="min-w-fit" onClick={() => add(word)}>
+                <Button variant="secondary" className="min-w-fit" onClick={() => {
+                    add(input)
+                    setInput("")
+                }}>
                     {t("settings.add", "Add")}
                 </Button>
-                <Button variant="secondary" className="min-w-fit" onClick={() => remove(word)}>
+                <Button variant="secondary" className="min-w-fit" onClick={() => {
+                    remove(input)
+                    setInput("")
+                }}>
                     {t("settings.remove", "Remove")}
                 </Button>
                 <DialogClose asChild>

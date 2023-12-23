@@ -3,14 +3,12 @@ import {useEffect, useState} from "react"
 import {examples} from "../../../wailsjs/go/models.ts"
 import {GetExamples} from "../../../wailsjs/go/main/App"
 import {useTranslation} from "react-i18next"
+import {useEditorsStore} from "@/store/editors.ts"
 import Example = examples.Example
 
-interface Props {
-    replaceContent: (content: string) => void
-}
-
-export default function ({replaceContent}: Props) {
+export default function () {
     const {t} = useTranslation()
+    const setJSON = useEditorsStore(state => state.setJSON)
 
     let [exampleList, setExampleList] = useState([] as Example[])
     useEffect(() => {
@@ -24,7 +22,7 @@ export default function ({replaceContent}: Props) {
             <MenubarTrigger>{t("examples.title", "Examples")}</MenubarTrigger>
             <MenubarContent>
                 {exampleList.map(example =>
-                    <MenubarItem key={example.title} onClick={() => replaceContent(example.content)}>
+                    <MenubarItem key={example.title} onClick={() => setJSON(example.content)}>
                         {example.title}
                     </MenubarItem>
                 )}

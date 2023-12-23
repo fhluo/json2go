@@ -1,15 +1,14 @@
-import {Layout, View} from "@/lib/types.ts"
 import {cn} from "@/lib/utils.ts"
 import {useTranslation} from "react-i18next"
+import {Layout, useLayoutStore} from "@/store/layout.ts"
+import {useViewStore, View} from "@/store/view.ts"
+import {useEditorsStore} from "@/store/editors.ts"
 
-interface Props {
-    view: View
-    layout: Layout
-    pasteJSON: () => void
-}
-
-export default function ({view, layout, pasteJSON}: Props) {
+export default function () {
     const {t} = useTranslation()
+    const layout = useLayoutStore(state => state.layout)
+    const view = useViewStore(state => state.view)
+    const pasteJSON = useEditorsStore(state => state.pasteJSON)
 
     return (
         <div id="container-json" style={{display: view === View.GoOnly ? "none" : ""}}

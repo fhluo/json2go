@@ -1,14 +1,10 @@
 import {MenubarContent, MenubarItem, MenubarMenu, MenubarTrigger} from "@/components/ui/menubar.tsx"
 import {useTranslation} from "react-i18next"
+import {useFontSizeStore} from "@/lib/store.ts"
 
-interface Props {
-    increaseFontSize: () => void
-    decreaseFontSize: () => void
-    resetFontSize: () => void
-}
-
-export default function ({increaseFontSize, decreaseFontSize, resetFontSize}: Props) {
+export default function () {
     const {t} = useTranslation()
+    const {increase, decrease, reset} = useFontSizeStore()
 
     return (
         <MenubarMenu>
@@ -16,13 +12,13 @@ export default function ({increaseFontSize, decreaseFontSize, resetFontSize}: Pr
                 {t("font.title", "Font")}
             </MenubarTrigger>
             <MenubarContent>
-                <MenubarItem onClick={increaseFontSize}>
+                <MenubarItem onClick={increase}>
                     {t("font.increase", "Increase size")}
                 </MenubarItem>
-                <MenubarItem onClick={decreaseFontSize}>
+                <MenubarItem onClick={decrease}>
                     {t("font.decrease", "Decrease size")}
                 </MenubarItem>
-                <MenubarItem onClick={resetFontSize}>
+                <MenubarItem onClick={reset}>
                     {t("font.reset", "Reset size")}
                 </MenubarItem>
             </MenubarContent>

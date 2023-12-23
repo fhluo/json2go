@@ -3,14 +3,11 @@ import {DialogTrigger} from "@/components/ui/dialog.tsx"
 import Updates from "@/ui/dialogs/updates.tsx"
 import About from "@/ui/dialogs/about.tsx"
 import {useTranslation} from "react-i18next"
-import {ReactNode} from "react"
+import {useDialogStore} from "@/store/dialog.ts"
 
-interface Props {
-    setDialog: (element: ReactNode) => void
-}
-
-export default function ({setDialog}: Props) {
+export default function () {
     const {t} = useTranslation()
+    const setDialog = useDialogStore(state => state.setDialog)
 
     return (
         <MenubarMenu>

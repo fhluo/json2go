@@ -6,18 +6,12 @@ import {
     MenubarTrigger
 } from "@/components/ui/menubar.tsx"
 import {useTranslation} from "react-i18next"
-import {useEffect, useState} from "react"
-import {SetLocale} from "../../../wailsjs/go/main/App"
 import {languages} from "@/lib/i18n.ts"
+import {useLanguageStore} from "@/lib/store.ts"
 
 export default function () {
-    const {t, i18n} = useTranslation()
-
-    let [language, setLanguage] = useState(i18n.language)
-    useEffect(() => {
-        void i18n.changeLanguage(language)
-        void SetLocale(language)
-    }, [language])
+    const {t} = useTranslation()
+    let {language, setLanguage} = useLanguageStore()
 
     return (
         <MenubarMenu>

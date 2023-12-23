@@ -1,12 +1,14 @@
 import {Dialog} from "@/components/ui/dialog.tsx"
 import {Menubar} from "@/components/ui/menubar.tsx"
-import {PropsWithChildren, ReactNode} from "react"
+import {PropsWithChildren} from "react"
+import {useDialogStore} from "@/store/dialog.ts"
 
 interface Props {
-    dialog: ReactNode
 }
 
-export default function ({children, dialog}: PropsWithChildren<Props>) {
+export default function ({children}: PropsWithChildren<Props>) {
+    const dialog = useDialogStore(state => state.dialog)
+
     return (
         <Dialog>
             <Menubar className="rounded-none border-none bg-transparent">

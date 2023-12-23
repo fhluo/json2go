@@ -8,19 +8,14 @@ import {
     MenubarSubTrigger,
     MenubarTrigger
 } from "@/components/ui/menubar.tsx"
-import {Layout, View} from "@/lib/types.ts"
 import {useTranslation} from "react-i18next"
+import {Layout, useLayoutStore} from "@/store/layout.ts"
+import {useViewStore, View} from "@/store/view.ts"
 
-interface Props {
-    view: View
-    setView: (view: View) => void
-
-    layout: Layout
-    setLayout: (layout: Layout) => void
-}
-
-export default function ({view, setView, layout, setLayout}: Props) {
+export default function () {
     const {t} = useTranslation()
+    const {layout, setLayout} = useLayoutStore()
+    const {view, setView} = useViewStore()
 
     return (
         <MenubarMenu>

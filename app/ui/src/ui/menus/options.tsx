@@ -1,16 +1,11 @@
 import {MenubarCheckboxItem, MenubarContent, MenubarMenu, MenubarTrigger} from "@/components/ui/menubar.tsx"
 import {useTranslation} from "react-i18next"
+import {useRealTimeStore, useValidJSONStore} from "@/lib/store.ts"
 
-interface Props {
-    validJSON: boolean
-    setValidJSON: (v: boolean) => void
-
-    realTime: boolean
-    setRealTime: (v: boolean) => void
-}
-
-export default function ({validJSON, setValidJSON, realTime, setRealTime}: Props) {
+export default function () {
     const {t} = useTranslation()
+    const {validJSON, setValidJSON} = useValidJSONStore()
+    const {realTime, setRealTime} = useRealTimeStore()
 
     return (
         <MenubarMenu>
