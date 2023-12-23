@@ -14,7 +14,7 @@
   "info": {
     "companyName": "",
     "productName": "json2go",
-    "productVersion": "0.4.0",
+    "productVersion": "0.4.1",
     "copyright": "Copyright © 2022 fhluo",
     "comments": "Generate Go type definitions from JSON"
   }
