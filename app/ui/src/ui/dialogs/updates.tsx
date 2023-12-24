@@ -1,5 +1,5 @@
 import {DialogClose, DialogContent, DialogFooter, DialogHeader, DialogTitle,} from "@/components/ui/dialog.tsx"
-import {useEffect, useState} from "react"
+import {useEffect, useRef, useState} from "react"
 import {GetLatestVersion, GetVersion} from "../../../wailsjs/go/main/App"
 import {Button} from "@/components/ui/button.tsx"
 import {useTranslation} from "react-i18next"
@@ -11,14 +11,22 @@ export default function () {
     const [version, setVersion] = useState("")
     const [latestVersion, setLatestVersion] = useState("")
     const [message, setMessage] = useState(t("updates.checking", "Checking..."))
+    const isChecking = useRef(true)
 
     useEffect(() => {
         Promise.all([GetVersion(), GetLatestVersion()]).then(
             ([version, latestVersion]) => {
                 setVersion(version)
                 setLatestVersion(latestVersion)
+                isChecking.current = false
             }
         )
+    }, [])
+
+    useEffect(() => {
+        if (isChecking.current) {
+            return
+        }
 
         if (!version || !latestVersion) {
             setMessage(t("updates.failed", "Unable to check for updates."))
@@ -30,7 +38,7 @@ export default function () {
         } else {
             setMessage(`${t("updates.available", "A new version is available: ")}v${latestVersion}.`)
         }
-    }, [])
+    }, [version, latestVersion])
 
     return (
         <DialogContent className="select-none">
