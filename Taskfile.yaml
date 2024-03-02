@@ -24,6 +24,26 @@ tasks:
     cmds:
       - go build -o ./app/build/bin/json2go-cli.exe ./cmd/json2go
 
+  build-web:
+    dir: ./app/ui
+    cmds:
+      - pnpm build
+
+  dev-web:
+    dir: ./app/ui
+    cmds:
+      - pnpm dev
+
+  check-web:
+    dir: ./app/ui
+    cmds:
+      - pnpm check
+
+  format-web:
+    dir: ./app/ui
+    cmds:
+      - pnpm format
+
   build-gui:
     dir: ./app
     deps:
