@@ -1,18 +1,19 @@
-import {create} from "zustand"
+import { create } from "zustand";
 
 export enum Layout {
-    TwoColumns = "Two Columns",
-    TwoRows = "Two Rows",
+	TwoColumns = "Two Columns",
+	TwoRows = "Two Rows",
 }
 
 interface LayoutState {
-    layout: Layout
-    setLayout: (layout: Layout) => void
+	layout: Layout;
+	setLayout: (layout: Layout) => void;
 }
 
-export const useLayoutStore = create<LayoutState>(set => ({
-    layout: Layout.TwoColumns,
-    setLayout: layout => set({
-        layout: layout
-    })
-}))
+export const useLayoutStore = create<LayoutState>((set) => ({
+	layout: Layout.TwoColumns,
+	setLayout: (layout) =>
+		set({
+			layout: layout,
+		}),
+}));
