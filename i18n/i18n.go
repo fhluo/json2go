@@ -4,6 +4,7 @@ import (
 	"embed"
 	"io/fs"
 	"log"
+	"slices"
 	"strings"
 
 	"github.com/fhluo/json2go/internal/config"
@@ -33,6 +34,22 @@ var (
 //go:generate goi18n merge -outdir locales locales/active.en.toml locales/active.zh-Hans.toml
 //go:generate goi18n merge -outdir locales locales/active.en.toml locales/active.zh-Hans.toml locales/translate.zh-Hans.toml
 
+func getLanguages() []string {
+	languages := []string{
+		config.Locale.Get(),
+	}
+
+	r, _ := windows.GetUserPreferredUILanguages(windows.MUI_LANGUAGE_NAME)
+	languages = append(languages, r...)
+
+	r, _ = windows.GetSystemPreferredUILanguages(windows.MUI_LANGUAGE_NAME)
+	languages = append(languages, r...)
+
+	return slices.DeleteFunc(languages, func(s string) bool {
+		return s == ""
+	})
+}
+
 func init() {
 	bundle := i18n.NewBundle(language.English)
 	bundle.RegisterUnmarshalFunc("toml", toml.Unmarshal)
@@ -48,21 +65,6 @@ func init() {
 		log.Fatalln(err)
 	}
 
-	var languages []string
-
-	lang := config.Locale.Get()
-	if lang != "" {
-		languages = append(languages, lang)
-	} else {
-		languages, err = windows.GetUserPreferredUILanguages(windows.MUI_LANGUAGE_NAME)
-		if err != nil {
-			languages, err = windows.GetSystemPreferredUILanguages(windows.MUI_LANGUAGE_NAME)
-			if err != nil {
-				log.Fatalln(err)
-			}
-		}
-	}
-
-	localizer = i18n.NewLocalizer(bundle, languages...)
+	localizer = i18n.NewLocalizer(bundle, getLanguages()...)
 	MustLocalize = localizer.MustLocalize
 }
