@@ -41,7 +41,7 @@ function getMonacoLocale(locale: string): string {
 		return locale;
 	}
 
-	if (locale == "zh") {
+	if (locale === "zh") {
 		return "zh-cn";
 	}
 
@@ -67,12 +67,15 @@ function editorOptions(
 }
 
 function replaceContent(editor: IStandaloneCodeEditor, content: string) {
-	editor!.executeEdits("", [
-		{
-			range: editor!.getModel()!.getFullModelRange(),
-			text: content,
-		},
-	]);
+	const range = editor?.getModel()?.getFullModelRange();
+	if (range) {
+		editor?.executeEdits("", [
+			{
+				range: range,
+				text: content,
+			},
+		]);
+	}
 }
 
 interface EditorsState {
@@ -101,16 +104,22 @@ export const useEditorsStore = create<EditorsState>((set, get) => ({
 			const jsonElement = document.getElementById(jsonID);
 			const goElement = document.getElementById(goID);
 
-			jsonElement!.innerHTML = "";
-			goElement!.innerHTML = "";
-			monaco.editor.getModels().forEach((model) => model.dispose());
+			if (!(jsonElement && goElement)) {
+				return;
+			}
+
+			jsonElement.innerHTML = "";
+			goElement.innerHTML = "";
+			for (const model of monaco.editor.getModels()) {
+				model.dispose();
+			}
 
 			const jsonEditor = monaco.editor.create(
-				jsonElement!,
+				jsonElement,
 				editorOptions("json", fontSize, ""),
 			);
 			const goEditor = monaco.editor.create(
-				goElement!,
+				goElement,
 				editorOptions("go", fontSize, ""),
 			);
 
@@ -131,21 +140,34 @@ export const useEditorsStore = create<EditorsState>((set, get) => ({
 		);
 	},
 	setJSON: (value) => {
-		replaceContent(get().jsonEditor!, value);
+		const editor = get().jsonEditor;
+		if (editor) {
+			replaceContent(editor, value);
+		}
 	},
 	pasteJSON: async () => {
-		replaceContent(get().jsonEditor!, await ReadClipboard());
+		const editor = get().jsonEditor;
+		if (editor) {
+			replaceContent(editor, await ReadClipboard());
+		}
 	},
 	copyGo: async () => {
-		void WriteClipboard(get().goEditor!.getValue());
+		const editor = get().goEditor;
+		if (editor) {
+			void WriteClipboard(editor.getValue());
+		}
 	},
 	openJSON: async () => {
 		const content = await OpenJSONFile();
-		if (content) {
-			replaceContent(get().jsonEditor!, content);
+		const editor = get().jsonEditor;
+		if (content && editor) {
+			replaceContent(editor, content);
 		}
 	},
 	saveGo: async () => {
-		void SaveGoSourceFile(get().goEditor!.getValue());
+		const editor = get().goEditor;
+		if (editor) {
+			void SaveGoSourceFile(editor.getValue());
+		}
 	},
 }));

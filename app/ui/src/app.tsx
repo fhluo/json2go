@@ -8,8 +8,8 @@ import { useEditorsStore } from "@/store/editors.ts";
 import { useMessageStore } from "@/store/message.ts";
 import Container from "@/ui/container.tsx";
 import Footer from "@/ui/footer.tsx";
-import Go from "@/ui/go.tsx";
-import JSON from "@/ui/json.tsx";
+import GoContainer from "@/ui/go.tsx";
+import JSONContainer from "@/ui/json.tsx";
 import Menubar from "@/ui/menubar.tsx";
 import ExamplesMenu from "@/ui/menus/examples.tsx";
 import FileMenu from "@/ui/menus/file.tsx";
@@ -92,8 +92,8 @@ function App() {
 				<HelpMenu />
 			</Menubar>
 			<Container>
-				<JSON />
-				<Go />
+				<JSONContainer />
+				<GoContainer />
 			</Container>
 			<Footer />
 		</main>

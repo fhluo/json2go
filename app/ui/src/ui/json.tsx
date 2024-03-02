@@ -23,9 +23,11 @@ export default function () {
 				<span className="py-1 px-4 select-none text-yellow-700 font-mono group-focus-within:text-yellow-500">
 					JSON
 				</span>
-				<button onClick={pasteJSON}>{t("Paste")}</button>
+				<button type={"button"} onClick={pasteJSON}>
+					{t("Paste")}
+				</button>
 			</div>
-			<div className="w-full h-32 grow" id="json-editor"></div>
+			<div className="w-full h-32 grow" id="json-editor" />
 		</div>
 	);
 }

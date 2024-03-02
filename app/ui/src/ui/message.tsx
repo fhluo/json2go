@@ -18,6 +18,7 @@ export default function () {
 			<InfoCircledIcon className="w-5 h-5 ml-2 mr-1 text-red-600" />
 			<span>{message}</span>
 			<button
+				type={"button"}
 				onClick={clear}
 				className={
 					"hover:bg-gray-200/50 py-1 px-1 rounded-r transition flex items-center justify-center"

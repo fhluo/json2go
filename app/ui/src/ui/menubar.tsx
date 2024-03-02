@@ -3,9 +3,7 @@ import { Menubar } from "@/components/ui/menubar.tsx";
 import { useDialogStore } from "@/store/dialog.ts";
 import { PropsWithChildren } from "react";
 
-type Props = {};
-
-export default function ({ children }: PropsWithChildren<Props>) {
+export default function ({ children }: PropsWithChildren) {
 	const dialog = useDialogStore((state) => state.dialog);
 
 	return (

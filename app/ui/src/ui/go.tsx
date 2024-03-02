@@ -25,9 +25,11 @@ export default function () {
 				<span className="py-1 px-4 select-none text-purple-700 font-mono group-focus-within:text-purple-500">
 					Go
 				</span>
-				<button onClick={copyGo}>{t("Copy")}</button>
+				<button type={"button"} onClick={copyGo}>
+					{t("Copy")}
+				</button>
 			</div>
-			<div className="w-full h-32 grow" id="go-editor"></div>
+			<div className="w-full h-32 grow" id="go-editor" />
 		</div>
 	);
 }
