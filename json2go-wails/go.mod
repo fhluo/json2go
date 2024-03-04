@@ -1,10 +1,11 @@
 module github.com/fhluo/json2go/json2go-wails
 
-go 1.22
+go 1.22.0
 
 require (
 	github.com/Masterminds/semver v1.5.0
 	github.com/fatih/color v1.16.0
+	github.com/fhluo/json2go/json2go v0.5.0
 	github.com/fhluo/pkg v0.0.0-20231222091306-8995d1d5af88
 	github.com/hashicorp/go-multierror v1.1.1
 	github.com/nicksnyder/go-i18n/v2 v2.4.0
@@ -18,6 +19,7 @@ require (
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect
+	github.com/dave/jennifer v1.7.0 // indirect
 	github.com/fsnotify/fsnotify v1.7.0 // indirect
 	github.com/go-ole/go-ole v1.3.0 // indirect
 	github.com/godbus/dbus/v5 v5.1.0 // indirect
@@ -45,7 +47,6 @@ require (
 	github.com/spf13/cast v1.6.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
 	github.com/spf13/viper v1.18.2 // indirect
-	github.com/stretchr/testify v1.9.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/tkrajina/go-reflector v0.5.6 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
@@ -53,13 +54,12 @@ require (
 	github.com/wailsapp/go-webview2 v1.0.10 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
 	go.uber.org/multierr v1.11.0 // indirect
-	golang.org/x/crypto v0.20.0 // indirect
+	golang.org/x/crypto v0.21.0 // indirect
 	golang.org/x/exp v0.0.0-20240222234643-814bf88cf225 // indirect
 	golang.org/x/exp/shiny v0.0.0-20240222234643-814bf88cf225 // indirect
 	golang.org/x/image v0.15.0 // indirect
 	golang.org/x/mobile v0.0.0-20240213143359-d1f7d3436075 // indirect
 	golang.org/x/net v0.21.0 // indirect
-	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 	gopkg.in/ini.v1 v1.67.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 )
