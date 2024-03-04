@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	gen "github.com/dave/jennifer/jen"
-	"github.com/fhluo/json2go/pkg/json2go/conv"
+	"github.com/fhluo/json2go/json2go/conv"
 	"github.com/samber/lo"
 )
 

@@ -4,9 +4,9 @@ import (
 	"fmt"
 
 	gen "github.com/dave/jennifer/jen"
-	"github.com/fhluo/json2go/pkg/json2go/conv"
-	"github.com/fhluo/json2go/pkg/json2go/scanner"
-	"github.com/fhluo/json2go/pkg/json2go/token"
+	"github.com/fhluo/json2go/json2go/conv"
+	"github.com/fhluo/json2go/json2go/scanner"
+	"github.com/fhluo/json2go/json2go/token"
 	"github.com/samber/lo"
 )
 
