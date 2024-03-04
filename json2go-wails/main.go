@@ -7,8 +7,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/fhluo/json2go/internal/config"
-	"github.com/fhluo/json2go/internal/logger"
+	"github.com/fhluo/json2go/json2go-wails/internal/config"
+	"github.com/fhluo/json2go/json2go-wails/internal/logger"
 	"github.com/wailsapp/wails/v2/pkg/application"
 	"github.com/wailsapp/wails/v2/pkg/options"
 	"github.com/wailsapp/wails/v2/pkg/options/assetserver"

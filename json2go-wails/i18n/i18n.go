@@ -7,7 +7,7 @@ import (
 	"slices"
 	"strings"
 
-	"github.com/fhluo/json2go/internal/config"
+	"github.com/fhluo/json2go/json2go-wails/internal/config"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/pelletier/go-toml/v2"
 	"github.com/samber/lo"

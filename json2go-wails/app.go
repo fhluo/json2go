@@ -7,11 +7,11 @@ import (
 	"os"
 	"strings"
 
-	"github.com/fhluo/json2go/i18n"
-	"github.com/fhluo/json2go/internal/config"
-	"github.com/fhluo/json2go/internal/examples"
-	"github.com/fhluo/json2go/internal/version"
-	"github.com/fhluo/json2go/pkg/json2go"
+	"github.com/fhluo/json2go/json2go"
+	"github.com/fhluo/json2go/json2go-wails/i18n"
+	"github.com/fhluo/json2go/json2go-wails/internal/config"
+	"github.com/fhluo/json2go/json2go-wails/internal/examples"
+	"github.com/fhluo/json2go/json2go-wails/internal/version"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 	"golang.design/x/clipboard"
 )

@@ -1,8 +1,8 @@
-/app/build/tools/
-/app/build/windows/installer/tmp/
+/json2go-wails/build/tools/
+/json2go-wails/build/windows/installer/tmp/
 
-/app/ui/dist/
-/app/ui/public/monaco-editor/
+/json2go-web/dist/
+/json2go-web/public/monaco-editor/
 
 .idea/
 node_modules/
