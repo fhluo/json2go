@@ -16,7 +16,7 @@ import (
 )
 
 var (
-	//go:embed all:ui/dist
+	//go:embed all:web/dist
 	assets  embed.FS
 	logFile *os.File
 )

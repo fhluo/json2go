@@ -1,7 +1,7 @@
 /json2go-wails/build/tools/
 /json2go-wails/build/windows/installer/tmp/
+/json2go-wails/web/dist/
 
-/json2go-web/dist/
 /json2go-web/public/monaco-editor/
 
 .idea/

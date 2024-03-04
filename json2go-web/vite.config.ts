@@ -10,5 +10,8 @@ export default defineConfig({
     alias: {
       "@": path.resolve(__dirname, "./src"),
     }
+  },
+  build: {
+    outDir: "../json2go-wails/web/dist"
   }
 })

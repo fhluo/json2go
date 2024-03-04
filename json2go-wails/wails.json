@@ -2,10 +2,10 @@
   "$schema": "https://wails.io/schemas/config.v2.json",
   "name": "json2go",
   "outputfilename": "json2go",
-  "frontend:dir": "ui",
-  "frontend:install": "pnpm install",
-  "frontend:build": "pnpm run build",
-  "frontend:dev:watcher": "pnpm run dev",
+  "frontend:dir": "../json2go-web",
+  "frontend:install": "task setup-web",
+  "frontend:build": "task build-web",
+  "frontend:dev:watcher": "task dev-web",
   "frontend:dev:serverUrl": "auto",
   "author": {
     "name": "fhluo",
@@ -14,7 +14,7 @@
   "info": {
     "companyName": "",
     "productName": "json2go",
-    "productVersion": "0.4.1",
+    "productVersion": "0.5.0",
     "copyright": "Copyright © 2022 fhluo",
     "comments": "Generate Go type definitions from JSON"
   }

@@ -16,36 +16,37 @@ tasks:
       - pnpm install
 
   copy-monaco:
-    dir: ./tools
+    dir: ./tools/copy-monaco
     cmds:
-      - go run ./copy-monaco
+      - go run .
 
   build-cli:
+    dir: ./json2go-cli
     cmds:
-      - go build -o ./app/build/bin/json2go-cli.exe ./cmd/json2go
+      - go build -o ../json2go-wails/build/bin/json2go-cli.exe
 
   build-web:
-    dir: ./app/ui
+    dir: ./json2go-web
     cmds:
       - pnpm build
 
   dev-web:
-    dir: ./app/ui
+    dir: ./json2go-web
     cmds:
       - pnpm dev
 
   check-web:
-    dir: ./app/ui
+    dir: ./json2go-web
     cmds:
       - pnpm check
 
   format-web:
-    dir: ./app/ui
+    dir: ./json2go-web
     cmds:
       - pnpm format
 
   build-gui:
-    dir: ./app
+    dir: ./json2go-wails
     deps:
       - copy-monaco
     cmds:
@@ -60,7 +61,7 @@ tasks:
     env:
       json2go_dev: true
       json2go_debug: true
-    dir: ./app
+    dir: ./json2go-wails
     deps:
       - copy-monaco
     cmds:
