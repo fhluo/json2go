@@ -2,8 +2,6 @@ package main
 
 import (
 	"log"
-
-	"github.com/fhluo/json2go/cmd"
 )
 
 func init() {
@@ -11,5 +9,5 @@ func init() {
 }
 
 func main() {
-	cmd.Execute()
+	Execute()
 }

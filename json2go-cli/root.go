@@ -1,4 +1,4 @@
-package cmd
+package main
 
 import (
 	"bytes"
@@ -9,7 +9,7 @@ import (
 	"path/filepath"
 
 	gen "github.com/dave/jennifer/jen"
-	"github.com/fhluo/json2go/pkg/json2go"
+	"github.com/fhluo/json2go/json2go"
 	"github.com/spf13/cobra"
 )
 
