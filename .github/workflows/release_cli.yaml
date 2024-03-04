@@ -20,9 +20,6 @@ jobs:
       - name: Set up Task
         run: go install github.com/go-task/task/v3/cmd/task@latest
 
-      - name: Setup
-        run: task setup
-
       - name: Build
         run: task build-cli
 
