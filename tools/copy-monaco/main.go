@@ -48,8 +48,8 @@ func findJSON2GoDir() string {
 func main() {
 	dir := findJSON2GoDir()
 
-	src := filepath.Join(dir, "app/ui/node_modules/monaco-editor/min/vs")
-	dst := filepath.Join(dir, "app/ui/public/monaco-editor/min/vs")
+	src := filepath.Join(dir, "json2go-web/node_modules/monaco-editor/min/vs")
+	dst := filepath.Join(dir, "json2go-web/public/monaco-editor/min/vs")
 
 	_ = os.MkdirAll(dst, 0660)
 

@@ -11,7 +11,7 @@ tasks:
       - go run github.com/fhluo/tools/setup-nsis@latest app/build/tools
 
   setup-web:
-    dir: ./app/ui
+    dir: ./json2go-web
     cmds:
       - pnpm install
 
