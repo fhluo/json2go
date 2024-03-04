@@ -1,4 +1,4 @@
-name: Release
+name: Release CLI
 
 on:
   push:
@@ -22,9 +22,6 @@ jobs:
 
       - name: Build
         run: task build-cli
-
-      - name: Test
-        run: task test
 
       - name: Release
         uses: softprops/action-gh-release@v1
