@@ -9,3 +9,6 @@ node_modules/
 
 *.exe*
 translate.*.toml
+
+go.work
+go.work.sum

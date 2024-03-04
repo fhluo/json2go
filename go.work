@@ -1,8 +1,0 @@
-go 1.22.0
-
-use (
-	./json2go
-	./json2go-cli
-	./json2go-wails
-	./tools/copy-monaco
-)
