@@ -1,25 +1,32 @@
 package main
 
 import (
-	"log"
+	"github.com/lmittmann/tint"
 	"log/slog"
 	"os"
 	"path/filepath"
+	"time"
 
 	cp "github.com/otiai10/copy"
 )
 
 func init() {
-	log.SetFlags(0)
+	slog.SetDefault(slog.New(
+		tint.NewHandler(os.Stderr, &tint.Options{
+			Level:      slog.LevelInfo,
+			TimeFormat: time.TimeOnly,
+		}),
+	))
 }
 
 func Copy(src string, dst string) {
-	if err := cp.Copy(src, dst); err != nil {
+	err := cp.Copy(src, dst)
+	if err != nil {
 		slog.Error("failed to copy", "err", err, "src", src, "dst", dst)
 		os.Exit(1)
-	} else {
-		slog.Info("copied", "src", src, "dst", dst)
 	}
+
+	slog.Info("copied", "src", src, "dst", dst)
 }
 
 // findJSON2GoDir finds the json2go directory.
@@ -45,6 +52,14 @@ func findJSON2GoDir() string {
 	return dir
 }
 
+var Paths = [...]string{
+	"base",
+	"basic-languages/go",
+	"editor",
+	"language/json",
+	"loader.js",
+}
+
 func main() {
 	dir := findJSON2GoDir()
 
@@ -53,9 +68,7 @@ func main() {
 
 	_ = os.MkdirAll(dst, 0660)
 
-	Copy(filepath.Join(src, "base"), filepath.Join(dst, "base"))
-	Copy(filepath.Join(src, "basic-languages", "go"), filepath.Join(dst, "basic-languages", "go"))
-	Copy(filepath.Join(src, "editor"), filepath.Join(dst, "editor"))
-	Copy(filepath.Join(src, "language", "json"), filepath.Join(dst, "language", "json"))
-	Copy(filepath.Join(src, "loader.js"), filepath.Join(dst, "loader.js"))
+	for _, path := range Paths {
+		Copy(filepath.Join(src, path), filepath.Join(dst, path))
+	}
 }
