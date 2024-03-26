@@ -1,25 +1,9 @@
-import i18n from "i18next";
-import { initReactI18next } from "react-i18next";
-import en from "../../locales/en.json";
-import zh from "../../locales/zh.json";
+import {getLocaleFromNavigator, init, register} from "svelte-i18n";
 
-const resources = {
-	en: {
-		translation: en,
-	},
-	zh: {
-		translation: zh,
-	},
-};
+register("en", () => import("../../locales/en.json"))
+register("zh", () => import("../../locales/zh.json"))
 
-const languages = Object.keys(resources);
-
-void i18n.use(initReactI18next).init({
-	resources,
-	lng: "en",
-	interpolation: {
-		escapeValue: false,
-	},
-});
-
-export { i18n, languages };
+init({
+    fallbackLocale: "en",
+    initialLocale: getLocaleFromNavigator(),
+})

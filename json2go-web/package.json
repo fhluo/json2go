@@ -29,6 +29,7 @@
     "bits-ui": "^0.19.7",
     "clsx": "^2.1.0",
     "monaco-editor": "^0.46.0",
+    "svelte-i18n": "^4.0.0",
     "svelte-radix": "^1.1.0",
     "tailwind-merge": "^2.2.2",
     "tailwind-variants": "^0.2.1"
