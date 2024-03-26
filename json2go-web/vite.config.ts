@@ -1,15 +1,15 @@
-import path from "path"
 import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react-swc'
+import { svelte } from '@sveltejs/vite-plugin-svelte'
+import path from "path"
 
 // https://vitejs.dev/config/
 export default defineConfig({
   appType: "mpa",
-  plugins: [react()],
+  plugins: [svelte()],
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-    }
+      "$lib": path.resolve("./src/lib"),
+    },
   },
   build: {
     outDir: "../json2go-wails/web/dist"
