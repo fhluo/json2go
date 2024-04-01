@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/dialog.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { useAllCapsWordsStore } from "@/lib/store.ts";
-import { FormEvent, useEffect, useState } from "react";
+import { type FormEvent, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 function onBeforeInput(event: FormEvent<HTMLInputElement>) {

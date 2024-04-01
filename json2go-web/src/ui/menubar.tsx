@@ -1,7 +1,7 @@
 import { Dialog } from "@/components/ui/dialog.tsx";
 import { Menubar } from "@/components/ui/menubar.tsx";
 import { useDialogStore } from "@/store/dialog.ts";
-import { PropsWithChildren } from "react";
+import type { PropsWithChildren } from "react";
 
 export default function ({ children }: PropsWithChildren) {
 	const dialog = useDialogStore((state) => state.dialog);

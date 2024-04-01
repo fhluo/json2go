@@ -1,5 +1,5 @@
 import type { Button as ButtonPrimitive } from "bits-ui";
-import { tv, type VariantProps } from "tailwind-variants";
+import { type VariantProps, tv } from "tailwind-variants";
 import Root from "./button.svelte";
 
 const buttonVariants = tv({
@@ -11,7 +11,8 @@ const buttonVariants = tv({
 				"bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90",
 			outline:
 				"border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground",
-			secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+			secondary:
+				"bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
 			ghost: "hover:bg-accent hover:text-accent-foreground",
 			link: "text-primary underline-offset-4 hover:underline",
 		},
