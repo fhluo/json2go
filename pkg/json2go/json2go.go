@@ -61,3 +61,4 @@ func Generate(json string) (string, error) {
 func GenerateFromBytes(json []byte) (string, error) {
 	return DefaultOptions.GenerateFromBytes(json)
 }
+  

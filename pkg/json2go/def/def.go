@@ -2,12 +2,12 @@ package def
 
 import (
 	"fmt"
-
 	gen "github.com/dave/jennifer/jen"
 	"github.com/fhluo/json2go/json2go/conv"
 	"github.com/fhluo/json2go/json2go/scanner"
 	"github.com/fhluo/json2go/json2go/token"
 	"github.com/samber/lo"
+	"slices"
 )
 
 type Context struct {
@@ -122,10 +122,14 @@ func (c *Context) objectType() (Type, error) {
 	}
 
 	return Struct{
-		Fields: lo.Map(keys, func(key string, i int) *Field {
-			return &Field{
-				Key:  key,
-				Type: types[i],
+		Fields: slices.Collect(func(yield func(field *Field) bool) {
+			for i, key := range keys {
+				if !yield(&Field{
+					Key:  key,
+					Type: types[i],
+				}) {
+					return
+				}
 			}
 		}),
 		CamelCaseConverter: c.CamelCaseConverter,
@@ -230,9 +234,9 @@ func (c *Context) deduceStruct(types []Type) Struct {
 		fields := m[key]
 		field := fields[0]
 
-		field.Type = c.deduce(lo.Map(fields, func(field *Field, _ int) Type {
+		field.Type = c.deduce(slices.Collect(xiter.Map(slices.Values(fields), func(field *Field) Type {
 			return field.Type
-		}))
+		})))
 		field.OmitEmpty = len(fields) != len(types)
 		if field.OmitEmpty {
 			field.Type = field.Type.Nullable()

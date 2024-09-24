@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"iter"
 	"unicode/utf8"
 
 	"github.com/fhluo/json2go/json2go/stack"
@@ -192,6 +193,25 @@ scanAgain:
 		return token.EOF, "", nil
 	default:
 		return token.Illegal, "", fmt.Errorf("illegal character %c", s.character)
+	}
+}
+
+type Decoder struct {
+	*json.Decoder
+}
+
+func (d Decoder) Scan() iter.Seq2[json.Token, error] {
+	return func(yield func(json.Token, error) bool) {
+		for {
+			t, err := d.Decoder.Token()
+			if errors.Is(err, io.EOF) {
+				return
+			}
+
+			if !yield(t, err) {
+				return
+			}
+		}
 	}
 }
 

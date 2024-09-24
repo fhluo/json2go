@@ -1,10 +1,9 @@
 package conv
 
 import (
+	"maps"
 	"regexp"
 	"strings"
-
-	"github.com/samber/lo"
 )
 
 type CamelCaseConverter interface {
@@ -18,8 +17,12 @@ type DefaultCamelCaseConverter struct {
 
 func NewDefaultCamelCaseConverter(allCaps []string) DefaultCamelCaseConverter {
 	return DefaultCamelCaseConverter{
-		allCaps: lo.SliceToMap(allCaps, func(s string) (string, bool) {
-			return s, true
+		allCaps: maps.Collect(func(yield func(string, bool) bool) {
+			for _, item := range allCaps {
+				if !yield(item, true) {
+					return
+				}
+			}
 		}),
 		converted: make(map[string]string),
 	}
