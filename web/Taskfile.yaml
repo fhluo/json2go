@@ -21,7 +21,7 @@ tasks:
     generates:
       - web/public/monaco-editor/min/vs/*
     cmds:
-      - go run ../cmd/copy --verbose --src web/node_modules/monaco-editor/min/vs --dst web/public/monaco-editor/min/vs base basic-languages/go editor language/json loader.js
+      - go run ../cmd/copy --src node_modules/monaco-editor/min/vs --dst public/monaco-editor/min/vs base basic-languages/go editor language/json loader.js
 
   build:
     summary: Build the project
