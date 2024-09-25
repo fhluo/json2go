@@ -5,14 +5,15 @@ go 1.23.1
 require (
 	github.com/Masterminds/semver v1.5.0
 	github.com/dave/jennifer v1.7.1
-	github.com/fhluo/pkg v0.0.0-20231222091306-8995d1d5af88
 	github.com/lmittmann/tint v1.0.5
 	github.com/nicksnyder/go-i18n/v2 v2.4.0
 	github.com/otiai10/copy v1.14.0
 	github.com/pelletier/go-toml/v2 v2.2.3
 	github.com/pkg/errors v0.9.1
 	github.com/samber/lo v1.47.0
+	github.com/spf13/cast v1.7.0
 	github.com/spf13/cobra v1.8.1
+	github.com/spf13/viper v1.19.0
 	github.com/stretchr/testify v1.9.0
 	github.com/wailsapp/wails/v3 v3.0.0-alpha.7
 	golang.design/x/clipboard v0.7.0
@@ -60,9 +61,7 @@ require (
 	github.com/skeema/knownhosts v1.3.0 // indirect
 	github.com/sourcegraph/conc v0.3.0 // indirect
 	github.com/spf13/afero v1.11.0 // indirect
-	github.com/spf13/cast v1.7.0 // indirect
 	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/spf13/viper v1.19.0 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
 	github.com/wailsapp/go-webview2 v1.0.16 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
