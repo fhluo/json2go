@@ -23,15 +23,10 @@ jobs:
         with:
           go-version: 'stable'
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 20
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+          bun-version: latest
 
       - name: Set up Task
         run: go install github.com/go-task/task/v3/cmd/task@latest
@@ -41,3 +36,6 @@ jobs:
 
       - name: Build
         run: task build
+
+      - name: Test
+        run: task test
