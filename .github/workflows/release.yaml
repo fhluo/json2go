@@ -17,15 +17,10 @@ jobs:
         with:
           go-version: 'stable'
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
         with:
-          node-version: 21
-
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v3
-        with:
-          version: 8
+          bun-version: latest
 
       - name: Set up Task
         run: go install github.com/go-task/task/v3/cmd/task@latest
@@ -34,11 +29,11 @@ jobs:
         run: task setup
 
       - name: Build
-        run: task build-wails
+        run: task build
 
       - name: Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           files: |
-            json2go-wails/build/bin/json2go.exe
-            json2go-wails/build/bin/json2go-amd64-installer.exe
+            app/build/bin/json2go.exe
+            app/build/bin/json2go-amd64-installer.exe
