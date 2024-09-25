@@ -2,7 +2,7 @@ name: Release Wails
 
 on:
   push:
-    tags: ["json2go-wails/v*.*.*"]
+    tags: ["v*.*.*"]
 
 jobs:
   release:
