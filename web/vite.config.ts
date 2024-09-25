@@ -7,11 +7,6 @@ import path from "path"
 export default defineConfig({
   appType: "mpa",
   plugins: [tailwindcss(), svelte()],
-  resolve: {
-    alias: {
-      "$lib": path.resolve("./src/lib"),
-    },
-  },
   build: {
     outDir: "../app/web/dist"
   },
