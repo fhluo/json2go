@@ -1,15 +1,4 @@
-/json2go-wails/build/tools/
-/json2go-wails/build/windows/installer/tmp/
-/json2go-wails/web/dist/index.html
-/json2go-wails/web/dist/*/
-
-/json2go-web/public/monaco-editor/
-
 .idea/
-node_modules/
 
 *.exe*
 translate.*.toml
-
-go.work
-go.work.sum
