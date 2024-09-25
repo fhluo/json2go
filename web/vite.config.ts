@@ -14,5 +14,9 @@ export default defineConfig({
   },
   build: {
     outDir: "../app/web/dist"
+  },
+  server: {
+    port: 9245,
+    strictPort: true,
   }
 })
