@@ -26,11 +26,7 @@
   "dependencies": {
     "@monaco-editor/loader": "^1.4.0",
     "bits-ui": "^0.19.7",
-    "clsx": "^2.1.1",
     "monaco-editor": "^0.46.0",
-    "svelte-i18n": "^4.0.0",
-    "svelte-radix": "^1.1.1",
-    "tailwind-merge": "^2.5.2",
-    "tailwind-variants": "^0.2.1"
+    "svelte-i18n": "^4.0.0"
   }
 }
