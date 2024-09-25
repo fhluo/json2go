@@ -1,6 +1,6 @@
 <script lang="ts">
     import {getContext} from "svelte";
-    import {type ConfigState, openHomePage} from "$lib/api.svelte";
+    import {type ConfigState, openHomePage} from "src/lib/api.svelte";
     import {_} from "svelte-i18n"
     import {Dialog, Button, Tooltip} from "bits-ui";
 
