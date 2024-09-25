@@ -5,6 +5,9 @@ vars:
   BIN_DIR: "bin"
   VITE_PORT: '{{.WAILS_VITE_PORT | default 9245}}'
 
+includes:
+  web: ../web/Taskfile.yaml
+
 tasks:
 
   ## -------------------------- Build -------------------------- ##
@@ -204,7 +207,7 @@ tasks:
         vars:
           ARCH: '{{.ARCH}}'
     vars:
-        ARCH: '{{.ARCH | default ARCH}}'
+      ARCH: '{{.ARCH | default ARCH}}'
 
   package:windows:arm64:
     summary: Packages a production build of the application into a `.exe` bundle
@@ -321,9 +324,9 @@ tasks:
     summary: Generates a `.desktop` file
     dir: build
     sources:
-        - "appicon.png"
+      - "appicon.png"
     generates:
-        - '{{.ROOT_DIR}}/build/appimage/{{.APP_NAME}}.desktop'
+      - '{{.ROOT_DIR}}/build/appimage/{{.APP_NAME}}.desktop'
     cmds:
       - mkdir -p {{.ROOT_DIR}}/build/appimage
       # Run `wails3 generate .desktop -help` for all the options
@@ -360,33 +363,18 @@ tasks:
 
   install:frontend:deps:
     summary: Install frontend dependencies
-    dir: ../web
-    sources:
-      - package.json
-      - bun.lockb
-    generates:
-      - node_modules/*
-    preconditions:
-      - sh: bun --version
-        msg: "Bun is required. Please install it from https://bun.sh/"
-    cmds:
-      # - bun install --silent --no-progress
-      - bun install
+    deps:
+      - task: web:install
 
   build:frontend:
     summary: Build the frontend project
     dir: ../web
-    sources:
-      - "**/*"
-    generates:
-      - ../app/web/dist/*
     deps:
       - install:frontend:deps
       - task: generate:bindings
         vars:
           BUILD_FLAGS: '{{.BUILD_FLAGS}}'
-    cmds:
-      - bun run build --silent
+      - task: web:build
 
   generate:bindings:
     summary: Generates bindings for the frontend
@@ -410,7 +398,7 @@ tasks:
     cmds:
       - go mod tidy
 
-# ----------------------- dev ----------------------- #
+  # ----------------------- dev ----------------------- #
 
 
   run:
@@ -432,11 +420,8 @@ tasks:
 
   dev:frontend:
     summary: Runs the frontend in development mode
-    dir: ../web
     deps:
-      - task: install:frontend:deps
-    cmds:
-      - bun run dev -- --port {{.VITE_PORT}} --strictPort
+      - task: web:dev
 
   dev:
     summary: Runs the application in development mode

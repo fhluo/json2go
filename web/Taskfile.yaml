@@ -1,0 +1,58 @@
+version: 3
+
+tasks:
+  install:
+    summary: Install dependencies
+    sources:
+      - package.json
+      - bun.lockb
+    generates:
+      - node_modules/*
+    preconditions:
+      - sh: bun --version
+        msg: "Bun is required. Please install it from https://bun.sh/"
+    cmds:
+      - bun install
+
+  copy-monaco:
+    summary: Copy Monaco Editor assets
+    sources:
+      - web/node_modules/monaco-editor/min/vs/*
+    generates:
+      - web/public/monaco-editor/min/vs/*
+    cmds:
+      - go run ../cmd/copy --verbose --src web/node_modules/monaco-editor/min/vs --dst web/public/monaco-editor/min/vs base basic-languages/go editor language/json loader.js
+
+  build:
+    summary: Build the project
+    sources:
+      - "**/*"
+    generates:
+      - ../app/web/dist/*
+    deps:
+      - install
+      - copy-monaco
+    cmds:
+      - bun run build
+
+  dev:
+    summary: Start the development server
+    deps:
+      - install
+      - copy-monaco
+    cmds:
+      - bun run dev
+
+  check:
+    summary: Check the project
+    deps:
+      - install
+    cmds:
+      - bun check
+
+  format:
+    summary: Format the project
+    deps:
+      - install
+    cmds:
+      - bun format

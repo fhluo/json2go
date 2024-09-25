@@ -3,15 +3,18 @@ version: 3
 env:
   Path: "{{.PWD}}/app/build/tools/nsis/Bin;{{.PWD}}/app/build/tools/upx;{{.PATH}}"
 
+includes:
+  web: ./web/Taskfile.yaml
+  app: ./app/Taskfile.yaml
+
 tasks:
   setup-wails:
     cmds:
-      - go install github.com/wailsapp/wails/v2/cmd/wails@latest
+      - go install github.com/wailsapp/wails/v3/cmd/wails@latest
 
   setup-web:
-    dir: ./json2go-web
-    cmds:
-      - pnpm install
+    deps:
+      - task: web:install
 
   setup-upx:
     cmds:
@@ -32,7 +35,7 @@ tasks:
     env:
       GOOS: windows
       GOARCH: amd64
-    dir: ./json2go-cli
+    dir: cmd/json2go
     cmds:
       - go build -o json2go-cli_windows-amd64.exe
 
@@ -40,35 +43,8 @@ tasks:
     deps:
       - build-cli-windows
 
-  build-web:
-    dir: ./json2go-web
-    cmds:
-      - pnpm build
-
-  dev-web:
-    dir: ./json2go-web
-    cmds:
-      - pnpm dev
-
-  check-web:
-    dir: ./json2go-web
-    cmds:
-      - pnpm check
-
-  format-web:
-    dir: ./json2go-web
-    cmds:
-      - pnpm format
-
-  copy-monaco:
-    dir: ./tools/copy-monaco
-    cmds:
-      - go run .
-
   build-wails:
-    dir: ./json2go-wails
-    deps:
-      - copy-monaco
+    dir: app
     cmds:
       - go run github.com/fhluo/tools/wails-build@latest --upx --path='./build/tools/upx' --nsis --path='./build/tools/nsis/Bin'
 
@@ -81,7 +57,7 @@ tasks:
     env:
       json2go_dev: true
       json2go_debug: true
-    dir: ./json2go-wails
+    dir: app
     deps:
       - copy-monaco
     cmds:
@@ -89,7 +65,4 @@ tasks:
 
   test:
     cmds:
-      - go test -v ./json2go/...
-      - go test -v ./json2go-cli/...
-      - go test -v ./json2go-wails/...
-      - go test -v ./tools/copy-monaco/...
+      - go test -v ./...
