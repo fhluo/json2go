@@ -13,7 +13,7 @@ includes:
 
 tasks:
   setup-wails:
-    cmd: go install github.com/wailsapp/wails/v3/cmd/wails@latest
+    cmd: go install github.com/wailsapp/wails/v3/cmd/wails3@latest
 
   setup-upx:
     cmd: go run github.com/fhluo/tools/setup-upx@latest
