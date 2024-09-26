@@ -59,8 +59,8 @@
   },
   "updates": {
     "title": "Check for updates",
-    "none": "You are using the latest version.",
-    "available": "A new version is available: ",
+    "latest": "You are using the latest version.",
+    "new": "A new version is available: ",
     "failed": "Unable to check for updates.",
     "checking": "Checking for updates..."
   },

@@ -26,10 +26,8 @@
         if (isChecking) {
             message = $_("updates.checking", {default: "Checking..."});
         } else if (version && latestVersion && version === latestVersion) {
-            // todo: update key updates.none to updates.latest in translations file
             message = $_("updates.latest", {default: "You are using the latest version."});
         } else if (version && latestVersion && version !== latestVersion) {
-            // todo: update key updates.available to updates.new in translations file
             message = $_("updates.new", {default: "A new version is available: "}) + `v${latestVersion}`;
         } else {
             message = $_("updates.failed", {default: "Unable to check for updates."});
