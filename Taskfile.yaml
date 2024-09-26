@@ -13,25 +13,18 @@ includes:
 
 tasks:
   setup-wails:
-    cmds:
-      - go install github.com/wailsapp/wails/v3/cmd/wails@latest
-
-  setup-web:
-    deps:
-      - task: web:install
+    cmd: go install github.com/wailsapp/wails/v3/cmd/wails@latest
 
   setup-upx:
-    cmds:
-      - go run github.com/fhluo/tools/setup-upx@latest json2go-wails/build/tools
+    cmd: go run github.com/fhluo/tools/setup-upx@latest
 
   setup-nsis:
-    cmds:
-      - go run github.com/fhluo/tools/setup-nsis@latest json2go-wails/build/tools
+    cmd: go run github.com/fhluo/tools/setup-nsis@latest
 
   setup:
     deps:
       - setup-wails
-      - setup-web
+      - task: web:install
       - setup-upx
       - setup-nsis
 
@@ -50,7 +43,8 @@ tasks:
   build-wails:
     dir: app
     cmds:
-      - go run github.com/fhluo/tools/wails-build@latest --upx --path='./build/tools/upx' --nsis --path='./build/tools/nsis/Bin'
+#      - go run github.com/fhluo/tools/wails-build@latest --upx --path='./build/tools/upx' --nsis --path='./build/tools/nsis/Bin'
+      - wails build
 
   build:
     deps:
