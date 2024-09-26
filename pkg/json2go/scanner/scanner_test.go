@@ -4,7 +4,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/fhluo/json2go/json2go/token"
+	"github.com/fhluo/json2go/pkg/json2go/token"
+
 	"github.com/stretchr/testify/assert"
 )
 

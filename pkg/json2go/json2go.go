@@ -2,7 +2,7 @@ package json2go
 
 import (
 	"github.com/dave/jennifer/jen"
-	"github.com/fhluo/json2go/json2go/def"
+	"github.com/fhluo/json2go/pkg/json2go/def"
 )
 
 var DefaultOptions = Options{TypeName: "T"}
@@ -61,4 +61,3 @@ func Generate(json string) (string, error) {
 func GenerateFromBytes(json []byte) (string, error) {
 	return DefaultOptions.GenerateFromBytes(json)
 }
-  
