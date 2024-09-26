@@ -2,12 +2,14 @@ package def
 
 import (
 	"fmt"
-	gen "github.com/dave/jennifer/jen"
-	"github.com/fhluo/json2go/json2go/conv"
-	"github.com/fhluo/json2go/json2go/scanner"
-	"github.com/fhluo/json2go/json2go/token"
-	"github.com/samber/lo"
 	"slices"
+
+	gen "github.com/dave/jennifer/jen"
+	"github.com/fhluo/json2go/pkg/json2go/conv"
+	"github.com/fhluo/json2go/pkg/json2go/scanner"
+	"github.com/fhluo/json2go/pkg/json2go/token"
+	"github.com/fhluo/json2go/pkg/xiter"
+	"github.com/samber/lo"
 )
 
 type Context struct {
@@ -234,9 +236,14 @@ func (c *Context) deduceStruct(types []Type) Struct {
 		fields := m[key]
 		field := fields[0]
 
-		field.Type = c.deduce(slices.Collect(xiter.Map(slices.Values(fields), func(field *Field) Type {
-			return field.Type
-		})))
+		field.Type = c.deduce(slices.Collect(
+			xiter.Map(
+				func(field *Field) Type {
+					return field.Type
+				},
+				slices.Values(fields),
+			),
+		))
 		field.OmitEmpty = len(fields) != len(types)
 		if field.OmitEmpty {
 			field.Type = field.Type.Nullable()

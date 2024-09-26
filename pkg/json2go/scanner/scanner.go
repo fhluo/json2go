@@ -8,8 +8,9 @@ import (
 	"iter"
 	"unicode/utf8"
 
-	"github.com/fhluo/json2go/json2go/stack"
-	"github.com/fhluo/json2go/json2go/token"
+	"github.com/fhluo/json2go/pkg/json2go/stack"
+	"github.com/fhluo/json2go/pkg/json2go/token"
+
 	"github.com/pkg/errors"
 )
 
