@@ -6,6 +6,12 @@
 
     const ui = getContext<UIState>("ui");
     const editors = getContext<EditorsState>("editors");
+
+    export interface Props {
+        goElement: HTMLElement;
+    }
+
+    let {goElement = $bindable<HTMLElement>()}: Props = $props();
 </script>
 
 <div id="container-go" class="group" class:hidden={ui.hideGoEditor} class:col-span-2={ui.showTwoColumns}
@@ -18,5 +24,5 @@
             {$_("Copy")}
         </button>
     </div>
-    <div class="w-full h-32 grow" id="go-editor"></div>
+    <div class="w-full h-32 grow" id="go-editor" bind:this={goElement}></div>
 </div>
