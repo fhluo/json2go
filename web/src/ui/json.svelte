@@ -6,6 +6,12 @@
 
     const ui = getContext<UIState>("ui");
     const editors = getContext<EditorsState>("editors");
+
+    export interface Props {
+        jsonElement: HTMLElement;
+    }
+
+    let {jsonElement = $bindable<HTMLElement>()}: Props = $props();
 </script>
 
 <div id="container-json" class="group" class:hidden={ui.hideJSONEditor} class:col-span-2={ui.showTwoColumns}
@@ -18,5 +24,5 @@
             {$_("Paste")}
         </button>
     </div>
-    <div class="w-full h-32 grow" id="json-editor"></div>
+    <div class="w-full h-32 grow" id="json-editor" bind:this={jsonElement}></div>
 </div>
