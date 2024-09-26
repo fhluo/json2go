@@ -6,10 +6,6 @@
 
     const ui = getContext<UIState>("ui");
     const editors = getContext<EditorsState>("editors");
-
-    function pasteJSON() {
-        editors.pasteToJSONEditor();
-    }
 </script>
 
 <div id="container-json" class="group" class:hidden={ui.hideJSONEditor} class:col-span-2={ui.showTwoColumns}
@@ -18,7 +14,7 @@
         <span class="py-1 px-4 select-none text-yellow-700 font-mono group-focus-within:text-yellow-500">
             JSON
         </span>
-        <button type="button" on:click={pasteJSON}>
+        <button type="button" on:click={editors.pasteToJSONEditor}>
             {$_("Paste")}
         </button>
     </div>
