@@ -25,8 +25,8 @@
   },
   "dependencies": {
     "@monaco-editor/loader": "^1.4.0",
-    "bits-ui": "^0.19.7",
-    "monaco-editor": "^0.46.0",
+    "bits-ui": "^0.21.15",
+    "monaco-editor": "^0.52.0",
     "svelte-i18n": "^4.0.0"
   }
 }
