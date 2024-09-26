@@ -2,3 +2,5 @@
 
 *.exe*
 translate.*.toml
+
+.task/
