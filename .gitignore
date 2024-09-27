@@ -1,7 +1,7 @@
 .idea/
 
 *.syso
-*.exe*
+*.exe
 translate.*.toml
 
 .task/
