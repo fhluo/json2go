@@ -3,7 +3,7 @@
     import {_} from "svelte-i18n";
     import {Menubar} from "bits-ui";
     import {EventsEmit} from "../../../wailsjs/runtime";
-    import Settings from "@/ui/dialogs/settings.svelte";
+    import Settings from "../../ui/dialogs/settings.svelte";
     import type {EditorsState} from "../../state/editors.svelte";
 
     const editors = getContext<EditorsState>("editors");

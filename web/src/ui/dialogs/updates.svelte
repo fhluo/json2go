@@ -2,8 +2,8 @@
     import {getContext} from "svelte";
     import {Button, Dialog} from "bits-ui";
     import {_} from "svelte-i18n";
-    import type {ConfigState} from "src/lib/api.svelte";
-    import {openRelease} from "src/lib/api.svelte";
+    import type {ConfigState} from "../../lib/api.svelte";
+    import {openRelease} from "../../lib/api.svelte";
     import {GetLatestVersion, GetVersion} from "../../../wailsjs/go/main/App";
 
     let config = getContext<ConfigState>("config");

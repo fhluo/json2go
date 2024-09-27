@@ -2,8 +2,7 @@
     import {getContext} from "svelte";
     import {_} from "svelte-i18n";
     import {Menubar} from "bits-ui";
-    import type {UIState} from "src/state/ui.svelte";
-    import {Layout, View} from "src/state/ui.svelte";
+    import  {type UIState, Layout, View} from "../../state/ui.svelte";
 
     const ui = getContext<UIState>("ui");
 

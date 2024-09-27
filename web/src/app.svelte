@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onMount } from "svelte";
     import { getContext, setContext } from "svelte";
     import { EventsEmit, EventsOn } from "../wailsjs/runtime";
     import { createConfigState } from "./lib/api.svelte";
