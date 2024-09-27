@@ -7,8 +7,6 @@ var (
 	jsonExample string
 	//go:embed "data/Get the latest release.json"
 	getTheLatestRelease string
-	//go:embed "data/package.json"
-	packageJSON string
 
 	Examples = []Example{
 		{
@@ -18,10 +16,6 @@ var (
 		{
 			Title:   "Github API Response",
 			Content: getTheLatestRelease,
-		},
-		{
-			Title:   "package.json",
-			Content: packageJSON,
 		},
 	}
 )
