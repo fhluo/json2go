@@ -44,7 +44,7 @@ tasks:
     dir: app
     cmds:
 #      - go run github.com/fhluo/tools/wails-build@latest --upx --path='./build/tools/upx' --nsis --path='./build/tools/nsis/Bin'
-      - wails build
+      - wails3 task build
 
   build:
     deps:
@@ -59,7 +59,7 @@ tasks:
     deps:
       - copy-monaco
     cmds:
-      - wails dev
+      - wails3 task dev
 
   test:
     cmds:
