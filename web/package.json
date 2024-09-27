@@ -29,6 +29,7 @@
     "bits-ui": "^0.21.15",
     "lucide-svelte": "^0.446.0",
     "monaco-editor": "^0.52.0",
-    "svelte-i18n": "^4.0.0"
+    "svelte-i18n": "^4.0.0",
+    "@wailsio/runtime": "^3.0.0-alpha.27"
   }
 }

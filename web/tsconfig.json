@@ -22,11 +22,10 @@
       "@lib/*": ["src/lib/*"],
       "@state/*": ["src/state/*"],
       "@ui/*": ["src/ui/*"],
-      "@wails/*": ["wailsjs/*"],
       "@api/*": ["bindings/github.com/fhluo/json2go/*"]
     }
   },
   "include": ["src/**/*.ts", "src/**/*.js", "src/**/*.svelte"],
-  "exclude": ["src/wailsjs"],
+  "exclude": ["bindings"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
