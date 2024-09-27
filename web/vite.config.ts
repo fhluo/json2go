@@ -13,7 +13,6 @@ export default defineConfig({
       "@state": path.resolve(__dirname, "src/state"),
       "@lib": path.resolve(__dirname, "src/lib"),
       "@ui": path.resolve(__dirname, "src/ui"),
-      "@wails": path.resolve(__dirname, "wailsjs"),
       "@api": path.resolve(__dirname, "bindings/github.com/fhluo/json2go"),
     }
   },
