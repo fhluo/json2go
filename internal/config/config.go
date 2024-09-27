@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/fhluo/pkg/config"
+	"github.com/fhluo/json2go/pkg/config"
 	"os"
 	"path/filepath"
 )
