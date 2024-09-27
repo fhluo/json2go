@@ -1,17 +1,5 @@
-import {
-	GetAllCapsWords,
-	GetFontSize,
-	GetLocale,
-	GetOptionsGenerateInRealTime,
-	GetOptionsValidJSONBeforeGeneration,
-	GetVersion,
-	SetAllCapsWords,
-	SetFontSize,
-	SetLocale,
-	SetOptionsGenerateInRealTime,
-	SetOptionsValidJSONBeforeGeneration,
-} from "../../wailsjs/go/main/App";
-import { BrowserOpenURL } from "../../wailsjs/runtime";
+import {Config, Version} from "@api/app/services";
+import {Browser} from "@wailsio/runtime";
 
 function splitWords(words: string): string[] {
 	return words
@@ -32,26 +20,26 @@ export function createConfigState() {
 
 	return {
 		async init() {
-			locale = await GetLocale();
-			fontSize = await GetFontSize();
-			allCapsWords = await GetAllCapsWords();
-			validJSON = await GetOptionsValidJSONBeforeGeneration();
-			realTime = await GetOptionsGenerateInRealTime();
-			version = await GetVersion();
+			locale = await Config.GetLocale();
+			fontSize = await Config.GetFontSize();
+			allCapsWords = await Config.GetAllCapsWords();
+			validJSON = await Config.GetOptionsValidJSONBeforeGeneration();
+			realTime = await Config.GetOptionsGenerateInRealTime();
+			version = await Version.GetVersion();
 		},
 		get locale() {
 			return locale;
 		},
 		set locale(value) {
 			locale = value;
-			void SetLocale(locale);
+			void Config.SetLocale(locale);
 		},
 		get fontSize() {
 			return fontSize;
 		},
 		set fontSize(value) {
 			fontSize = value;
-			void SetFontSize(fontSize);
+			void Config.SetFontSize(fontSize);
 		},
 		increaseFontSize() {
 			this.fontSize += 1;
@@ -67,7 +55,7 @@ export function createConfigState() {
 		},
 		set allCapsWords(value) {
 			allCapsWords = value;
-			void SetAllCapsWords(allCapsWords);
+			void Config.SetAllCapsWords(allCapsWords);
 		},
 		addAllCapsWords(words: string) {
 			this.allCapsWords = Array.from(
@@ -85,14 +73,14 @@ export function createConfigState() {
 		},
 		set validJSON(value) {
 			validJSON = value;
-			void SetOptionsValidJSONBeforeGeneration(validJSON);
+			void Config.SetOptionsValidJSONBeforeGeneration(validJSON);
 		},
 		get realTime() {
 			return realTime;
 		},
 		set realTime(value) {
 			realTime = value;
-			void SetOptionsGenerateInRealTime(realTime);
+			void Config.SetOptionsGenerateInRealTime(realTime);
 		},
 		get version() {
 			return version;
@@ -103,9 +91,9 @@ export function createConfigState() {
 export type ConfigState = ReturnType<typeof createConfigState>;
 
 export function openHomePage() {
-	BrowserOpenURL("https://github.com/fhluo/json2go");
+	void Browser.OpenURL("https://github.com/fhluo/json2go");
 }
 
 export function openRelease(version: string) {
-	BrowserOpenURL(`https://github.com/fhluo/json2go/releases/tag/v${version}`);
+	void Browser.OpenURL(`https://github.com/fhluo/json2go/releases/tag/v${version}`);
 }

@@ -1,16 +1,16 @@
 <script lang="ts">
     import { getContext } from "svelte";
-    import { GetExamples } from "../../../wailsjs/go/main/App";
-    import { examples } from "../../../wailsjs/go/models";
     import { _ } from "svelte-i18n";
     import { Menubar } from "bits-ui";
     import type { EditorsState } from "../../state/editors.svelte";
+    import {Examples} from "@api/app/services";
+    import {Example} from "@api/internal/examples";
 
-    let exampleList: examples.Example[] = [];
+    let exampleList: Example[] = [];
     const editors = getContext<EditorsState>("editors");
 
     $effect(() => {
-        GetExamples().then((examples) => {
+        Examples.All().then((examples) => {
             exampleList = examples;
         });
     });

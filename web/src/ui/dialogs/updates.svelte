@@ -4,7 +4,7 @@
     import {_} from "svelte-i18n";
     import type {ConfigState} from "../../lib/api.svelte";
     import {openRelease} from "../../lib/api.svelte";
-    import {GetLatestVersion, GetVersion} from "../../../wailsjs/go/main/App";
+    import {Version} from "@api/app/services";
 
     let config = getContext<ConfigState>("config");
     let version = $state("");
@@ -13,7 +13,7 @@
     let isChecking = $state(true);
 
     $effect(() => {
-        Promise.all([GetVersion(), GetLatestVersion()]).then(
+        Promise.all([Version.GetVersion(), Version.GetLatestVersion()]).then(
             ([version_, latestVersion_]) => {
                 version = version_;
                 latestVersion = latestVersion_;
