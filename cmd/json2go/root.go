@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"github.com/fhluo/json2go/pkg/json2go"
 	"io"
 	"log"
 	"log/slog"
@@ -9,7 +10,6 @@ import (
 	"path/filepath"
 
 	gen "github.com/dave/jennifer/jen"
-	"github.com/fhluo/json2go/json2go"
 	"github.com/spf13/cobra"
 )
 
