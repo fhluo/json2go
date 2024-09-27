@@ -1,6 +1,6 @@
 import {editor} from "monaco-editor";
 import loader from "@monaco-editor/loader"
-import {Generate, OpenJSONFile, ReadClipboard, SaveGoSourceFile, WriteClipboard} from "../../wailsjs/go/main/App";
+import {Clipboard, Dialogs, JSON2Go} from "@api/app/services";
 
 function loaderConfig(language: string) {
     return {
@@ -124,19 +124,19 @@ export function createEditorsState(
             }
         },
         async json2go() {
-            this.go = await Generate(this.json)
+            this.go = await JSON2Go.Generate(this.json)
         },
         async pasteToJSONEditor() {
-            this.json = await ReadClipboard()
+            this.json = await Clipboard.Read()
         },
         async copyFromGoEditor() {
-            await WriteClipboard(this.go)
+            Clipboard.Write(this.go)
         },
         async openJSONFile() {
-            this.json = await OpenJSONFile()
+            this.json = await Dialogs.OpenJSONFile()
         },
         async saveGoFile() {
-            await SaveGoSourceFile(this.go)
+            await Dialogs.SaveGoSourceFile(this.go)
         },
         get jsonEditor() {
             return jsonEditor

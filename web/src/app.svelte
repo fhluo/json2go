@@ -1,6 +1,5 @@
 <script lang="ts">
-    import { getContext, setContext } from "svelte";
-    import { EventsEmit, EventsOn } from "../wailsjs/runtime";
+    import { setContext } from "svelte";
     import { createConfigState } from "./lib/api.svelte";
     import { createEditorsState } from "./state/editors.svelte";
     import { createUIState } from "./state/ui.svelte";
@@ -17,6 +16,8 @@
     import GoContainer from "./ui/go.svelte";
     import JSONContainer from "./ui/json.svelte";
     import {createMessageState} from "./state/message.svelte";
+    import {Events} from "@wailsio/runtime";
+    import {type WailsEvent} from "@wailsio/runtime/types/events";
 
     const config = createConfigState();
     const ui = createUIState();
@@ -45,10 +46,11 @@
        document.defaultView?.addEventListener("resize", () => {
             editors.jsonEditor?.layout();
             editors.goEditor?.layout();
-            EventsEmit("resize");
+
+            Events.Emit(new WailsEvent("resize"));
         });
 
-        EventsOn("error", (msg: string) => {
+       Events.On("error", (msg: string) => {
             message.message = msg;
         });
     });
