@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-2025
     steps:
       - uses: actions/checkout@v4
 
@@ -29,7 +29,9 @@ jobs:
           bun-version: latest
 
       - name: Set up Task
-        run: go install github.com/go-task/task/v3/cmd/task@latest
+        run: |
+          winget install --id Task.Task --accept-source-agreements --accept-package-agreements
+          "$env:LOCALAPPDATA\Microsoft\WinGet\Links" | Out-File -FilePath "$env:GITHUB_PATH" -Append
 
       - name: Setup
         run: task setup
