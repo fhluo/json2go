@@ -35,7 +35,7 @@ var rootCmd = &cobra.Command{
 	Use:   "copy [path...]",
 	Short: "Copy files and directories",
 	PersistentPreRun: func(cmd *cobra.Command, args []string) {
-		logger := slog.New(util.DiscardHandler)
+		logger := slog.New(slog.DiscardHandler)
 		if verbose {
 			logger = slog.New(
 				tint.NewHandler(os.Stderr, &tint.Options{
