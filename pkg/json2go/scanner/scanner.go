@@ -2,10 +2,10 @@ package scanner
 
 import (
 	"bytes"
-	"encoding/json"
+	"encoding/json/jsontext"
 	"fmt"
 	"io"
-	"iter"
+	"strings"
 	"unicode/utf8"
 
 	"github.com/fhluo/json2go/pkg/json2go/stack"
@@ -197,47 +197,35 @@ scanAgain:
 	}
 }
 
-type Decoder struct {
-	*json.Decoder
-}
-
-func (d Decoder) Scan() iter.Seq2[json.Token, error] {
-	return func(yield func(json.Token, error) bool) {
-		for {
-			t, err := d.Decoder.Token()
-			if errors.Is(err, io.EOF) {
-				return
-			}
-
-			if !yield(t, err) {
-				return
-			}
-		}
-	}
-}
-
 type StandardScanner struct {
-	*json.Decoder
+	*jsontext.Decoder
+}
+
+func (s StandardScanner) More() bool {
+	switch s.Decoder.PeekKind() {
+	case '}', ']':
+		return false
+	default:
+		return true
+	}
 }
 
 func NewStandard(s string) Scanner {
 	scanner := StandardScanner{
-		Decoder: json.NewDecoder(bytes.NewBufferString(s)),
+		Decoder: jsontext.NewDecoder(bytes.NewBufferString(s)),
 	}
-	scanner.UseNumber()
 	return scanner
 }
 
 func NewStandardFromBytes(data []byte) Scanner {
 	scanner := StandardScanner{
-		Decoder: json.NewDecoder(bytes.NewBuffer(data)),
+		Decoder: jsontext.NewDecoder(bytes.NewBuffer(data)),
 	}
-	scanner.UseNumber()
 	return scanner
 }
 
 func (s StandardScanner) Scan() (token.Token, string, error) {
-	t, err := s.Decoder.Token()
+	t, err := s.ReadToken()
 	if err != nil {
 		if errors.Is(err, io.EOF) {
 			return token.EOF, "", nil
@@ -245,41 +233,26 @@ func (s StandardScanner) Scan() (token.Token, string, error) {
 		return token.Illegal, "", err
 	}
 
-	switch x := t.(type) {
-	case json.Delim:
-		switch x {
-		case '{':
-			return token.LeftBrace, "", nil
-		case '}':
-			return token.RightBrace, "", nil
-		case '[':
-			return token.LeftBracket, "", nil
-		case ']':
-			return token.RightBracket, "", nil
-		default:
-			return token.Illegal, "", fmt.Errorf("invalid delim %s", x)
-		}
-	case bool:
+	switch t.Kind() {
+	case '{':
+		return token.LeftBrace, "", nil
+	case '}':
+		return token.RightBrace, "", nil
+	case '[':
+		return token.LeftBracket, "", nil
+	case ']':
+		return token.RightBracket, "", nil
+	case 't', 'f':
 		return token.Bool, "", nil
-	case json.Number:
-		n := x.String()
-
-		if n == "" {
+	case '0':
+		if strings.ContainsAny(t.String(), ".eE") {
 			return token.Float, "", nil
+		} else {
+			return token.Int, "", nil
 		}
-		if !(n[0] == '+' || n[0] == '-' || ('0' <= n[0] && n[0] <= '9')) {
-			return token.Float, "", nil
-		}
-		for i := 1; i < len(n); i++ {
-			if !('0' <= n[i] && n[i] <= '9') {
-				return token.Float, "", nil
-			}
-		}
-
-		return token.Int, "", nil
-	case string:
+	case '"':
 		return token.String, "", nil
-	case nil:
+	case 'n':
 		return token.Null, "", nil
 	default:
 		return token.Illegal, "", fmt.Errorf("unexpected type")
