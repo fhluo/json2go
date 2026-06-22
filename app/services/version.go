@@ -8,7 +8,7 @@ import (
 type Version struct{}
 
 func VersionService() application.Service {
-	return application.NewService(&Version{}, application.ServiceOptions{Route: "/version"})
+	return application.NewServiceWithOptions(&Version{}, application.ServiceOptions{Route: "/version"})
 }
 
 func (v *Version) GetVersion() string {

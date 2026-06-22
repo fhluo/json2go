@@ -1,20 +1,27 @@
 package services
 
 import (
-	"github.com/fhluo/json2go/app/i18n"
-	"github.com/wailsapp/wails/v3/pkg/application"
 	"os"
 	"strings"
+
+	"github.com/fhluo/json2go/app/i18n"
+	"github.com/wailsapp/wails/v3/pkg/application"
 )
 
-type Dialogs struct{}
+type Dialogs struct {
+	app *application.App
+}
 
 func DialogsService() application.Service {
-	return application.NewService(&Dialogs{}, application.ServiceOptions{Route: "/dialogs"})
+	return application.NewServiceWithOptions(&Dialogs{}, application.ServiceOptions{Route: "/dialogs"})
+}
+
+func (dialogs *Dialogs) Dialog() *application.DialogManager {
+	return dialogs.app.Dialog
 }
 
 func (dialogs *Dialogs) OpenJSONFile() string {
-	dialog := application.OpenFileDialog().SetTitle(i18n.MustLocalize(&i18n.LocalizeConfig{
+	dialog := dialogs.Dialog().OpenFile().SetTitle(i18n.MustLocalize(&i18n.LocalizeConfig{
 		DefaultMessage: &i18n.Message{
 			ID:    "Open JSON File",
 			Other: "Open JSON File",
@@ -31,7 +38,7 @@ func (dialogs *Dialogs) OpenJSONFile() string {
 		return ""
 	}
 
-	// cancelled by user
+	// canceled by user
 	if filename == "" {
 		return ""
 	}
@@ -46,14 +53,18 @@ func (dialogs *Dialogs) OpenJSONFile() string {
 }
 
 func (dialogs *Dialogs) SaveGoSourceFile(s string) {
-	dialog := application.SaveFileDialogWithOptions(&application.SaveFileDialogOptions{
+	dialog := dialogs.Dialog().SaveFile()
+
+	dialog.SetOptions(&application.SaveFileDialogOptions{
 		Title: i18n.MustLocalize(&i18n.LocalizeConfig{
 			DefaultMessage: &i18n.Message{
 				ID:    "Save Go Source File",
 				Other: "Save Go Source File",
 			},
 		}),
-	}).AddFilter(i18n.MustLocalize(&i18n.LocalizeConfig{
+	})
+
+	dialog.AddFilter(i18n.MustLocalize(&i18n.LocalizeConfig{
 		DefaultMessage: &i18n.Message{
 			ID:    "Go Source Files(*.go)",
 			Other: "Go Source Files(*.go)",
@@ -65,7 +76,7 @@ func (dialogs *Dialogs) SaveGoSourceFile(s string) {
 		return
 	}
 
-	// cancelled by user
+	// canceled by user
 	if filename == "" {
 		return
 	}

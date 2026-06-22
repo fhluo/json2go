@@ -2,16 +2,17 @@ package main
 
 import (
 	"embed"
-	"github.com/fhluo/json2go/app/services"
-	"github.com/fhluo/json2go/internal/config"
-	"github.com/lmittmann/tint"
 	"log"
 	"log/slog"
 	"os"
 	"path/filepath"
 	"time"
 
+	"github.com/fhluo/json2go/app/services"
+	"github.com/fhluo/json2go/internal/config"
+	"github.com/lmittmann/tint"
 	"github.com/wailsapp/wails/v3/pkg/application"
+	"github.com/wailsapp/wails/v3/pkg/events"
 )
 
 var (
@@ -74,7 +75,7 @@ func main() {
 		),
 	})
 
-	window := app.NewWebviewWindowWithOptions(application.WebviewWindowOptions{
+	window := app.Window.NewWithOptions(application.WebviewWindowOptions{
 		Title:     "json2go",
 		Width:     800,
 		Height:    600,
@@ -88,11 +89,11 @@ func main() {
 		},
 	})
 
-	app.OnEvent("exit", func(event *application.CustomEvent) {
+	app.Event.On("exit", func(event *application.CustomEvent) {
 		app.Quit()
 	})
 
-	app.OnEvent("resize", func(event *application.CustomEvent) {
+	window.OnWindowEvent(events.Common.WindowDidResize, func(event *application.WindowEvent) {
 		config.SetWindowSize(window.Size())
 	})
 

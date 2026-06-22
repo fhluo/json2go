@@ -1,15 +1,16 @@
 package services
 
 import (
+	"log/slog"
+
 	"github.com/fhluo/json2go/internal/config"
 	"github.com/wailsapp/wails/v3/pkg/application"
-	"log/slog"
 )
 
 type Config struct{}
 
 func ConfigService() application.Service {
-	return application.NewService(&Config{}, application.ServiceOptions{Route: "/config"})
+	return application.NewServiceWithOptions(&Config{}, application.ServiceOptions{Route: "/config"})
 }
 
 func (c *Config) GetLocale() string {

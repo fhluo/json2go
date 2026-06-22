@@ -1,7 +1,8 @@
 package services
 
 import (
-	"encoding/json"
+	"encoding/json/jsontext"
+
 	"github.com/fhluo/json2go/internal/config"
 	"github.com/fhluo/json2go/pkg/json2go"
 	"github.com/wailsapp/wails/v3/pkg/application"
@@ -10,11 +11,11 @@ import (
 type JSON2Go struct{}
 
 func Json2GoService() application.Service {
-	return application.NewService(&JSON2Go{}, application.ServiceOptions{Route: "/json2go"})
+	return application.NewServiceWithOptions(&JSON2Go{}, application.ServiceOptions{Route: "/json2go"})
 }
 
 func (j *JSON2Go) Generate(s string) string {
-	if config.OptionsValidJSONBeforeGeneration.Get() && !json.Valid([]byte(s)) {
+	if config.OptionsValidJSONBeforeGeneration.Get() && !jsontext.Value(s).IsValid() {
 		//runtime.EventsEmit(j.ctx, "error", "invalid json")
 		return ""
 	}

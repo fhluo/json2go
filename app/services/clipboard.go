@@ -1,9 +1,10 @@
 package services
 
 import (
+	"unsafe"
+
 	"github.com/wailsapp/wails/v3/pkg/application"
 	"golang.design/x/clipboard"
-	"unsafe"
 )
 
 func init() {
@@ -16,7 +17,7 @@ func init() {
 type Clipboard struct{}
 
 func ClipboardService() application.Service {
-	return application.NewService(&Clipboard{}, application.ServiceOptions{Route: "/clipboard"})
+	return application.NewServiceWithOptions(&Clipboard{}, application.ServiceOptions{Route: "/clipboard"})
 }
 
 func (c *Clipboard) Write(text string) {
