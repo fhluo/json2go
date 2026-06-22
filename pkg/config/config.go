@@ -38,8 +38,7 @@ func Init(filename string) {
 	}
 
 	// 读取配置文件失败，判断错误类型
-	var notFoundErr viper.ConfigFileNotFoundError
-	if !errors.As(err, &notFoundErr) {
+	if _, ok := errors.AsType[viper.ConfigFileNotFoundError](err); !ok {
 		slog.Error(err.Error())
 		os.Exit(1)
 	}
@@ -61,8 +60,7 @@ func Save() {
 	}
 
 	// 写入配置失败，判断错误类型
-	var notFoundErr viper.ConfigFileNotFoundError
-	if !errors.As(err, &notFoundErr) {
+	if _, ok := errors.AsType[viper.ConfigFileNotFoundError](err); !ok {
 		slog.Warn(err.Error())
 		return
 	}
