@@ -1,9 +1,10 @@
 package config
 
 import (
-	"github.com/fhluo/json2go/pkg/config"
 	"os"
 	"path/filepath"
+
+	"github.com/fhluo/json2go/pkg/config"
 )
 
 var (

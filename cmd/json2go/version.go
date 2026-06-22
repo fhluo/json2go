@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/fhluo/json2go/internal/version"
 	"os"
 
+	"github.com/fhluo/json2go/internal/version"
 	"github.com/spf13/cobra"
 )
 

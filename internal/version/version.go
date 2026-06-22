@@ -3,7 +3,6 @@ package version
 import (
 	_ "embed"
 	"fmt"
-	"github.com/pelletier/go-toml/v2"
 	"io"
 	"iter"
 	"log/slog"
@@ -13,6 +12,7 @@ import (
 	"unsafe"
 
 	"github.com/Masterminds/semver"
+	"github.com/pelletier/go-toml/v2"
 )
 
 //go:embed version.toml

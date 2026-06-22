@@ -2,15 +2,15 @@ package main
 
 import (
 	"fmt"
-	"github.com/fhluo/json2go/pkg/util"
-	"github.com/lmittmann/tint"
-	cp "github.com/otiai10/copy"
-	"github.com/spf13/cobra"
 	"log/slog"
 	"os"
 	"path/filepath"
 	"slices"
 	"time"
+
+	"github.com/lmittmann/tint"
+	cp "github.com/otiai10/copy"
+	"github.com/spf13/cobra"
 )
 
 var (

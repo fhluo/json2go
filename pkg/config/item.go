@@ -2,10 +2,11 @@ package config
 
 import (
 	"fmt"
-	"github.com/spf13/cast"
-	"github.com/spf13/viper"
 	"log/slog"
 	"sync"
+
+	"github.com/spf13/cast"
+	"github.com/spf13/viper"
 )
 
 var mutex sync.Mutex

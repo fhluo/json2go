@@ -2,11 +2,12 @@ package config
 
 import (
 	"errors"
-	"github.com/spf13/viper"
 	"log/slog"
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/spf13/viper"
 )
 
 var configFilename string
