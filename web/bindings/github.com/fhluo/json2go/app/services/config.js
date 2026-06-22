@@ -4,95 +4,83 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import {Call as $Call, Create as $Create} from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
 
 /**
- * @returns {Promise<string[]> & { cancel(): void }}
+ * @returns {$CancellablePromise<string[]>}
  */
 export function GetAllCapsWords() {
-    let $resultPromise = /** @type {any} */($Call.ByID(14832671));
-    let $typingPromise = /** @type {any} */($resultPromise.then(($result) => {
+    return $Call.ByID(14832671).then(/** @type {($result: any) => any} */(($result) => {
         return $$createType0($result);
     }));
-    $typingPromise.cancel = $resultPromise.cancel.bind($resultPromise);
-    return $typingPromise;
 }
 
 /**
- * @returns {Promise<number> & { cancel(): void }}
+ * @returns {$CancellablePromise<number>}
  */
 export function GetFontSize() {
-    let $resultPromise = /** @type {any} */($Call.ByID(1925795320));
-    return $resultPromise;
+    return $Call.ByID(1925795320);
 }
 
 /**
- * @returns {Promise<string> & { cancel(): void }}
+ * @returns {$CancellablePromise<string>}
  */
 export function GetLocale() {
-    let $resultPromise = /** @type {any} */($Call.ByID(107719334));
-    return $resultPromise;
+    return $Call.ByID(107719334);
 }
 
 /**
- * @returns {Promise<boolean> & { cancel(): void }}
+ * @returns {$CancellablePromise<boolean>}
  */
 export function GetOptionsGenerateInRealTime() {
-    let $resultPromise = /** @type {any} */($Call.ByID(317756455));
-    return $resultPromise;
+    return $Call.ByID(317756455);
 }
 
 /**
- * @returns {Promise<boolean> & { cancel(): void }}
+ * @returns {$CancellablePromise<boolean>}
  */
 export function GetOptionsValidJSONBeforeGeneration() {
-    let $resultPromise = /** @type {any} */($Call.ByID(557296779));
-    return $resultPromise;
+    return $Call.ByID(557296779);
 }
 
 /**
  * @param {string[]} words
- * @returns {Promise<void> & { cancel(): void }}
+ * @returns {$CancellablePromise<void>}
  */
 export function SetAllCapsWords(words) {
-    let $resultPromise = /** @type {any} */($Call.ByID(2314654347, words));
-    return $resultPromise;
+    return $Call.ByID(2314654347, words);
 }
 
 /**
  * @param {number} size
- * @returns {Promise<void> & { cancel(): void }}
+ * @returns {$CancellablePromise<void>}
  */
 export function SetFontSize(size) {
-    let $resultPromise = /** @type {any} */($Call.ByID(2902198964, size));
-    return $resultPromise;
+    return $Call.ByID(2902198964, size);
 }
 
 /**
  * @param {string} locale
- * @returns {Promise<void> & { cancel(): void }}
+ * @returns {$CancellablePromise<void>}
  */
 export function SetLocale(locale) {
-    let $resultPromise = /** @type {any} */($Call.ByID(123469194, locale));
-    return $resultPromise;
+    return $Call.ByID(123469194, locale);
 }
 
 /**
  * @param {boolean} b
- * @returns {Promise<void> & { cancel(): void }}
+ * @returns {$CancellablePromise<void>}
  */
 export function SetOptionsGenerateInRealTime(b) {
-    let $resultPromise = /** @type {any} */($Call.ByID(2905123619, b));
-    return $resultPromise;
+    return $Call.ByID(2905123619, b);
 }
 
 /**
  * @param {boolean} valid
- * @returns {Promise<void> & { cancel(): void }}
+ * @returns {$CancellablePromise<void>}
  */
 export function SetOptionsValidJSONBeforeGeneration(valid) {
-    let $resultPromise = /** @type {any} */($Call.ByID(885014175, valid));
-    return $resultPromise;
+    return $Call.ByID(885014175, valid);
 }
 
 // Private type creation functions
