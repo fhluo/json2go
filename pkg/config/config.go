@@ -39,13 +39,14 @@ func Init(filename string) {
 	}
 
 	// 读取配置文件失败，判断错误类型
-	if _, ok := errors.AsType[viper.ConfigFileNotFoundError](err); !ok {
+	err, ok := errors.AsType[viper.ConfigFileNotFoundError](err)
+	if !ok {
 		slog.Error(err.Error())
 		os.Exit(1)
 	}
 
 	// 未找到配置文件，创建配置文件
-	slog.Info(notFoundErr.Error())
+	slog.Info(err.Error())
 	if err = viper.WriteConfigAs(configFilename); err != nil {
 		slog.Error(err.Error())
 		os.Exit(1)
