@@ -4,15 +4,13 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
 
 /**
- * @returns {$CancellablePromise<string[]>}
+ * @returns {$CancellablePromise<string[] | null>}
  */
 export function GetAllCapsWords() {
-    return $Call.ByID(14832671).then(/** @type {($result: any) => any} */(($result) => {
-        return $$createType0($result);
-    }));
+    return $Call.ByID(14832671);
 }
 
 /**
@@ -44,7 +42,7 @@ export function GetOptionsValidJSONBeforeGeneration() {
 }
 
 /**
- * @param {string[]} words
+ * @param {string[] | null} words
  * @returns {$CancellablePromise<void>}
  */
 export function SetAllCapsWords(words) {
@@ -82,6 +80,3 @@ export function SetOptionsGenerateInRealTime(b) {
 export function SetOptionsValidJSONBeforeGeneration(valid) {
     return $Call.ByID(885014175, valid);
 }
-
-// Private type creation functions
-const $$createType0 = $Create.Array($Create.Any);

@@ -4,7 +4,7 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
@@ -14,9 +14,7 @@ import * as application$0 from "../../../../wailsapp/wails/v3/pkg/application/mo
  * @returns {$CancellablePromise<application$0.DialogManager | null>}
  */
 export function Dialog() {
-    return $Call.ByID(3956783017).then(/** @type {($result: any) => any} */(($result) => {
-        return $$createType1($result);
-    }));
+    return $Call.ByID(3956783017);
 }
 
 /**
@@ -33,7 +31,3 @@ export function OpenJSONFile() {
 export function SaveGoSourceFile(s) {
     return $Call.ByID(648126149, s);
 }
-
-// Private type creation functions
-const $$createType0 = application$0.DialogManager.createFrom;
-const $$createType1 = $Create.Nullable($$createType0);

@@ -4,21 +4,15 @@
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
-import { Call as $Call, CancellablePromise as $CancellablePromise, Create as $Create } from "@wailsio/runtime";
+import { Call as $Call, CancellablePromise as $CancellablePromise } from "@wailsio/runtime";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore: Unused imports
 import * as examples$0 from "../../internal/examples/models.js";
 
 /**
- * @returns {$CancellablePromise<examples$0.Example[]>}
+ * @returns {$CancellablePromise<examples$0.Example[] | null>}
  */
 export function All() {
-    return $Call.ByID(4162710654).then(/** @type {($result: any) => any} */(($result) => {
-        return $$createType1($result);
-    }));
+    return $Call.ByID(4162710654);
 }
-
-// Private type creation functions
-const $$createType0 = examples$0.Example.createFrom;
-const $$createType1 = $Create.Array($$createType0);
