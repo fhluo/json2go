@@ -1,15 +1,15 @@
 version: '3'
 
-includes:
-  common: ./build/Taskfile.common.yaml
-  windows: ./build/Taskfile.windows.yaml
-  darwin: ./build/Taskfile.darwin.yaml
-  linux: ./build/Taskfile.linux.yaml
-
 vars:
   APP_NAME: "json2go"
-  BIN_DIR: "bin"
+  BIN_DIR: "build/bin"
   VITE_PORT: '{{.WAILS_VITE_PORT | default 9245}}'
+
+includes:
+  common: ./build/Taskfile.yaml
+  windows: ./build/windows/Taskfile.yaml
+  darwin: ./build/darwin/Taskfile.yaml
+  linux: ./build/linux/Taskfile.yaml
 
 tasks:
   build:
@@ -30,4 +30,4 @@ tasks:
   dev:
     summary: Runs the application in development mode
     cmds:
-      - wails3 dev -config ./build/devmode.config.yaml -port {{.VITE_PORT}}
+      - wails3 dev -config ./build/config.yaml -port {{.VITE_PORT}}

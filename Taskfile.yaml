@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: 3
 
 env:
@@ -62,8 +63,6 @@ tasks:
       json2go_dev: true
       json2go_debug: true
     dir: app
-    deps:
-      - copy-monaco
     cmds:
       - wails3 task dev
 

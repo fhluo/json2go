@@ -9,16 +9,14 @@ tasks:
   go:mod:tidy:
     summary: Runs `go mod tidy`
     internal: true
-    generates:
-      - go.sum
-    sources:
-      - go.mod
+    run: once
     cmds:
       - go mod tidy
 
   install:frontend:deps:
     summary: Install frontend dependencies
     dir: frontend
+    run: once
     deps:
       - task: web:install
 
@@ -28,9 +26,10 @@ tasks:
       - task: generate:bindings
       - task: web:build
 
-
   generate:bindings:
     summary: Generates bindings for the frontend
+    deps:
+      - task: go:mod:tidy
     sources:
       - "**/*.go"
       - go.mod
@@ -38,7 +37,7 @@ tasks:
     generates:
       - "../web/bindings/**/*"
     cmds:
-      - wails3 generate bindings -d ../web/bindings  -f '{{.BUILD_FLAGS}}'{{if .UseTypescript}} -ts{{end}}
+      - wails3 generate bindings -d ../web/bindings  -f '{{.BUILD_FLAGS}}'{{if .UseTypescript}} -ts{{end}} -i -clean=true
 
   generate:icons:
     summary: Generates Windows `.ico` and Mac `.icns` files from an image
@@ -49,9 +48,15 @@ tasks:
       - "icons.icns"
       - "icons.ico"
     cmds:
-      - wails3 generate icons -input appicon.png
+      - wails3 generate icons -input appicon.png -macfilename darwin/icons.icns -windowsfilename windows/icons.ico
 
   dev:frontend:
     summary: Runs the frontend in development mode
     deps:
       - task: web:dev
+
+  update:build-assets:
+    summary: Updates the build assets
+    dir: build
+    cmds:
+      - wails3 update build-assets -name "{{.APP_NAME}}" -binaryname "{{.APP_NAME}}" -config config.yaml -dir .
