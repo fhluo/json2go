@@ -52,7 +52,17 @@ var rootCmd = &cobra.Command{
 		}
 
 		for path := range slices.Values(args) {
-			Copy(filepath.Join(source, path), filepath.Join(destination, path))
+			pattern := filepath.Join(source, path)
+
+			if matches, err := filepath.Glob(pattern); err == nil && len(matches) > 0 {
+				for _, match := range matches {
+					rel, _ := filepath.Rel(source, match)
+					Copy(match, filepath.Join(destination, rel))
+				}
+				continue
+			}
+
+			Copy(pattern, filepath.Join(destination, path))
 		}
 	},
 }
