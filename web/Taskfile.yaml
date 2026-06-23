@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: 3
 
 tasks:
@@ -17,11 +18,11 @@ tasks:
   copy-monaco:
     summary: Copy Monaco Editor assets
     sources:
-      - web/node_modules/monaco-editor/min/vs/*
+      - node_modules/monaco-editor/min/vs/**/*
     generates:
-      - web/public/monaco-editor/min/vs/*
+      - public/monaco-editor/min/vs/**/*
     cmds:
-      - go run ../cmd/copy --src node_modules/monaco-editor/min/vs --dst public/monaco-editor/min/vs base basic-languages/go editor language/json loader.js
+      - go run ../cmd/copy --src node_modules/monaco-editor/min/vs --dst public/monaco-editor/min/vs assets editor language basic-languages loader.js nls.messages-loader.js 'nls.messages.*.js' '_commonjsHelpers-*.js' 'go-*.js' 'editor.api-*.js' 'monaco.contribution-*.js' 'jsonMode-*.js' 'cssMode-*.js' 'htmlMode-*.js' 'tsMode-*.js'
 
   build:
     summary: Build the project
