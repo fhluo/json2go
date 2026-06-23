@@ -55,7 +55,7 @@ func main() {
 
 	app := application.New(application.Options{
 		Name:        "json2go",
-		Description: "",
+		Description: "Generate Go type definitions from JSON",
 		Services: []application.Service{
 			services.ClipboardService(),
 			services.ConfigService(),
@@ -67,6 +67,9 @@ func main() {
 		Assets: application.AssetOptions{
 			Handler: application.AssetFileServerFS(assets),
 		},
+		Mac: application.MacOptions{
+			ApplicationShouldTerminateAfterLastWindowClosed: true,
+		},
 		Logger: slog.New(
 			tint.NewHandler(os.Stderr, &tint.Options{
 				Level:      slog.LevelDebug,
@@ -76,17 +79,17 @@ func main() {
 	})
 
 	window := app.Window.NewWithOptions(application.WebviewWindowOptions{
-		Title:     "json2go",
-		Width:     800,
-		Height:    600,
-		MinWidth:  800,
-		MinHeight: 600,
-
+		Title:            "json2go",
+		Width:            800,
+		Height:           600,
+		MinWidth:         800,
+		MinHeight:        600,
 		BackgroundType:   application.BackgroundTypeTranslucent,
 		BackgroundColour: application.NewRGBA(27, 38, 54, 1),
 		Windows: application.WindowsWindow{
 			BackdropType: application.Mica,
 		},
+		URL: "/",
 	})
 
 	app.Event.On("exit", func(event *application.CustomEvent) {
