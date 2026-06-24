@@ -43,6 +43,7 @@ export default function () {
 					<div className="flex flex-row flex-wrap space-x-1.5 pb-1.5">
 						{words.map((value) => (
 							<Button
+								key={value}
 								size="sm"
 								variant={"outline"}
 								onClick={() => setInput(value)}
