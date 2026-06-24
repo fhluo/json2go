@@ -96,7 +96,7 @@ export const useEditorsStore = create<EditorsState>((set, get) => ({
 	goEditor: null,
 	init: (language, fontSize, jsonID, goID) => {
 		loader.config(loaderConfig(language));
-		loader.init().then((monaco) => {
+		void loader.init().then((monaco) => {
 			const jsonElement = document.getElementById(jsonID);
 			const goElement = document.getElementById(goID);
 
@@ -125,7 +125,7 @@ export const useEditorsStore = create<EditorsState>((set, get) => ({
 			});
 
 			// remeasure fonts after creating editors and fonts are loaded to avoid rendering issues
-			document.fonts.ready.then(() => {
+			void document.fonts.ready.then(() => {
 				monaco.editor.remeasureFonts();
 			});
 		});

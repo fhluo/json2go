@@ -16,7 +16,7 @@ export default function () {
 
 	const [exampleList, setExampleList] = useState([] as Example[]);
 	useEffect(() => {
-		GetExamples().then((value) => {
+		void GetExamples().then((value) => {
 			setExampleList(value ?? []);
 		});
 	}, []);

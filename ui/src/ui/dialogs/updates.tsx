@@ -20,7 +20,7 @@ export default function () {
 	const isChecking = useRef(true);
 
 	useEffect(() => {
-		Promise.all([GetVersion(), GetLatestVersion()]).then(
+		void Promise.all([GetVersion(), GetLatestVersion()]).then(
 			([version, latestVersion]) => {
 				setVersion(version);
 				setLatestVersion(latestVersion);

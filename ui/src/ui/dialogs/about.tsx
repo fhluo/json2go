@@ -22,7 +22,7 @@ export default function () {
 
 	const [version, setVersion] = useState("");
 	useEffect(() => {
-		GetVersion().then((value) => setVersion(value));
+		void GetVersion().then((value) => setVersion(value));
 	}, []);
 
 	return (
