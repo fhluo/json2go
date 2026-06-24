@@ -1,9 +1,4 @@
-import {
-	useFontSizeStore,
-	useLanguageStore,
-	useRealTimeStore,
-	useValidJSONStore,
-} from "@/lib/store.ts";
+import { useConfigStore } from "@/lib/store.ts";
 import { useEditorsStore } from "@/store/editors.ts";
 import { useMessageStore } from "@/store/message.ts";
 import Container from "@/ui/container.tsx";
@@ -23,11 +18,10 @@ import "./app.css";
 import { Events } from "@wailsio/runtime";
 
 function App() {
-	const { fontSize, init: initFontSize } = useFontSizeStore();
-	const { language, init: initLanguage } = useLanguageStore();
-
-	const { init: initValidJSON } = useValidJSONStore();
-	const { realTime, init: initRealTime } = useRealTimeStore();
+	const fontSize = useConfigStore((s) => s.fontSize);
+	const language = useConfigStore((s) => s.language);
+	const realTime = useConfigStore((s) => s.realTime);
+	const initConfig = useConfigStore((s) => s.init);
 
 	const setMessage = useMessageStore((state) => state.setMessage);
 
@@ -46,10 +40,7 @@ function App() {
 	generateRef.current = generate;
 
 	useEffect(() => {
-		initLanguage();
-		initFontSize();
-		initValidJSON();
-		initRealTime();
+		initConfig();
 
 		document.defaultView?.addEventListener("resize", () => {
 			jsonEditor?.layout();

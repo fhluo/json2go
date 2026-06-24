@@ -4,12 +4,14 @@ import {
 	MenubarMenu,
 	MenubarTrigger,
 } from "@/components/ui/menubar.tsx";
-import { useFontSizeStore } from "@/lib/store.ts";
+import { useConfigStore } from "@/lib/store.ts";
 import { useTranslation } from "react-i18next";
 
 export default function () {
 	const { t } = useTranslation();
-	const { increase, decrease, reset } = useFontSizeStore();
+	const increase = useConfigStore((s) => s.increaseFontSize);
+	const decrease = useConfigStore((s) => s.decreaseFontSize);
+	const reset = useConfigStore((s) => s.resetFontSize);
 
 	return (
 		<MenubarMenu>

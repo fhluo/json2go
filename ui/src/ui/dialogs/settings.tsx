@@ -7,8 +7,8 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog.tsx";
 import { Input } from "@/components/ui/input.tsx";
-import { useAllCapsWordsStore } from "@/lib/store.ts";
-import { useEffect, useState } from "react";
+import { useConfigStore } from "@/lib/store.ts";
+import { useState } from "react";
 import type { FormEvent } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -23,10 +23,9 @@ function onBeforeInput(event: FormEvent<HTMLInputElement>) {
 export default function () {
 	const { t } = useTranslation();
 
-	const { words, init, add, remove } = useAllCapsWordsStore();
-	useEffect(() => {
-		init();
-	}, []);
+	const words = useConfigStore((s) => s.allCapsWords);
+	const add = useConfigStore((s) => s.addAllCapsWords);
+	const remove = useConfigStore((s) => s.removeAllCapsWords);
 
 	const [input, setInput] = useState("");
 

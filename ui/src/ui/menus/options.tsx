@@ -4,13 +4,15 @@ import {
 	MenubarMenu,
 	MenubarTrigger,
 } from "@/components/ui/menubar.tsx";
-import { useRealTimeStore, useValidJSONStore } from "@/lib/store.ts";
+import { useConfigStore } from "@/lib/store.ts";
 import { useTranslation } from "react-i18next";
 
 export default function () {
 	const { t } = useTranslation();
-	const { validJSON, setValidJSON } = useValidJSONStore();
-	const { realTime, setRealTime } = useRealTimeStore();
+	const validJSON = useConfigStore((s) => s.validJSON);
+	const setValidJSON = useConfigStore((s) => s.setValidJSON);
+	const realTime = useConfigStore((s) => s.realTime);
+	const setRealTime = useConfigStore((s) => s.setRealTime);
 
 	return (
 		<MenubarMenu>

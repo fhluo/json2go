@@ -6,12 +6,13 @@ import {
 	MenubarTrigger,
 } from "@/components/ui/menubar.tsx";
 import { languages } from "@/lib/i18n.ts";
-import { useLanguageStore } from "@/lib/store.ts";
+import { useConfigStore } from "@/lib/store.ts";
 import { useTranslation } from "react-i18next";
 
 export default function () {
 	const { t } = useTranslation();
-	const { language, setLanguage } = useLanguageStore();
+	const language = useConfigStore((s) => s.language);
+	const setLanguage = useConfigStore((s) => s.setLanguage);
 
 	return (
 		<MenubarMenu>
