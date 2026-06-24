@@ -6,7 +6,7 @@ tasks:
     summary: Install dependencies
     sources:
       - package.json
-      - bun.lockb
+      - bun.lock
     generates:
       - node_modules/*
     preconditions:
@@ -22,14 +22,14 @@ tasks:
     generates:
       - public/monaco-editor/min/vs/**/*
     cmds:
-      - go run ../cmd/copy --src node_modules/monaco-editor/min/vs --dst public/monaco-editor/min/vs assets editor language basic-languages loader.js nls.messages-loader.js 'nls.messages.*.js' '_commonjsHelpers-*.js' 'go-*.js' 'editor.api-*.js' 'monaco.contribution-*.js' 'jsonMode-*.js' 'cssMode-*.js' 'htmlMode-*.js' 'tsMode-*.js'
+      - go run ../cmd/copy --src node_modules/monaco-editor/min/vs --dst public/monaco-editor/min/vs assets editor language basic-languages loader.js nls.messages-loader.js 'nls.messages.*.js' '_commonjsHelpers-*.js' 'go-*.js' 'editor.api-*.js' 'jsonMode-*.js' 'cssMode-*.js' 'htmlMode-*.js' 'tsMode-*.js' 'lspLanguageFeatures-*.js' 'workers-*.js'
 
   build:
     summary: Build the project
     sources:
       - "**/*"
     generates:
-      - ../app/web/dist/*
+      - ../app/ui/dist/*
     deps:
       - install
       - copy-monaco

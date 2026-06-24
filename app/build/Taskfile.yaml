@@ -2,8 +2,8 @@ version: '3'
 
 includes:
   web:
-    taskfile: ../../web/Taskfile.yaml
-    dir: ../../web
+    taskfile: ../../ui/Taskfile.yaml
+    dir: ../../ui
 
 tasks:
   go:mod:tidy:
@@ -35,9 +35,9 @@ tasks:
       - go.mod
       - go.sum
     generates:
-      - "../web/bindings/**/*"
+      - "../ui/bindings/**/*"
     cmds:
-      - wails3 generate bindings -d ../web/bindings  -f '{{.BUILD_FLAGS}}'{{if .UseTypescript}} -ts{{end}} -i -clean=true
+      - wails3 generate bindings -d ../ui/bindings  -f '{{.BUILD_FLAGS}}'{{if .UseTypescript}} -ts{{end}} -i -clean=true
 
   generate:icons:
     summary: Generates Windows `.ico` and Mac `.icns` files from an image

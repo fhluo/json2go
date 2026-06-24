@@ -22,7 +22,7 @@ dev_mode:
     dir:
       - .git
       - node_modules
-      - web
+      - ui
       - bin
     file:
       - .DS_Store
