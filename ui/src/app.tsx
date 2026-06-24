@@ -40,6 +40,11 @@ function App() {
 		generate,
 	} = useEditorsStore();
 
+	const realTimeRef = useRef(realTime);
+	realTimeRef.current = realTime;
+	const generateRef = useRef(generate);
+	generateRef.current = generate;
+
 	useEffect(() => {
 		initLanguage();
 		initFontSize();
@@ -73,8 +78,8 @@ function App() {
 	useEffect(() => {
 		if (jsonEditor) {
 			jsonEditor.getModel()?.onDidChangeContent(() => {
-				if (realTime) {
-					generate();
+				if (realTimeRef.current) {
+					generateRef.current();
 				}
 			});
 		}
