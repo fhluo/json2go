@@ -1,4 +1,4 @@
-import { useConfigStore } from "@/lib/store.ts";
+import { useConfigStore } from "@/lib/api.ts";
 import { useEditorsStore } from "@/store/editors.ts";
 import { useMessageStore } from "@/store/message.ts";
 import Container from "@/ui/container.tsx";

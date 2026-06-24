@@ -12,7 +12,7 @@ import {
 	TooltipProvider,
 	TooltipTrigger,
 } from "@/components/ui/tooltip.tsx";
-import { openHomePage } from "@/lib/utils.ts";
+import { openHomePage } from "@/lib/api.ts";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { GetVersion } from "@api/app/services/version";

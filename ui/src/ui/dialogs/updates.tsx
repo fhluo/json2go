@@ -6,7 +6,7 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import { openRelease } from "@/lib/utils.ts";
+import { openRelease } from "@/lib/api.ts";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { GetLatestVersion, GetVersion } from "@api/app/services/version";

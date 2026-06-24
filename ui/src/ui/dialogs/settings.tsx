@@ -7,7 +7,7 @@ import {
 	DialogTitle,
 } from "@/components/ui/dialog.tsx";
 import { Input } from "@/components/ui/input.tsx";
-import { useConfigStore } from "@/lib/store.ts";
+import { useConfigStore } from "@/lib/api.ts";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { useTranslation } from "react-i18next";

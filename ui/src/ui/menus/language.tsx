@@ -6,7 +6,7 @@ import {
 	MenubarTrigger,
 } from "@/components/ui/menubar.tsx";
 import { languages } from "@/lib/i18n.ts";
-import { useConfigStore } from "@/lib/store.ts";
+import { useConfigStore } from "@/lib/api.ts";
 import { useTranslation } from "react-i18next";
 
 export default function () {

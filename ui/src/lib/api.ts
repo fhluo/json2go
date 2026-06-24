@@ -1,3 +1,4 @@
+import { Browser } from "@wailsio/runtime";
 import i18n from "i18next";
 import { create } from "zustand";
 import {
@@ -117,3 +118,13 @@ export const useConfigStore = create<ConfigState>((set) => ({
 		set({ realTime });
 	},
 }));
+
+export function openHomePage() {
+	void Browser.OpenURL("https://github.com/fhluo/json2go");
+}
+
+export function openRelease(version: string) {
+	void Browser.OpenURL(
+		`https://github.com/fhluo/json2go/releases/tag/v${version}`,
+	);
+}

@@ -4,7 +4,7 @@ import {
 	MenubarMenu,
 	MenubarTrigger,
 } from "@/components/ui/menubar.tsx";
-import { useConfigStore } from "@/lib/store.ts";
+import { useConfigStore } from "@/lib/api.ts";
 import { useTranslation } from "react-i18next";
 
 export default function () {
