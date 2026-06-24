@@ -4,7 +4,7 @@ import { Layout, useLayoutStore } from "@/store/layout.ts";
 import { View, useViewStore } from "@/store/view.ts";
 import { useTranslation } from "react-i18next";
 
-export default function () {
+export default function Go() {
 	const { t } = useTranslation();
 	const layout = useLayoutStore((state) => state.layout);
 	const view = useViewStore((state) => state.view);

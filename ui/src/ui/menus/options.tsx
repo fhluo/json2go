@@ -7,7 +7,7 @@ import {
 import { useConfigStore } from "@/lib/api.ts";
 import { useTranslation } from "react-i18next";
 
-export default function () {
+export default function Options() {
 	const { t } = useTranslation();
 	const validJSON = useConfigStore((s) => s.validJSON);
 	const setValidJSON = useConfigStore((s) => s.setValidJSON);

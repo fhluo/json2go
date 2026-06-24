@@ -1,7 +1,7 @@
 import { useMessageStore } from "@/store/message.ts";
 import { Info, X } from "lucide-react";
 
-export default function () {
+export default function Message() {
 	const { message, clear } = useMessageStore();
 
 	if (!message) {

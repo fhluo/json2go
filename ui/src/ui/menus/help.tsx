@@ -11,7 +11,7 @@ import About from "@/ui/dialogs/about.tsx";
 import Updates from "@/ui/dialogs/updates.tsx";
 import { useTranslation } from "react-i18next";
 
-export default function () {
+export default function Help() {
 	const { t } = useTranslation();
 	const setDialog = useDialogStore((state) => state.setDialog);
 

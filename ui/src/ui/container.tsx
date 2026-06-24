@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils.ts";
 import { Layout, useLayoutStore } from "@/store/layout.ts";
 import type { PropsWithChildren } from "react";
 
-export default function ({ children }: PropsWithChildren) {
+export default function Container({ children }: PropsWithChildren) {
 	const layout = useLayoutStore((state) => state.layout);
 
 	return (

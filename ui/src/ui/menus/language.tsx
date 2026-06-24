@@ -9,7 +9,7 @@ import { languages } from "@/lib/i18n.ts";
 import { useConfigStore } from "@/lib/api.ts";
 import { useTranslation } from "react-i18next";
 
-export default function () {
+export default function Language() {
 	const { t } = useTranslation();
 	const language = useConfigStore((s) => s.language);
 	const setLanguage = useConfigStore((s) => s.setLanguage);

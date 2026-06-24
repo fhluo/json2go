@@ -12,7 +12,7 @@ import { Layout, useLayoutStore } from "@/store/layout.ts";
 import { View, useViewStore } from "@/store/view.ts";
 import { useTranslation } from "react-i18next";
 
-export default function () {
+export default function ViewMenu() {
 	const { t } = useTranslation();
 	const { layout, setLayout } = useLayoutStore();
 	const { view, setView } = useViewStore();

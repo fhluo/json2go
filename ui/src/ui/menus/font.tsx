@@ -7,7 +7,7 @@ import {
 import { useConfigStore } from "@/lib/api.ts";
 import { useTranslation } from "react-i18next";
 
-export default function () {
+export default function Font() {
 	const { t } = useTranslation();
 	const increase = useConfigStore((s) => s.increaseFontSize);
 	const decrease = useConfigStore((s) => s.decreaseFontSize);

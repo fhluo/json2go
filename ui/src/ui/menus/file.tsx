@@ -12,7 +12,7 @@ import Settings from "@/ui/dialogs/settings.tsx";
 import { useTranslation } from "react-i18next";
 import { Events } from "@wailsio/runtime";
 
-export default function () {
+export default function File() {
 	const { t } = useTranslation();
 	const setDialog = useDialogStore((state) => state.setDialog);
 	const { openJSON, saveGo } = useEditorsStore();

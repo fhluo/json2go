@@ -11,7 +11,7 @@ import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { GetLatestVersion, GetVersion } from "@api/app/services/version";
 
-export default function () {
+export default function Updates() {
 	const { t } = useTranslation();
 
 	const [version, setVersion] = useState("");

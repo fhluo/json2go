@@ -20,7 +20,7 @@ function onBeforeInput(event: FormEvent<HTMLInputElement>) {
 	}
 }
 
-export default function () {
+export default function Settings() {
 	const { t } = useTranslation();
 
 	const words = useConfigStore((s) => s.allCapsWords);

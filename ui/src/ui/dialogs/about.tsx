@@ -17,7 +17,7 @@ import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { GetVersion } from "@api/app/services/version";
 
-export default function () {
+export default function About() {
 	const { t } = useTranslation();
 
 	const [version, setVersion] = useState("");

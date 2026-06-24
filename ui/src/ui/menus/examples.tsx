@@ -10,7 +10,7 @@ import { useTranslation } from "react-i18next";
 import { All as GetExamples } from "@api/app/services/examples";
 import type { Example } from "@api/internal/examples/models";
 
-export default function () {
+export default function Examples() {
 	const { t } = useTranslation();
 	const setJSON = useEditorsStore((state) => state.setJSON);
 
