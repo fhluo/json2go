@@ -8,11 +8,10 @@ import {
 } from "@/components/ui/dialog.tsx";
 import { Input } from "@/components/ui/input.tsx";
 import { useConfigStore } from "@/lib/api.ts";
-import { useState } from "react";
-import type { FormEvent } from "react";
+import { useState, type InputEvent } from "react";
 import { useTranslation } from "react-i18next";
 
-function onBeforeInput(event: FormEvent<HTMLInputElement>) {
+function onBeforeInput(event: InputEvent<HTMLInputElement>) {
 	// user can only enter letters, space and ','
 	const value = event.currentTarget.value;
 	if (value && !value.match(/[a-zA-Z', ]/)) {
