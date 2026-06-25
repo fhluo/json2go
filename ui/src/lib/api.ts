@@ -1,19 +1,7 @@
 import { Browser } from "@wailsio/runtime";
 import i18n from "i18next";
 import { create } from "zustand";
-import {
-	GetAllCapsWords,
-	GetFontSize,
-	GetLocale,
-	GetOptionsGenerateInRealTime,
-	GetOptionsValidJSONBeforeGeneration,
-	SetAllCapsWords,
-	SetFontSize,
-	SetLocale,
-	SetOptionsGenerateInRealTime,
-	SetOptionsValidJSONBeforeGeneration,
-} from "@api/app/services/config";
-import { CheckForUpdate, GetVersion } from "@api/app/services/version";
+import { Config, Version } from "@api/app/services";
 
 const defaultFontSize = 16;
 
@@ -55,11 +43,11 @@ export const useConfigStore = create<ConfigState>((set) => ({
 	init: async () => {
 		const [language, fontSize, allCapsWords, validJSON, realTime] =
 			await Promise.all([
-				GetLocale(),
-				GetFontSize(),
-				GetAllCapsWords(),
-				GetOptionsValidJSONBeforeGeneration(),
-				GetOptionsGenerateInRealTime(),
+				Config.GetLocale(),
+				Config.GetFontSize(),
+				Config.GetAllCapsWords(),
+				Config.GetOptionsValidJSONBeforeGeneration(),
+				Config.GetOptionsGenerateInRealTime(),
 			]);
 		void i18n.changeLanguage(language || "en");
 		set({
@@ -73,22 +61,22 @@ export const useConfigStore = create<ConfigState>((set) => ({
 
 	setLanguage: (language) => {
 		void i18n.changeLanguage(language);
-		void SetLocale(language);
+		void Config.SetLocale(language);
 		set({ language });
 	},
 
 	increaseFontSize: () =>
 		set((state) => {
-			void SetFontSize(state.fontSize + 1);
+			void Config.SetFontSize(state.fontSize + 1);
 			return { fontSize: state.fontSize + 1 };
 		}),
 	decreaseFontSize: () =>
 		set((state) => {
-			void SetFontSize(state.fontSize - 1);
+			void Config.SetFontSize(state.fontSize - 1);
 			return { fontSize: state.fontSize - 1 };
 		}),
 	resetFontSize: () => {
-		void SetFontSize(defaultFontSize);
+		void Config.SetFontSize(defaultFontSize);
 		set({ fontSize: defaultFontSize });
 	},
 
@@ -97,7 +85,7 @@ export const useConfigStore = create<ConfigState>((set) => ({
 			const result = unique(
 				state.allCapsWords.concat(splitWords(words)),
 			);
-			void SetAllCapsWords(result);
+			void Config.SetAllCapsWords(result);
 			return { allCapsWords: result };
 		}),
 	removeAllCapsWords: (words) =>
@@ -106,16 +94,16 @@ export const useConfigStore = create<ConfigState>((set) => ({
 			const result = unique(
 				state.allCapsWords.filter((word) => !items.includes(word)),
 			);
-			void SetAllCapsWords(result);
+			void Config.SetAllCapsWords(result);
 			return { allCapsWords: result };
 		}),
 
 	setValidJSON: (validJSON) => {
-		void SetOptionsValidJSONBeforeGeneration(validJSON);
+		void Config.SetOptionsValidJSONBeforeGeneration(validJSON);
 		set({ validJSON });
 	},
 	setRealTime: (realTime) => {
-		void SetOptionsGenerateInRealTime(realTime);
+		void Config.SetOptionsGenerateInRealTime(realTime);
 		set({ realTime });
 	},
 }));
@@ -149,13 +137,13 @@ export const useVersionStore = create<VersionState>((set, get) => ({
 
 	fetchVersion: async () => {
 		if (get().fetched) return;
-		const version = await GetVersion();
+		const version = await Version.GetVersion();
 		set({ version, fetched: true });
 	},
 
 	checkForUpdate: async () => {
 		set({ checking: true });
-		const info = await CheckForUpdate();
+		const info = await Version.CheckForUpdate();
 		set({
 			version: info.currentVersion,
 			latestVersion: info.latestVersion,

@@ -1,9 +1,7 @@
 import loader from "@monaco-editor/loader";
 import { editor } from "monaco-editor";
 import { create } from "zustand";
-import { Generate } from "@api/app/services/json2go";
-import { OpenJSONFile, SaveGoSourceFile } from "@api/app/services/dialogs";
-import { Read as ReadClipboard, Write as WriteClipboard } from "@api/app/services/clipboard";
+import { Clipboard, Dialogs, JSON2Go } from "@api/app/services";
 type IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 type IStandaloneEditorConstructionOptions = editor.IStandaloneEditorConstructionOptions;
 
@@ -132,7 +130,7 @@ export const useEditorsStore = create<EditorsState>((set, get) => ({
 	},
 	generate: async () => {
 		get().goEditor?.setValue(
-			await Generate(get().jsonEditor?.getValue() || ""),
+			await JSON2Go.Generate(get().jsonEditor?.getValue() || ""),
 		);
 	},
 	setJSON: (value) => {
@@ -144,17 +142,17 @@ export const useEditorsStore = create<EditorsState>((set, get) => ({
 	pasteJSON: async () => {
 		const editor = get().jsonEditor;
 		if (editor) {
-			replaceContent(editor, await ReadClipboard());
+			replaceContent(editor, await Clipboard.Read());
 		}
 	},
 	copyGo: async () => {
 		const editor = get().goEditor;
 		if (editor) {
-			void WriteClipboard(editor.getValue());
+			void Clipboard.Write(editor.getValue());
 		}
 	},
 	openJSON: async () => {
-		const content = await OpenJSONFile();
+		const content = await Dialogs.OpenJSONFile();
 		const editor = get().jsonEditor;
 		if (content && editor) {
 			replaceContent(editor, content);
@@ -163,7 +161,7 @@ export const useEditorsStore = create<EditorsState>((set, get) => ({
 	saveGo: async () => {
 		const editor = get().goEditor;
 		if (editor) {
-			void SaveGoSourceFile(editor.getValue());
+			void Dialogs.SaveGoSourceFile(editor.getValue());
 		}
 	},
 }));
