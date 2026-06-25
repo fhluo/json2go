@@ -7,16 +7,16 @@ import {
 import { useEditorsStore } from "@/store/editors.ts";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { All as GetExamples } from "@api/app/services/examples";
+import { Examples } from "@api/app/services";
 import type { Example } from "@api/internal/examples/models";
 
-export default function Examples() {
+export default function ExamplesMenu() {
 	const { t } = useTranslation();
 	const setJSON = useEditorsStore((state) => state.setJSON);
 
 	const [exampleList, setExampleList] = useState([] as Example[]);
 	useEffect(() => {
-		void GetExamples().then((value) => {
+		void Examples.All().then((value) => {
 			setExampleList(value ?? []);
 		});
 	}, []);
