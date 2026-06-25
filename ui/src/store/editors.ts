@@ -102,6 +102,8 @@ export const useEditorsStore = create<EditorsState>((set, get) => ({
 				return;
 			}
 
+			get().jsonEditor?.dispose();
+			get().goEditor?.dispose();
 			jsonElement.innerHTML = "";
 			goElement.innerHTML = "";
 			for (const model of monaco.editor.getModels()) {
