@@ -1,34 +1,33 @@
 package def
 
 import (
-	"bytes"
-	"encoding/json/jsontext"
 	"fmt"
 	"slices"
-	"strings"
 
 	gen "github.com/dave/jennifer/jen"
 	"github.com/fhluo/json2go/pkg/json2go/conv"
+	"github.com/fhluo/json2go/pkg/json2go/scanner"
+	"github.com/fhluo/json2go/pkg/json2go/token"
 	"github.com/fhluo/json2go/pkg/xiter"
 	"github.com/samber/lo"
 )
 
 type Context struct {
+	scanner.Scanner
 	conv.CamelCaseConverter
-	*jsontext.Decoder
 }
 
 func From(s string, allCaps ...string) *Context {
 	c := new(Context)
 	c.CamelCaseConverter = conv.NewDefaultCamelCaseConverter(allCaps)
-	c.Decoder = jsontext.NewDecoder(bytes.NewBufferString(s))
+	c.Scanner = scanner.New(s)
 	return c
 }
 
 func FromBytes(data []byte, allCaps ...string) *Context {
 	c := new(Context)
 	c.CamelCaseConverter = conv.NewDefaultCamelCaseConverter(allCaps)
-	c.Decoder = jsontext.NewDecoder(bytes.NewBuffer(data))
+	c.Scanner = scanner.NewFromBytes(data)
 	return c
 }
 
@@ -41,30 +40,26 @@ func (c *Context) Declare(name string) (*gen.Statement, error) {
 }
 
 func (c *Context) object() (keys []string, types []Type, err error) {
-	if c.PeekKind() != '{' {
-		err = fmt.Errorf("expected '{'")
-		return
-	}
-	if _, err = c.ReadToken(); err != nil {
-		return
+	var (
+		key string
+		t   Type
+	)
+	for c.More() {
+		// key
+		_, key, err = c.Scan()
+		if err != nil {
+			return
+		}
+		keys = append(keys, key)
+		// value
+		if t, err = c.Type(); err != nil {
+			return
+		} else {
+			types = append(types, t)
+		}
 	}
 
-	for c.PeekKind() != '}' {
-		// key name
-		tok, err := c.ReadToken()
-		if err != nil {
-			return nil, nil, err
-		}
-		keys = append(keys, tok.String())
-		// value type
-		t, err := c.Type()
-		if err != nil {
-			return nil, nil, err
-		}
-		types = append(types, t)
-	}
-
-	_, err = c.ReadToken()
+	_, _, err = c.Scan()
 	return
 }
 
@@ -144,23 +139,16 @@ func (c *Context) objectType() (Type, error) {
 }
 
 func (c *Context) array() (types []Type, err error) {
-	if c.PeekKind() != '[' {
-		err = fmt.Errorf("expected '['")
-		return
-	}
-	if _, err = c.ReadToken(); err != nil {
-		return
-	}
-
-	for c.PeekKind() != ']' {
-		t, err := c.Type()
-		if err != nil {
-			return nil, err
+	var t Type
+	for c.More() {
+		if t, err = c.Type(); err != nil {
+			return
+		} else {
+			types = append(types, t)
 		}
-		types = append(types, t)
 	}
 
-	_, err = c.ReadToken()
+	_, _, err = c.Scan()
 	return
 }
 
@@ -173,35 +161,28 @@ func (c *Context) arrayType() (Type, error) {
 }
 
 func (c *Context) Type() (Type, error) {
-	switch c.PeekKind() {
-	case '{':
+	t, _, err := c.Scan()
+	if err != nil {
+		return nil, err
+	}
+
+	switch t {
+	case token.LeftBrace:
 		return c.objectType()
-	case '[':
+	case token.LeftBracket:
 		return c.arrayType()
-	case 't', 'f':
-		return Bool{}, c.SkipValue()
-	case '0':
-		tok, err := c.ReadToken()
-		if err != nil {
-			return nil, err
-		}
-
-		if strings.ContainsAny(tok.String(), ".eE") {
-			return Float{}, nil
-		} else {
-			return Int{}, nil
-		}
-	case '"':
-		return String{}, c.SkipValue()
-	case 'n':
-		return Any{}, c.SkipValue()
+	case token.Bool:
+		return Bool{}, nil
+	case token.Int:
+		return Int{}, nil
+	case token.Float:
+		return Float{}, nil
+	case token.String:
+		return String{}, nil
+	case token.Null:
+		return Any{}, nil
 	default:
-		tok, err := c.ReadToken()
-		if err != nil {
-			return nil, err
-		}
-
-		return nil, fmt.Errorf("unexpected %v: %v", tok.Kind(), tok.String())
+		return nil, fmt.Errorf("unexpected token %s", t)
 	}
 }
 
