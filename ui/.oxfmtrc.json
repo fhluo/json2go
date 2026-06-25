@@ -1,0 +1,13 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "printWidth": 120,
+  "ignorePatterns": [],
+  "overrides": [
+    {
+      "files": ["**/*.{js,ts,jsx,tsx}"],
+      "options": {
+        "tabWidth": 4
+      }
+    }
+  ]
+}

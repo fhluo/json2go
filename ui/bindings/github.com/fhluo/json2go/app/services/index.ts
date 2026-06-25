@@ -7,15 +7,6 @@ import * as Dialogs from "./dialogs.js";
 import * as Examples from "./examples.js";
 import * as JSON2Go from "./json2go.js";
 import * as Version from "./version.js";
-export {
-    Clipboard,
-    Config,
-    Dialogs,
-    Examples,
-    JSON2Go,
-    Version
-};
+export { Clipboard, Config, Dialogs, Examples, JSON2Go, Version };
 
-export type {
-    UpdateInfo
-} from "./models.js";
+export type { UpdateInfo } from "./models.js";

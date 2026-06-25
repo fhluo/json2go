@@ -4,30 +4,30 @@ import { useEditorLayout } from "@/store/ui.ts";
 import { useTranslation } from "react-i18next";
 
 export default function Go() {
-	const { t } = useTranslation();
-	const { hideGoEditor, editorSpan, isColumns, isRows, goBorderLeft, goBorderTop } = useEditorLayout();
-	const copyGo = useEditorsStore((state) => state.copyGo);
+    const { t } = useTranslation();
+    const { hideGoEditor, editorSpan, isColumns, isRows, goBorderLeft, goBorderTop } = useEditorLayout();
+    const copyGo = useEditorsStore((state) => state.copyGo);
 
-	return (
-		<div
-			id="container-go"
-			style={{ display: hideGoEditor ? "none" : "" }}
-			className={cn("group", {
-				"col-span-2": isColumns && editorSpan,
-				"row-span-2": isRows && editorSpan,
-				"border-l": goBorderLeft,
-				"border-t": goBorderTop,
-			})}
-		>
-			<div className="w-full bg-white/50 flex flex-row">
-				<span className="py-1 px-4 select-none text-purple-700 font-mono group-focus-within:text-purple-500">
-					Go
-				</span>
-				<button type={"button"} onClick={copyGo}>
-					{t("Copy")}
-				</button>
-			</div>
-			<div className="w-full h-32 grow" id="go-editor" />
-		</div>
-	);
+    return (
+        <div
+            id="container-go"
+            style={{ display: hideGoEditor ? "none" : "" }}
+            className={cn("group", {
+                "col-span-2": isColumns && editorSpan,
+                "row-span-2": isRows && editorSpan,
+                "border-l": goBorderLeft,
+                "border-t": goBorderTop,
+            })}
+        >
+            <div className="w-full bg-white/50 flex flex-row">
+                <span className="py-1 px-4 select-none text-purple-700 font-mono group-focus-within:text-purple-500">
+                    Go
+                </span>
+                <button type={"button"} onClick={copyGo}>
+                    {t("Copy")}
+                </button>
+            </div>
+            <div className="w-full h-32 grow" id="go-editor" />
+        </div>
+    );
 }

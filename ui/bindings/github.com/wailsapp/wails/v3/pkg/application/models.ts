@@ -4,5 +4,4 @@
 /**
  * DialogManager manages dialog-related operations
  */
-export interface DialogManager {
-}
+export interface DialogManager {}

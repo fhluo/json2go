@@ -18,82 +18,77 @@ import "./app.css";
 import { Events } from "@wailsio/runtime";
 
 function App() {
-	const fontSize = useConfigStore((s) => s.fontSize);
-	const language = useConfigStore((s) => s.language);
-	const realTime = useConfigStore((s) => s.realTime);
-	const initConfig = useConfigStore((s) => s.init);
+    const fontSize = useConfigStore((s) => s.fontSize);
+    const language = useConfigStore((s) => s.language);
+    const realTime = useConfigStore((s) => s.realTime);
+    const initConfig = useConfigStore((s) => s.init);
 
-	const setMessage = useMessageStore((state) => state.setMessage);
+    const setMessage = useMessageStore((state) => state.setMessage);
 
-	const init = useRef(false);
+    const init = useRef(false);
 
-	const {
-		jsonEditor,
-		goEditor,
-		init: initEditors,
-		generate,
-	} = useEditorsStore();
+    const { jsonEditor, goEditor, init: initEditors, generate } = useEditorsStore();
 
-	const realTimeRef = useRef(realTime);
-	realTimeRef.current = realTime;
-	const generateRef = useRef(generate);
-	generateRef.current = generate;
+    const realTimeRef = useRef(realTime);
+    realTimeRef.current = realTime;
+    const generateRef = useRef(generate);
+    generateRef.current = generate;
 
-	useEffect(() => {
-		void initConfig();
+    useEffect(() => {
+        void initConfig();
 
-		document.defaultView?.addEventListener("resize", () => {
-			jsonEditor?.layout();
-			goEditor?.layout();
+        document.defaultView?.addEventListener("resize", () => {
+            jsonEditor?.layout();
+            goEditor?.layout();
             void Events.Emit("resize");
-		});
+        });
 
-		Events.On("error", (ev) => setMessage(ev.data));
+        Events.On("error", (ev) => setMessage(ev.data));
 
-		init.current = true;
-	}, []);
+        init.current = true;
+    }, []);
 
-	useEffect(() => {
-		if (language) {
-			initEditors(language, fontSize, "json-editor", "go-editor");
-		}
-	}, [language]);
+    useEffect(() => {
+        if (language) {
+            initEditors(language, fontSize, "json-editor", "go-editor");
+        }
+    }, [language]);
 
-	useEffect(() => {
-		if (init.current) {
-			jsonEditor?.updateOptions({ fontSize });
-			goEditor?.updateOptions({ fontSize });
-		}
-	}, [fontSize]);
+    useEffect(() => {
+        if (init.current) {
+            jsonEditor?.updateOptions({ fontSize });
+            goEditor?.updateOptions({ fontSize });
+        }
+    }, [fontSize]);
 
-	useEffect(() => {
-		if (jsonEditor) {
-			jsonEditor.getModel()?.onDidChangeContent(() => {
-				if (realTimeRef.current) {
-					generateRef.current();
-				}
-			});
-		}
-	}, [jsonEditor]);
+    useEffect(() => {
+        if (jsonEditor) {
+            jsonEditor.getModel()?.onDidChangeContent(() => {
+                if (realTimeRef.current) {
+                    generateRef.current();
+                }
+            });
+        }
+    }, [jsonEditor]);
 
-	return (
-		<main className="w-screen h-screen flex flex-col">
-			<Menubar>
-				<FileMenu />
-				<OptionsMenu />
-				<ViewMenu />
-				<FontMenu />
-				<LanguageMenu />
-				<ExamplesMenu />
-				<HelpMenu />
-			</Menubar>
-			<Container>
-				<JSONContainer />
-				<GoContainer />
-			</Container>
-			<Footer />
-		</main>
-	);
+    return (
+        <main className="w-screen h-screen flex flex-col">
+            <Menubar>
+                <FileMenu />
+                <OptionsMenu />
+                <ViewMenu />
+                <FontMenu />
+                <LanguageMenu />
+                <ExamplesMenu />
+                <HelpMenu />
+            </Menubar>
+            <Container>
+                <JSONContainer />
+                <GoContainer />
+            </Container>
+            <Footer />
+        </main>
+    );
 }
 
 export default App;

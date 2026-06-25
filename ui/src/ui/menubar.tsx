@@ -4,14 +4,12 @@ import { useDialogStore } from "@/store/dialog.ts";
 import type { PropsWithChildren } from "react";
 
 export default function Menubar_({ children }: PropsWithChildren) {
-	const dialog = useDialogStore((state) => state.dialog);
+    const dialog = useDialogStore((state) => state.dialog);
 
-	return (
-		<Dialog>
-			<Menubar className="rounded-none border-none bg-transparent">
-				{children}
-			</Menubar>
-			{dialog}
-		</Dialog>
-	);
+    return (
+        <Dialog>
+            <Menubar className="rounded-none border-none bg-transparent">{children}</Menubar>
+            {dialog}
+        </Dialog>
+    );
 }

@@ -6,150 +6,143 @@ import { Config, Version } from "@api/app/services";
 const defaultFontSize = 16;
 
 function splitWords(words: string): string[] {
-	return words
-		.split(",")
-		.map((word) => word.trim())
-		.filter((word) => word !== "");
+    return words
+        .split(",")
+        .map((word) => word.trim())
+        .filter((word) => word !== "");
 }
 
 function unique(items: string[]): string[] {
-	return Array.from(new Set(items));
+    return Array.from(new Set(items));
 }
 
 interface ConfigState {
-	language: string;
-	fontSize: number;
-	allCapsWords: string[];
-	validJSON: boolean;
-	realTime: boolean;
-	init: () => Promise<void>;
-	setLanguage: (language: string) => void;
-	increaseFontSize: () => void;
-	decreaseFontSize: () => void;
-	resetFontSize: () => void;
-	addAllCapsWords: (words: string) => void;
-	removeAllCapsWords: (words: string) => void;
-	setValidJSON: (validJSON: boolean) => void;
-	setRealTime: (realTime: boolean) => void;
+    language: string;
+    fontSize: number;
+    allCapsWords: string[];
+    validJSON: boolean;
+    realTime: boolean;
+    init: () => Promise<void>;
+    setLanguage: (language: string) => void;
+    increaseFontSize: () => void;
+    decreaseFontSize: () => void;
+    resetFontSize: () => void;
+    addAllCapsWords: (words: string) => void;
+    removeAllCapsWords: (words: string) => void;
+    setValidJSON: (validJSON: boolean) => void;
+    setRealTime: (realTime: boolean) => void;
 }
 
 export const useConfigStore = create<ConfigState>((set) => ({
-	language: "",
-	fontSize: defaultFontSize,
-	allCapsWords: [],
-	validJSON: false,
-	realTime: false,
+    language: "",
+    fontSize: defaultFontSize,
+    allCapsWords: [],
+    validJSON: false,
+    realTime: false,
 
-	init: async () => {
-		const [language, fontSize, allCapsWords, validJSON, realTime] =
-			await Promise.all([
-				Config.GetLocale(),
-				Config.GetFontSize(),
-				Config.GetAllCapsWords(),
-				Config.GetOptionsValidJSONBeforeGeneration(),
-				Config.GetOptionsGenerateInRealTime(),
-			]);
-		void i18n.changeLanguage(language || "en");
-		set({
-			language: language || "en",
-			fontSize,
-			allCapsWords: allCapsWords || [],
-			validJSON,
-			realTime,
-		});
-	},
+    init: async () => {
+        const [language, fontSize, allCapsWords, validJSON, realTime] = await Promise.all([
+            Config.GetLocale(),
+            Config.GetFontSize(),
+            Config.GetAllCapsWords(),
+            Config.GetOptionsValidJSONBeforeGeneration(),
+            Config.GetOptionsGenerateInRealTime(),
+        ]);
+        void i18n.changeLanguage(language || "en");
+        set({
+            language: language || "en",
+            fontSize,
+            allCapsWords: allCapsWords || [],
+            validJSON,
+            realTime,
+        });
+    },
 
-	setLanguage: (language) => {
-		void i18n.changeLanguage(language);
-		void Config.SetLocale(language);
-		set({ language });
-	},
+    setLanguage: (language) => {
+        void i18n.changeLanguage(language);
+        void Config.SetLocale(language);
+        set({ language });
+    },
 
-	increaseFontSize: () =>
-		set((state) => {
-			void Config.SetFontSize(state.fontSize + 1);
-			return { fontSize: state.fontSize + 1 };
-		}),
-	decreaseFontSize: () =>
-		set((state) => {
-			void Config.SetFontSize(state.fontSize - 1);
-			return { fontSize: state.fontSize - 1 };
-		}),
-	resetFontSize: () => {
-		void Config.SetFontSize(defaultFontSize);
-		set({ fontSize: defaultFontSize });
-	},
+    increaseFontSize: () =>
+        set((state) => {
+            void Config.SetFontSize(state.fontSize + 1);
+            return { fontSize: state.fontSize + 1 };
+        }),
+    decreaseFontSize: () =>
+        set((state) => {
+            void Config.SetFontSize(state.fontSize - 1);
+            return { fontSize: state.fontSize - 1 };
+        }),
+    resetFontSize: () => {
+        void Config.SetFontSize(defaultFontSize);
+        set({ fontSize: defaultFontSize });
+    },
 
-	addAllCapsWords: (words) =>
-		set((state) => {
-			const result = unique(
-				state.allCapsWords.concat(splitWords(words)),
-			);
-			void Config.SetAllCapsWords(result);
-			return { allCapsWords: result };
-		}),
-	removeAllCapsWords: (words) =>
-		set((state) => {
-			const items = splitWords(words);
-			const result = unique(
-				state.allCapsWords.filter((word) => !items.includes(word)),
-			);
-			void Config.SetAllCapsWords(result);
-			return { allCapsWords: result };
-		}),
+    addAllCapsWords: (words) =>
+        set((state) => {
+            const result = unique(state.allCapsWords.concat(splitWords(words)));
+            void Config.SetAllCapsWords(result);
+            return { allCapsWords: result };
+        }),
+    removeAllCapsWords: (words) =>
+        set((state) => {
+            const items = splitWords(words);
+            const result = unique(state.allCapsWords.filter((word) => !items.includes(word)));
+            void Config.SetAllCapsWords(result);
+            return { allCapsWords: result };
+        }),
 
-	setValidJSON: (validJSON) => {
-		void Config.SetOptionsValidJSONBeforeGeneration(validJSON);
-		set({ validJSON });
-	},
-	setRealTime: (realTime) => {
-		void Config.SetOptionsGenerateInRealTime(realTime);
-		set({ realTime });
-	},
+    setValidJSON: (validJSON) => {
+        void Config.SetOptionsValidJSONBeforeGeneration(validJSON);
+        set({ validJSON });
+    },
+    setRealTime: (realTime) => {
+        void Config.SetOptionsGenerateInRealTime(realTime);
+        set({ realTime });
+    },
 }));
 
 export function openHomePage() {
-	void Browser.OpenURL("https://github.com/fhluo/json2go");
+    void Browser.OpenURL("https://github.com/fhluo/json2go");
 }
 
 export function openRelease(version: string) {
-	void Browser.OpenURL(
-		`https://github.com/fhluo/json2go/releases/tag/v${version}`,
-	);
+    void Browser.OpenURL(`https://github.com/fhluo/json2go/releases/tag/v${version}`);
 }
 
 interface VersionState {
-	version: string;
-	latestVersion: string;
-	hasUpdate: boolean;
-	checking: boolean;
-	fetched: boolean;
-	fetchVersion: () => Promise<void>;
-	checkForUpdate: () => Promise<void>;
+    version: string;
+    latestVersion: string;
+    hasUpdate: boolean;
+    checking: boolean;
+    fetched: boolean;
+    fetchVersion: () => Promise<void>;
+    checkForUpdate: () => Promise<void>;
 }
 
 export const useVersionStore = create<VersionState>((set, get) => ({
-	version: "",
-	latestVersion: "",
-	hasUpdate: false,
-	checking: true,
-	fetched: false,
+    version: "",
+    latestVersion: "",
+    hasUpdate: false,
+    checking: true,
+    fetched: false,
 
-	fetchVersion: async () => {
-		if (get().fetched) return;
-		const version = await Version.GetVersion();
-		set({ version, fetched: true });
-	},
+    fetchVersion: async () => {
+        if (get().fetched) return;
+        const version = await Version.GetVersion();
+        set({ version, fetched: true });
+    },
 
-	checkForUpdate: async () => {
-		set({ checking: true });
-		const info = await Version.CheckForUpdate();
-		set({
-			version: info.currentVersion,
-			latestVersion: info.latestVersion,
-			hasUpdate: info.hasUpdate,
-			checking: false,
-			fetched: true,
-		});
-	},
+    checkForUpdate: async () => {
+        set({ checking: true });
+        const info = await Version.CheckForUpdate();
+        set({
+            version: info.currentVersion,
+            latestVersion: info.latestVersion,
+            hasUpdate: info.hasUpdate,
+            checking: false,
+            fetched: true,
+        });
+    },
 }));
