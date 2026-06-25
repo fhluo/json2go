@@ -12,8 +12,8 @@ type Dialogs struct {
 	app *application.App
 }
 
-func DialogsService() application.Service {
-	return application.NewServiceWithOptions(&Dialogs{}, application.ServiceOptions{Route: "/dialogs"})
+func DialogsService(app *application.App) application.Service {
+	return application.NewServiceWithOptions(&Dialogs{app: app}, application.ServiceOptions{Route: "/dialogs"})
 }
 
 func (dialogs *Dialogs) Dialog() *application.DialogManager {

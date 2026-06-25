@@ -59,7 +59,6 @@ func main() {
 		Services: []application.Service{
 			services.ClipboardService(),
 			services.ConfigService(),
-			services.DialogsService(),
 			services.ExamplesService(),
 			services.Json2GoService(),
 			services.VersionService(),
@@ -77,6 +76,8 @@ func main() {
 			}),
 		),
 	})
+
+	app.RegisterService(services.DialogsService(app))
 
 	window := app.Window.NewWithOptions(application.WebviewWindowOptions{
 		Title:            "json2go",
