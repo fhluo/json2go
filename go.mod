@@ -8,13 +8,14 @@ require (
 	github.com/lmittmann/tint v1.1.3
 	github.com/nicksnyder/go-i18n/v2 v2.6.1
 	github.com/otiai10/copy v1.14.1
-	github.com/pelletier/go-toml/v2 v2.4.0
+	github.com/pelletier/go-toml/v2 v2.4.2
+	github.com/pkg/errors v0.9.1
 	github.com/samber/lo v1.53.0
 	github.com/spf13/cast v1.10.0
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
-	github.com/wailsapp/wails/v3 v3.0.0-alpha2.105
+	github.com/wailsapp/wails/v3 v3.0.0-alpha2.106
 	golang.design/x/clipboard v0.8.0
 	golang.org/x/sys v0.46.0
 	golang.org/x/text v0.38.0
@@ -39,7 +40,7 @@ require (
 	github.com/spf13/afero v1.15.0 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	github.com/wailsapp/wails/webview2 v1.0.24 // indirect
+	github.com/wailsapp/wails/webview2 v1.0.27 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.design/x/x11 v0.2.0 // indirect
 	golang.org/x/exp/shiny v0.0.0-20260611194520-c48552f49976 // indirect
