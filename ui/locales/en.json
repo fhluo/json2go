@@ -60,8 +60,8 @@
   },
   "updates": {
     "title": "Check for updates",
-    "latest": "You are using the latest version.",
-    "new": "A new version is available: ",
+    "upToDate": "You're up to date.",
+    "available": "A new version is available: v{{version}}.",
     "failed": "Unable to check for updates.",
     "checking": "Checking for updates..."
   },

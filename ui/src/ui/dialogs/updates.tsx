@@ -18,7 +18,7 @@ export default function Updates() {
 	const hasUpdate = useVersionStore((s) => s.hasUpdate);
 	const checking = useVersionStore((s) => s.checking);
 	const checkForUpdate = useVersionStore((s) => s.checkForUpdate);
-	const [message, setMessage] = useState(t("updates.checking", "Checking..."));
+	const [message, setMessage] = useState(t("updates.checking", "Checking for updates..."));
 
 	useEffect(() => {
 		void checkForUpdate();
@@ -36,13 +36,12 @@ export default function Updates() {
 
 		if (hasUpdate) {
 			setMessage(
-				`${t(
-					"updates.available",
-					"A new version is available: ",
-				)}v${latestVersion}.`,
+				t("updates.available", "A new version is available: v{{version}}.", {
+					version: latestVersion,
+				}),
 			);
 		} else {
-			setMessage(t("updates.none", "You are using the latest version."));
+			setMessage(t("updates.upToDate", "You're up to date."));
 		}
 	}, [checking, version, latestVersion, hasUpdate]);
 
