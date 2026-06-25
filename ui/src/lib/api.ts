@@ -13,6 +13,7 @@ import {
 	SetOptionsGenerateInRealTime,
 	SetOptionsValidJSONBeforeGeneration,
 } from "@api/app/services/config";
+import { CheckForUpdate, GetVersion } from "@api/app/services/version";
 
 const defaultFontSize = 16;
 
@@ -128,3 +129,39 @@ export function openRelease(version: string) {
 		`https://github.com/fhluo/json2go/releases/tag/v${version}`,
 	);
 }
+
+interface VersionState {
+	version: string;
+	latestVersion: string;
+	hasUpdate: boolean;
+	checking: boolean;
+	fetched: boolean;
+	fetchVersion: () => Promise<void>;
+	checkForUpdate: () => Promise<void>;
+}
+
+export const useVersionStore = create<VersionState>((set, get) => ({
+	version: "",
+	latestVersion: "",
+	hasUpdate: false,
+	checking: true,
+	fetched: false,
+
+	fetchVersion: async () => {
+		if (get().fetched) return;
+		const version = await GetVersion();
+		set({ version, fetched: true });
+	},
+
+	checkForUpdate: async () => {
+		set({ checking: true });
+		const info = await CheckForUpdate();
+		set({
+			version: info.currentVersion,
+			latestVersion: info.latestVersion,
+			hasUpdate: info.hasUpdate,
+			checking: false,
+			fetched: true,
+		});
+	},
+}));

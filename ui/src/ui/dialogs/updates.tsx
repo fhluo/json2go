@@ -6,31 +6,26 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import { openRelease } from "@/lib/api.ts";
-import { useEffect, useRef, useState } from "react";
+import { openRelease, useVersionStore } from "@/lib/api.ts";
+import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CheckForUpdate } from "@api/app/services/version";
 
 export default function Updates() {
 	const { t } = useTranslation();
 
-	const [version, setVersion] = useState("");
-	const [latestVersion, setLatestVersion] = useState("");
-	const [hasUpdate, setHasUpdate] = useState(false);
+	const version = useVersionStore((s) => s.version);
+	const latestVersion = useVersionStore((s) => s.latestVersion);
+	const hasUpdate = useVersionStore((s) => s.hasUpdate);
+	const checking = useVersionStore((s) => s.checking);
+	const checkForUpdate = useVersionStore((s) => s.checkForUpdate);
 	const [message, setMessage] = useState(t("updates.checking", "Checking..."));
-	const isChecking = useRef(true);
 
 	useEffect(() => {
-		void CheckForUpdate().then((info) => {
-			setVersion(info.currentVersion);
-			setLatestVersion(info.latestVersion);
-			setHasUpdate(info.hasUpdate);
-			isChecking.current = false;
-		});
+		void checkForUpdate();
 	}, []);
 
 	useEffect(() => {
-		if (isChecking.current) {
+		if (checking) {
 			return;
 		}
 
@@ -49,7 +44,7 @@ export default function Updates() {
 		} else {
 			setMessage(t("updates.none", "You are using the latest version."));
 		}
-	}, [version, latestVersion, hasUpdate]);
+	}, [checking, version, latestVersion, hasUpdate]);
 
 	return (
 		<DialogContent className="select-none">

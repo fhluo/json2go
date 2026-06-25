@@ -6,16 +6,17 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useVersionStore } from "@/lib/api.ts";
 import { useTranslation } from "react-i18next";
-import { GetVersion } from "@api/app/services/version";
 
 export default function About() {
 	const { t } = useTranslation();
 
-	const [version, setVersion] = useState("");
+	const version = useVersionStore((s) => s.version);
+	const fetchVersion = useVersionStore((s) => s.fetchVersion);
 	useEffect(() => {
-		void GetVersion().then((value) => setVersion(value));
+		void fetchVersion();
 	}, []);
 
 	return (
