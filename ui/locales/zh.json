@@ -49,6 +49,8 @@
   "view": {
     "title": "视图",
     "editors": "编辑器",
+    "jsonOnly": "JSON",
+    "goOnly": "Go",
     "both": "JSON 和 Go",
     "layout": "布局",
     "columns": "两列",

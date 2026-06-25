@@ -32,10 +32,10 @@ export default function ViewMenu() {
 								{t("view.both", View.JSONAndGo)}
 							</MenubarRadioItem>
 							<MenubarRadioItem value={View.JSONOnly}>
-								{View.JSONOnly}
+								{t("view.jsonOnly", View.JSONOnly)}
 							</MenubarRadioItem>
 							<MenubarRadioItem value={View.GoOnly}>
-								{View.GoOnly}
+								{t("view.goOnly", View.GoOnly)}
 							</MenubarRadioItem>
 						</MenubarRadioGroup>
 					</MenubarSubContent>

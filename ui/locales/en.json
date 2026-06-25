@@ -48,6 +48,8 @@
   "view": {
     "title": "View",
     "editors": "Editors",
+    "jsonOnly": "JSON Only",
+    "goOnly": "Go Only",
     "both": "Both",
     "layout": "Layout",
     "columns": "Two Columns",
