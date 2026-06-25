@@ -6,6 +6,7 @@ import {
 	MenubarSeparator,
 	MenubarTrigger,
 } from "@/components/ui/menubar.tsx";
+import { openHomePage } from "@/lib/api.ts";
 import { useDialogStore } from "@/store/dialog.ts";
 import About from "@/ui/dialogs/about.tsx";
 import Updates from "@/ui/dialogs/updates.tsx";
@@ -21,19 +22,22 @@ export default function Help() {
 			<MenubarContent>
 				<DialogTrigger
 					render={
+						<MenubarItem onClick={() => setDialog(<About />)}>
+							{t("help.about", "About")}
+						</MenubarItem>
+					}
+				/>
+				<DialogTrigger
+					render={
 						<MenubarItem onClick={() => setDialog(<Updates />)}>
 						{t("help.updates", "Check for updates")}
 					</MenubarItem>
 					}
 				/>
 				<MenubarSeparator />
-				<DialogTrigger
-					render={
-						<MenubarItem onClick={() => setDialog(<About />)}>
-						{t("help.about", "About")}
-					</MenubarItem>
-					}
-				/>
+				<MenubarItem onClick={openHomePage}>
+					{t("help.repository", "Repository")}
+				</MenubarItem>
 			</MenubarContent>
 		</MenubarMenu>
 	);

@@ -43,6 +43,7 @@
   "help": {
     "title": "帮助",
     "updates": "检查更新",
+    "repository": "仓库",
     "about": "关于"
   },
   "view": {

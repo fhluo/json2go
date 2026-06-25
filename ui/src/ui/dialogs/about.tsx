@@ -6,13 +6,6 @@ import {
 	DialogHeader,
 	DialogTitle,
 } from "@/components/ui/dialog.tsx";
-import {
-	Tooltip,
-	TooltipContent,
-	TooltipProvider,
-	TooltipTrigger,
-} from "@/components/ui/tooltip.tsx";
-import { openHomePage } from "@/lib/api.ts";
 import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { GetVersion } from "@api/app/services/version";
@@ -31,22 +24,7 @@ export default function About() {
 				<DialogTitle>{t("about.title", "About")}</DialogTitle>
 			</DialogHeader>
 			<div className="flex flex-col items-center justify-center space-y-2 text-gray-900">
-				<TooltipProvider>
-					<Tooltip>
-						<TooltipTrigger
-							render={
-								<p className="text-lg font-semibold" onDoubleClick={openHomePage}>
-									json2go
-								</p>
-							}
-						/>
-						<TooltipContent className="bg-transparent text-slate-600">
-							<p>
-								{t("about.tip", "Double-click to visit json2go on Github.com")}
-							</p>
-						</TooltipContent>
-					</Tooltip>
-				</TooltipProvider>
+				<p className="text-lg font-semibold">json2go</p>
 				<p className="text-sm leading-relaxed text-muted-foreground">
 					{t("about.description", "Generate Go type definitions from JSON")}
 				</p>

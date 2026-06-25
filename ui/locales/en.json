@@ -42,6 +42,7 @@
   "help": {
     "title": "Help",
     "updates": "Check for updates",
+    "repository": "Repository",
     "about": "About"
   },
   "view": {
