@@ -15,3 +15,7 @@ export {
     JSON2Go,
     Version
 };
+
+export type {
+    UpdateInfo
+} from "./models.js";

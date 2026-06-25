@@ -23,3 +23,23 @@ func (v *Version) GetLatestVersion() string {
 
 	return r.String()
 }
+
+type UpdateInfo struct {
+	CurrentVersion string `json:"currentVersion"`
+	LatestVersion  string `json:"latestVersion"`
+	HasUpdate      bool   `json:"hasUpdate"`
+}
+
+func (v *Version) CheckForUpdate() UpdateInfo {
+	current := version.Version()
+	latest, err := version.Latest()
+	if err != nil {
+		return UpdateInfo{}
+	}
+
+	return UpdateInfo{
+		CurrentVersion: current.String(),
+		LatestVersion:  latest.String(),
+		HasUpdate:      current.LessThan(latest),
+	}
+}

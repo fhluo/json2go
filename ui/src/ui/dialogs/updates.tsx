@@ -9,24 +9,24 @@ import {
 import { openRelease } from "@/lib/api.ts";
 import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { GetLatestVersion, GetVersion } from "@api/app/services/version";
+import { CheckForUpdate } from "@api/app/services/version";
 
 export default function Updates() {
 	const { t } = useTranslation();
 
 	const [version, setVersion] = useState("");
 	const [latestVersion, setLatestVersion] = useState("");
+	const [hasUpdate, setHasUpdate] = useState(false);
 	const [message, setMessage] = useState(t("updates.checking", "Checking..."));
 	const isChecking = useRef(true);
 
 	useEffect(() => {
-		void Promise.all([GetVersion(), GetLatestVersion()]).then(
-			([version, latestVersion]) => {
-				setVersion(version);
-				setLatestVersion(latestVersion);
-				isChecking.current = false;
-			},
-		);
+		void CheckForUpdate().then((info) => {
+			setVersion(info.currentVersion);
+			setLatestVersion(info.latestVersion);
+			setHasUpdate(info.hasUpdate);
+			isChecking.current = false;
+		});
 	}, []);
 
 	useEffect(() => {
@@ -39,17 +39,17 @@ export default function Updates() {
 			return;
 		}
 
-		if (version === latestVersion) {
-			setMessage(t("updates.none", "You are using the latest version."));
-		} else {
+		if (hasUpdate) {
 			setMessage(
 				`${t(
 					"updates.available",
 					"A new version is available: ",
 				)}v${latestVersion}.`,
 			);
+		} else {
+			setMessage(t("updates.none", "You are using the latest version."));
 		}
-	}, [version, latestVersion]);
+	}, [version, latestVersion, hasUpdate]);
 
 	return (
 		<DialogContent className="select-none">
@@ -58,7 +58,7 @@ export default function Updates() {
 			</DialogHeader>
 			<p className="text-gray-900 leading-relaxed">{message}</p>
 			<DialogFooter>
-				{version && latestVersion && version !== latestVersion && (
+				{version && latestVersion && hasUpdate && (
 					<Button
 						variant="secondary"
 						onClick={() => openRelease(latestVersion)}
