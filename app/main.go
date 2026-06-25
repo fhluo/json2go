@@ -93,10 +93,6 @@ func main() {
 		URL: "/",
 	})
 
-	app.Event.On("exit", func(event *application.CustomEvent) {
-		app.Quit()
-	})
-
 	window.OnWindowEvent(events.Common.WindowDidResize, func(event *application.WindowEvent) {
 		config.SetWindowSize(window.Size())
 	})

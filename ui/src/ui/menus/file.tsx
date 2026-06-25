@@ -10,7 +10,7 @@ import { useDialogStore } from "@/store/dialog.ts";
 import { useEditorsStore } from "@/store/editors.ts";
 import Settings from "@/ui/dialogs/settings.tsx";
 import { useTranslation } from "react-i18next";
-import { Events } from "@wailsio/runtime";
+import { Application } from "@wailsio/runtime";
 
 export default function File() {
 	const { t } = useTranslation();
@@ -36,7 +36,7 @@ export default function File() {
 					}
 				/>
 				<MenubarSeparator />
-				<MenubarItem onClick={() => void Events.Emit("exit")}>
+				<MenubarItem onClick={() => void Application.Quit()}>
 					{t("file.exit", "Exit")}
 				</MenubarItem>
 			</MenubarContent>
