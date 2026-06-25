@@ -12,7 +12,7 @@ export default function Message() {
 		<div
 			className={
 				"flex flex-row items-center justify-center" +
-				"select-none mx-4 border bg-white/50 rounded shadow-sm space-x-1.5"
+				" select-none mx-4 border bg-white/50 rounded shadow-sm space-x-1.5"
 			}
 		>
 			<Info className="w-5 h-5 ml-2 mr-1 text-red-600" />
