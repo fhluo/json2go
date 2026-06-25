@@ -40,7 +40,7 @@ function App() {
 	generateRef.current = generate;
 
 	useEffect(() => {
-		initConfig();
+		void initConfig();
 
 		document.defaultView?.addEventListener("resize", () => {
 			jsonEditor?.layout();
