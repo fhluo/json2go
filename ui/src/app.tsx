@@ -1,6 +1,5 @@
 import { useConfigStore } from "@/lib/api.ts";
 import { useEditorsStore } from "@/store/editors.ts";
-import { useMessageStore } from "@/store/message.ts";
 import Container from "@/ui/container.tsx";
 import Footer from "@/ui/footer.tsx";
 import GoContainer from "@/ui/go.tsx";
@@ -14,6 +13,7 @@ import LanguageMenu from "@/ui/menus/language.tsx";
 import OptionsMenu from "@/ui/menus/options.tsx";
 import ViewMenu from "@/ui/menus/view.tsx";
 import { useEffect, useRef } from "react";
+import { toast, Toaster } from "sonner";
 import "./app.css";
 import { Events } from "@wailsio/runtime";
 
@@ -22,8 +22,6 @@ function App() {
     const language = useConfigStore((s) => s.language);
     const realTime = useConfigStore((s) => s.realTime);
     const initConfig = useConfigStore((s) => s.init);
-
-    const setMessage = useMessageStore((state) => state.setMessage);
 
     const init = useRef(false);
 
@@ -43,7 +41,7 @@ function App() {
             void Events.Emit("resize");
         });
 
-        Events.On("error", (ev) => setMessage(ev.data));
+        Events.On("error", (ev) => toast.error(ev.data));
 
         init.current = true;
     }, []);
@@ -87,6 +85,7 @@ function App() {
                 <GoContainer />
             </Container>
             <Footer />
+            <Toaster richColors position="top-right" />
         </main>
     );
 }
