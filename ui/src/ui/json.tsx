@@ -1,22 +1,20 @@
 import { cn } from "@/lib/utils.ts";
 import { useEditorsStore } from "@/store/editors.ts";
-import { Layout, useLayoutStore } from "@/store/layout.ts";
-import { View, useViewStore } from "@/store/view.ts";
+import { useEditorLayout } from "@/store/ui.ts";
 import { useTranslation } from "react-i18next";
 
 export default function JSON() {
 	const { t } = useTranslation();
-	const layout = useLayoutStore((state) => state.layout);
-	const view = useViewStore((state) => state.view);
+	const { hideJSONEditor, editorSpan, isColumns, isRows } = useEditorLayout();
 	const pasteJSON = useEditorsStore((state) => state.pasteJSON);
 
 	return (
 		<div
 			id="container-json"
-			style={{ display: view === View.GoOnly ? "none" : "" }}
+			style={{ display: hideJSONEditor ? "none" : "" }}
 			className={cn("group", {
-				"col-span-2": layout === Layout.TwoColumns && view === View.JSONOnly,
-				"row-span-2": layout === Layout.TwoRows && view === View.JSONOnly,
+				"col-span-2": isColumns && editorSpan,
+				"row-span-2": isRows && editorSpan,
 			})}
 		>
 			<div className="w-full bg-white/50 flex flex-row">

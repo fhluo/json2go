@@ -1,24 +1,22 @@
 import { cn } from "@/lib/utils.ts";
 import { useEditorsStore } from "@/store/editors.ts";
-import { Layout, useLayoutStore } from "@/store/layout.ts";
-import { View, useViewStore } from "@/store/view.ts";
+import { useEditorLayout } from "@/store/ui.ts";
 import { useTranslation } from "react-i18next";
 
 export default function Go() {
 	const { t } = useTranslation();
-	const layout = useLayoutStore((state) => state.layout);
-	const view = useViewStore((state) => state.view);
+	const { hideGoEditor, editorSpan, isColumns, isRows, goBorderLeft, goBorderTop } = useEditorLayout();
 	const copyGo = useEditorsStore((state) => state.copyGo);
 
 	return (
 		<div
 			id="container-go"
-			style={{ display: view === View.JSONOnly ? "none" : "" }}
+			style={{ display: hideGoEditor ? "none" : "" }}
 			className={cn("group", {
-				"col-span-2": layout === Layout.TwoColumns && view === View.GoOnly,
-				"row-span-2": layout === Layout.TwoRows && view === View.GoOnly,
-				"border-l": layout === Layout.TwoColumns && view === View.JSONAndGo,
-				"border-t": layout === Layout.TwoRows && view === View.JSONAndGo,
+				"col-span-2": isColumns && editorSpan,
+				"row-span-2": isRows && editorSpan,
+				"border-l": goBorderLeft,
+				"border-t": goBorderTop,
 			})}
 		>
 			<div className="w-full bg-white/50 flex flex-row">
