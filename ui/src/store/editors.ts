@@ -102,6 +102,9 @@ export const useEditorsStore = create<EditorsState>((set, get) => ({
 				return;
 			}
 
+			const jsonValue = get().jsonEditor?.getValue() || "";
+			const goValue = get().goEditor?.getValue() || "";
+
 			get().jsonEditor?.dispose();
 			get().goEditor?.dispose();
 			jsonElement.innerHTML = "";
@@ -112,11 +115,11 @@ export const useEditorsStore = create<EditorsState>((set, get) => ({
 
 			const jsonEditor = monaco.editor.create(
 				jsonElement,
-				editorOptions("json", fontSize, ""),
+				editorOptions("json", fontSize, jsonValue),
 			);
 			const goEditor = monaco.editor.create(
 				goElement,
-				editorOptions("go", fontSize, ""),
+				editorOptions("go", fontSize, goValue),
 			);
 
 			set({
