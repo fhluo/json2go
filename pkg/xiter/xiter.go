@@ -1,14 +1,31 @@
 package xiter
 
-import "iter"
+import (
+	"iter"
+	"slices"
+)
+
+func Slice[Slice ~[]E, E any](s Slice) Seq[E] {
+	return Seq[E](slices.Values(s))
+}
+
+type Seq[T any] iter.Seq[T]
 
 // Map returns an iterator over f applied to seq.
-func Map[In, Out any](f func(In) Out, seq iter.Seq[In]) iter.Seq[Out] {
-	return func(yield func(Out) bool) {
-		for in := range seq {
+func (s Seq[T]) Map[U any](f func(T) U) Seq[U] {
+	return func(yield func(U) bool) {
+		for in := range s {
 			if !yield(f(in)) {
 				return
 			}
 		}
 	}
+}
+
+func (s Seq[T]) Iter() iter.Seq[T] {
+	return iter.Seq[T](s)
+}
+
+func (s Seq[T]) Collect() []T {
+	return slices.Collect(s.Iter())
 }

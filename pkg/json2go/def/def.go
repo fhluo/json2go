@@ -236,14 +236,9 @@ func (c *Context) deduceStruct(types []Type) Struct {
 		fields := m[key]
 		field := fields[0]
 
-		field.Type = c.deduce(slices.Collect(
-			xiter.Map(
-				func(field *Field) Type {
-					return field.Type
-				},
-				slices.Values(fields),
-			),
-		))
+		field.Type = c.deduce(xiter.Slice(fields).Map(func(field *Field) Type {
+			return field.Type
+		}).Collect())
 		field.OmitEmpty = len(fields) != len(types)
 		if field.OmitEmpty {
 			field.Type = field.Type.Nullable()
