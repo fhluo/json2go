@@ -10,7 +10,6 @@ import (
 	"github.com/fhluo/json2go/internal/config"
 	"github.com/nicksnyder/go-i18n/v2/i18n"
 	"github.com/pelletier/go-toml/v2"
-	"github.com/samber/lo"
 	"golang.org/x/sys/windows"
 	"golang.org/x/text/language"
 )
@@ -57,7 +56,9 @@ func init() {
 	// load locales
 	err := fs.WalkDir(locales, "locales", func(path string, d fs.DirEntry, err error) error {
 		if !d.IsDir() && strings.HasPrefix(d.Name(), "active.") {
-			lo.Must(bundle.LoadMessageFileFS(locales, path))
+			if _, err := bundle.LoadMessageFileFS(locales, path); err != nil {
+				return err
+			}
 		}
 		return nil
 	})

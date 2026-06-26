@@ -10,7 +10,6 @@ require (
 	github.com/otiai10/copy v1.14.1
 	github.com/pelletier/go-toml/v2 v2.4.2
 	github.com/pkg/errors v0.9.1
-	github.com/samber/lo v1.53.0
 	github.com/spf13/cast v1.10.0
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
