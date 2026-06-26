@@ -11,7 +11,7 @@ info:
   description: "Generate Go type definitions from JSON" # The application description
   copyright: "Copyright © 2022 fhluo" # Copyright text
   comments: "" # Comments
-  version: "v0.6.0" # The application version
+  version: "v0.5.0" # The application version
 
 # Dev mode configuration
 dev_mode:
