@@ -1,6 +1,7 @@
 import loader from "@monaco-editor/loader";
 import { editor } from "monaco-editor";
 import { create } from "zustand";
+import { toast } from "sonner";
 import { Clipboard, Dialogs, JSON2Go } from "@api/app/services";
 type IStandaloneCodeEditor = editor.IStandaloneCodeEditor;
 type IStandaloneEditorConstructionOptions = editor.IStandaloneEditorConstructionOptions;
@@ -108,6 +109,7 @@ export const useEditorsStore = create<EditorsState>((set, get) => ({
         });
     },
     generate: async () => {
+        toast.dismiss();
         get().goEditor?.setValue(await JSON2Go.Generate(get().jsonEditor?.getValue() || ""));
     },
     setJSON: (value) => {
