@@ -54,9 +54,9 @@ func (c *Context) object() (keys []string, types []Type, err error) {
 		// value
 		if t, err = c.Type(); err != nil {
 			return
-		} else {
-			types = append(types, t)
 		}
+
+		types = append(types, t)
 	}
 
 	_, _, err = c.Scan()
@@ -143,9 +143,9 @@ func (c *Context) array() (types []Type, err error) {
 	for c.More() {
 		if t, err = c.Type(); err != nil {
 			return
-		} else {
-			types = append(types, t)
 		}
+
+		types = append(types, t)
 	}
 
 	_, _, err = c.Scan()
@@ -272,9 +272,9 @@ func (c *Context) deduce(types []Type) Type {
 	case 1:
 		if nullable {
 			return types[0].Nullable()
-		} else {
-			return types[0]
 		}
+
+		return types[0]
 	}
 
 	switch types[0].(type) {
@@ -285,13 +285,13 @@ func (c *Context) deduce(types []Type) Type {
 	case Int:
 		if all[Int](types) {
 			return Int{Pointer: nullable}
-		} else {
-			ok := lo.EveryBy(types, func(item Type) bool {
-				return is[Int](item) || is[Float](item)
-			})
-			if ok {
-				return Float{Pointer: nullable}
-			}
+		}
+
+		ok := lo.EveryBy(types, func(item Type) bool {
+			return is[Int](item) || is[Float](item)
+		})
+		if ok {
+			return Float{Pointer: nullable}
 		}
 	case Float:
 		if all[Float](types) {

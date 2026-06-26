@@ -29,9 +29,9 @@ func (t TypeDecl) String() string {
 	r, err := format.Source([]byte(s))
 	if err != nil {
 		return s
-	} else {
-		return string(r)
 	}
+
+	return string(r)
 }
 
 type Int struct {
@@ -41,9 +41,9 @@ type Int struct {
 func (i Int) String() string {
 	if i.Pointer {
 		return "*int"
-	} else {
-		return "int"
 	}
+
+	return "int"
 }
 
 func (i Int) Nullable() Type {
@@ -65,9 +65,9 @@ type Float struct {
 func (f Float) String() string {
 	if f.Pointer {
 		return "*float64"
-	} else {
-		return "float64"
 	}
+
+	return "float64"
 }
 
 func (f Float) Nullable() Type {
@@ -89,9 +89,9 @@ type Bool struct {
 func (b Bool) String() string {
 	if b.Pointer {
 		return "*bool"
-	} else {
-		return "bool"
 	}
+
+	return "bool"
 }
 
 func (b Bool) Nullable() Type {
@@ -113,9 +113,9 @@ type String struct {
 func (s String) String() string {
 	if s.Pointer {
 		return "*string"
-	} else {
-		return "string"
 	}
+
+	return "string"
 }
 
 func (s String) Nullable() Type {
