@@ -191,12 +191,10 @@ func is[T Type](t Type) bool {
 }
 
 func all[T Type](types []Type) bool {
-	for _, t := range types {
-		if _, ok := t.(T); !ok {
-			return false
-		}
-	}
-	return true
+	return xiter.Slice(types).All(func(t Type) bool {
+		_, ok := t.(T)
+		return ok
+	})
 }
 
 func remove[T Type](types []Type) []Type {
