@@ -129,13 +129,13 @@ scanAgain:
 	case '}':
 		if s.stack.IsEmpty() {
 			return token.Null, "", fmt.Errorf("brackets do not match")
-		} else {
-			if s.stack.Top() == token.LeftBrace {
-				s.stack.Pop()
-			} else {
-				return token.Illegal, "", fmt.Errorf("expecting '%s', got '%s", token.LeftBrace, s.stack.Top())
-			}
 		}
+
+		if s.stack.Top() != token.LeftBrace {
+			return token.Illegal, "", fmt.Errorf("expecting '%s', got '%s", token.LeftBrace, s.stack.Top())
+		}
+
+		s.stack.Pop()
 		s.next()
 		return token.RightBrace, "", nil
 	case '[':
@@ -145,13 +145,13 @@ scanAgain:
 	case ']':
 		if s.stack.IsEmpty() {
 			return token.Illegal, "", fmt.Errorf("brackets do not match")
-		} else {
-			if s.stack.Top() == token.LeftBracket {
-				s.stack.Pop()
-			} else {
-				return token.Illegal, "", fmt.Errorf("expecting '%s', got '%s", token.LeftBracket, s.stack.Top())
-			}
 		}
+
+		if s.stack.Top() != token.LeftBracket {
+			return token.Illegal, "", fmt.Errorf("expecting '%s', got '%s", token.LeftBracket, s.stack.Top())
+		}
+
+		s.stack.Pop()
 		s.next()
 		return token.RightBracket, "", nil
 	case '"':
