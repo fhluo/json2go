@@ -10,7 +10,7 @@ import (
 	"github.com/fhluo/json2go/pkg/json2go/conv"
 
 	gen "github.com/dave/jennifer/jen"
-	"github.com/samber/lo"
+	"github.com/fhluo/json2go/pkg/xiter"
 )
 
 type Type interface {
@@ -188,9 +188,9 @@ func (s Struct) String() string {
 	%s
 }`,
 		strings.Join(
-			lo.Map(s.Fields, func(field *Field, _ int) string {
+			xiter.Slice(s.Fields).Map(func(field *Field) string {
 				return field.String()
-			}),
+			}).Collect(),
 			"\n\t",
 		),
 	)
@@ -207,9 +207,9 @@ func (s Struct) Naming() {
 	}
 
 	named := !slices.Contains(
-		lo.Map(s.Fields, func(field *Field, _ int) string {
+		xiter.Slice(s.Fields).Map(func(field *Field) string {
 			return field.Name
-		}),
+		}).Collect(),
 		"",
 	)
 	if named {
@@ -231,9 +231,9 @@ func (s Struct) Naming() {
 
 func (s Struct) Code() gen.Code {
 	s.Naming()
-	codes := lo.Map(s.Fields, func(field *Field, _ int) gen.Code {
+	codes := xiter.Slice(s.Fields).Map(func(field *Field) gen.Code {
 		return field.Code()
-	})
+	}).Collect()
 
 	if s.Pointer {
 		gen.Op("*").Struct(codes...)

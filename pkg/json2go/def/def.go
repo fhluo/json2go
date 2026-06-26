@@ -9,7 +9,6 @@ import (
 	"github.com/fhluo/json2go/pkg/json2go/scanner"
 	"github.com/fhluo/json2go/pkg/json2go/token"
 	"github.com/fhluo/json2go/pkg/xiter"
-	"github.com/samber/lo"
 )
 
 type Context struct {
@@ -252,12 +251,12 @@ func (c *Context) deduceStruct(types []Type) Struct {
 
 func (c *Context) deduceMap(types []Type) Type {
 	return Map{
-		Key: c.deduce(lo.Map(types, func(item Type, _ int) Type {
+		Key: c.deduce(xiter.Slice(types).Map(func(item Type) Type {
 			return item.(Map).Key
-		})),
-		Value: c.deduce(lo.Map(types, func(item Type, _ int) Type {
+		}).Collect()),
+		Value: c.deduce(xiter.Slice(types).Map(func(item Type) Type {
 			return item.(Map).Value
-		})),
+		}).Collect()),
 	}
 }
 
@@ -287,7 +286,7 @@ func (c *Context) deduce(types []Type) Type {
 			return Int{Pointer: nullable}
 		}
 
-		ok := lo.EveryBy(types, func(item Type) bool {
+		ok := xiter.Slice(types).All(func(item Type) bool {
 			return is[Int](item) || is[Float](item)
 		})
 		if ok {
@@ -319,7 +318,7 @@ func (c *Context) deduce(types []Type) Type {
 			return c.deduceStruct(types)
 		}
 
-		ok := lo.EveryBy(types, func(item Type) bool {
+		ok := xiter.Slice(types).All(func(item Type) bool {
 			return is[Struct](item) || is[Map](item)
 		})
 		if ok {
@@ -327,9 +326,9 @@ func (c *Context) deduce(types []Type) Type {
 				if s, ok := types[i].(Struct); ok {
 					types[i] = Map{
 						Key: String{},
-						Value: c.deduce(lo.Map(s.Fields, func(field *Field, _ int) Type {
+						Value: c.deduce(xiter.Slice(s.Fields).Map(func(field *Field) Type {
 							return field.Type
-						})),
+						}).Collect()),
 					}
 				}
 			}
