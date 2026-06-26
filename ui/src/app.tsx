@@ -13,7 +13,8 @@ import LanguageMenu from "@/ui/menus/language.tsx";
 import OptionsMenu from "@/ui/menus/options.tsx";
 import ViewMenu from "@/ui/menus/view.tsx";
 import { useEffect, useRef } from "react";
-import { toast, Toaster } from "sonner";
+import { toast } from "sonner";
+import { Toaster } from "@/components/ui/sonner";
 import "./app.css";
 import { Events } from "@wailsio/runtime";
 
@@ -85,7 +86,7 @@ function App() {
                 <GoContainer />
             </Container>
             <Footer />
-            <Toaster richColors position="top-right" />
+            <Toaster position="top-right" />
         </main>
     );
 }
