@@ -202,7 +202,7 @@ func all[T Type](types []Type) bool {
 
 func remove[T Type](types []Type) []Type {
 	i := 0
-	for j := 0; j < len(types); j++ {
+	for j := range types {
 		if !is[T](types[j]) {
 			if i != j {
 				types[i] = types[j]
@@ -319,26 +319,26 @@ func (c *Context) deduce(types []Type) Type {
 		if all[Struct](types) {
 			if nullable {
 				return c.deduceStruct(types).Nullable()
-			} else {
-				return c.deduceStruct(types)
 			}
-		} else {
-			ok := lo.EveryBy(types, func(item Type) bool {
-				return is[Struct](item) || is[Map](item)
-			})
-			if ok {
-				for i := range types {
-					if s, ok := types[i].(Struct); ok {
-						types[i] = Map{
-							Key: String{},
-							Value: c.deduce(lo.Map(s.Fields, func(field *Field, _ int) Type {
-								return field.Type
-							})),
-						}
+
+			return c.deduceStruct(types)
+		}
+
+		ok := lo.EveryBy(types, func(item Type) bool {
+			return is[Struct](item) || is[Map](item)
+		})
+		if ok {
+			for i := range types {
+				if s, ok := types[i].(Struct); ok {
+					types[i] = Map{
+						Key: String{},
+						Value: c.deduce(lo.Map(s.Fields, func(field *Field, _ int) Type {
+							return field.Type
+						})),
 					}
 				}
-				return c.deduceMap(types)
 			}
+			return c.deduceMap(types)
 		}
 	case Map:
 		if all[Map](types) {

@@ -247,9 +247,9 @@ func (s StandardScanner) Scan() (token.Token, string, error) {
 	case '0':
 		if strings.ContainsAny(t.String(), ".eE") {
 			return token.Float, "", nil
-		} else {
-			return token.Int, "", nil
 		}
+
+		return token.Int, "", nil
 	case '"':
 		return token.String, "", nil
 	case 'n':
