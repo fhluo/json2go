@@ -1,7 +1,7 @@
 version: '3'
 
 includes:
-  web:
+  ui:
     taskfile: ../../ui/Taskfile.yaml
     dir: ../../ui
 
@@ -15,16 +15,15 @@ tasks:
 
   install:frontend:deps:
     summary: Install frontend dependencies
-    dir: frontend
     run: once
     deps:
-      - task: web:install
+      - task: ui:install
 
   build:frontend:
     summary: Build the frontend project
     deps:
       - task: generate:bindings
-      - task: web:build
+      - task: ui:build
 
   generate:bindings:
     summary: Generates bindings for the frontend
@@ -53,7 +52,7 @@ tasks:
   dev:frontend:
     summary: Runs the frontend in development mode
     deps:
-      - task: web:dev
+      - task: ui:dev
 
   update:build-assets:
     summary: Updates the build assets

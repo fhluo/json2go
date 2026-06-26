@@ -49,11 +49,12 @@ tasks:
     deps:
       - install
     cmds:
-      - bun check
+      - bun lint
+      - bun fmt:check
 
-  format:
+  fmt:
     summary: Format the project
     deps:
       - install
     cmds:
-      - bun format
+      - bun fmt

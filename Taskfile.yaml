@@ -5,7 +5,7 @@ env:
   Path: "{{.PWD}}/app/build/tools/nsis/Bin;{{.PWD}}/app/build/tools/upx;{{.PATH}}"
 
 includes:
-  web:
+  ui:
     taskfile: ./ui/Taskfile.yaml
     dir: ./ui
   app:
@@ -25,7 +25,7 @@ tasks:
   setup:
     deps:
       - setup-wails
-      - task: web:install
+      - task: ui:install
 
   build-cli-windows:
     env:
