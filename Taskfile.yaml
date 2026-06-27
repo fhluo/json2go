@@ -16,11 +16,11 @@ tasks:
   setup-wails:
     cmd: go install github.com/wailsapp/wails/v3/cmd/wails3@latest
 
-  setup-upx:
-    cmd: go run github.com/fhluo/tools/setup-upx@latest app/build/tools
+  dl-upx:
+    cmd: go run github.com/fhluo/tools/dl-upx@latest app/build/tools
 
-  setup-nsis:
-    cmd: go run github.com/fhluo/tools/setup-nsis@latest app/build/tools
+  dl-nsis:
+    cmd: go run github.com/fhluo/tools/dl-nsis@latest app/build/tools
 
   setup:
     deps:
@@ -53,8 +53,8 @@ tasks:
   package:
     dir: app
     deps:
-      - setup-upx
-      - setup-nsis
+      - dl-upx
+      - dl-nsis
     cmds:
       - wails3 task package
 
