@@ -7,7 +7,7 @@
       "ProductVersion": "0.5.0",
       "CompanyName": "",
       "FileDescription": "",
-      "LegalCopyright": "Copyright © 2022 fhluo",
+      "LegalCopyright": "Copyright © 2022-2026 fhluo",
       "ProductName": "json2go",
       "Comments": "Generate Go type definitions from JSON"
     }

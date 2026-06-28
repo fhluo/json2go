@@ -33,7 +33,7 @@ export default function About() {
                         {version}
                     </p>
                 </div>
-                <p className="text-sm">Copyright © 2022 fhluo</p>
+                <p className="text-sm">Copyright © 2022-2026 fhluo</p>
             </div>
             <DialogFooter>
                 <DialogClose render={<Button variant="secondary">{t("OK")}</Button>} />
