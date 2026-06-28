@@ -13,18 +13,33 @@ includes:
     dir: ./app
 
 tasks:
-  setup-wails:
+  setup:wails:
     cmd: go install github.com/wailsapp/wails/v3/cmd/wails3@latest
 
-  dl-upx:
-    cmd: go run github.com/fhluo/tools/dl-upx@latest app/build/tools
+  setup:nsis:
+    platforms: [windows]
+    cmds:
+      - winget install -e --id NSIS.NSIS --accept-source-agreements --accept-package-agreements
+      - cmd: echo "C:\Program Files (x86)\NSIS\Bin" >> "$GITHUB_PATH"
+        if: '[ "$GITHUB_ACTIONS" = "true" ]'
 
-  dl-nsis:
-    cmd: go run github.com/fhluo/tools/dl-nsis@latest app/build/tools
+  setup:inno:
+    platforms: [windows]
+    cmds:
+      - winget install -e --id JRSoftware.InnoSetup.7 --accept-source-agreements --accept-package-agreements
+      - cmd: echo "C:\Program Files\Inno Setup 7" >> "$GITHUB_PATH"
+        if: '[ "$GITHUB_ACTIONS" = "true" ]'
+
+  setup:upx:
+    platforms: [windows]
+    cmds:
+      - winget install -e --id UPX.UPX --accept-source-agreements --accept-package-agreements
+      - cmd: echo "{{.LOCALAPPDATA}}\Microsoft\WinGet\Links" >> "$GITHUB_PATH"
+        if: '[ "$GITHUB_ACTIONS" = "true" ]'
 
   setup:
     deps:
-      - setup-wails
+      - setup:wails
       - task: ui:install
 
   build-cli-windows:
@@ -53,8 +68,8 @@ tasks:
   package:
     dir: app
     deps:
-      - dl-upx
-      - dl-nsis
+      - setup:upx
+      - setup:inno
     cmds:
       - wails3 task package
 
