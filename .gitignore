@@ -2,6 +2,8 @@
 
 *.syso
 *.exe
+
+bin/
 translate.*.toml
 
 .task/

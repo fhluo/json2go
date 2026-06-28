@@ -48,7 +48,7 @@ tasks:
       GOARCH: amd64
     dir: cmd/json2go
     cmds:
-      - go build -o json2go-cli_windows-amd64.exe
+      - go build -o ../../bin/json2go-cli_windows-amd64.exe
 
   build-cli:
     deps:

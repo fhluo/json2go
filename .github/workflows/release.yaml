@@ -35,5 +35,5 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: |
-            app/build/bin/json2go.exe
-            app/build/bin/json2go-amd64-installer.exe
+            bin/json2go.exe
+            bin/json2go-amd64-installer.exe

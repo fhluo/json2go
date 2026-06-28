@@ -2,7 +2,7 @@ version: '3'
 
 vars:
   APP_NAME: "json2go"
-  BIN_DIR: "build/bin"
+  BIN_DIR: "../bin"
   VITE_PORT: '{{.WAILS_VITE_PORT | default 9245}}'
 
 includes:
