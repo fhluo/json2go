@@ -104,6 +104,9 @@ test:
 build: build-cli build-wails
 
 [group: 'build']
+build-release: build-cli build-wails-prod
+
+[group: 'build']
 [working-directory: 'cmd/json2go']
 build-cli:
   go build -o ../../bin/{{cli_file}}
@@ -112,6 +115,11 @@ build-cli:
 [working-directory: 'app']
 build-wails:
   wails3 task build
+
+[group: 'build']
+[working-directory: 'app']
+build-wails-prod:
+  $env.PRODUCTION = "true"; wails3 task build
 
 [group: 'packge']
 [working-directory: 'bin']
