@@ -17,7 +17,7 @@ function loaderConfig(language: string) {
     };
 }
 
-const monacoLocales = ["en", "de", "es", "fr", "it", "ja", "ko", "ru", "zh-cn", "zh-tw"];
+const monacoLocales = ["en", "zh-cn"];
 
 function getMonacoLocale(locale: string): string {
     locale = locale.toLowerCase();

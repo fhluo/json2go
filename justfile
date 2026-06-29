@@ -62,7 +62,14 @@ setup-web:
 [group: 'web']
 [working-directory: 'ui']
 copy-monaco:
-  go run ../cmd/copy --src node_modules/monaco-editor/min/vs --dst public/monaco-editor/min/vs assets editor language basic-languages loader.js nls.messages-loader.js 'nls.messages.*.js' '_commonjsHelpers-*.js' 'go-*.js' 'editor.api-*.js' 'jsonMode-*.js' 'cssMode-*.js' 'htmlMode-*.js' 'tsMode-*.js' 'lspLanguageFeatures-*.js' 'workers-*.js'
+  #!nu
+  let src = ("node_modules/monaco-editor/min/vs" | path expand)
+  let dst = ("public/monaco-editor/min/vs" | path expand)
+  mkdir $dst
+  cd $src
+  cp -r assets editor basic-languages language/json $dst
+  cp loader.js nls.messages-loader.js nls.messages.zh-cn.js $dst
+  cp `_commonjsHelpers-*.js` `go-*.js` `editor.api-*.js` `jsonMode-*.js` `lspLanguageFeatures-*.js` `workers-*.js` $dst
 
 [group: 'web']
 [working-directory: 'ui']
