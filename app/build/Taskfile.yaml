@@ -1,10 +1,5 @@
 version: '3'
 
-includes:
-  ui:
-    taskfile: ../../ui/Taskfile.yaml
-    dir: ../../ui
-
 tasks:
   go:mod:tidy:
     summary: Runs `go mod tidy`
@@ -16,14 +11,13 @@ tasks:
   install:frontend:deps:
     summary: Install frontend dependencies
     run: once
-    deps:
-      - task: ui:install
+    cmd: just setup-web
 
   build:frontend:
     summary: Build the frontend project
     deps:
       - task: generate:bindings
-      - task: ui:build
+    cmd: just web-build
 
   generate:bindings:
     summary: Generates bindings for the frontend
@@ -50,8 +44,7 @@ tasks:
 
   dev:frontend:
     summary: Runs the frontend in development mode
-    deps:
-      - task: ui:dev
+    cmd: just web-dev
 
   update:build-assets:
     summary: Updates the build assets
