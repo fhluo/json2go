@@ -8,8 +8,6 @@ vars:
 includes:
   common: ./build/Taskfile.yaml
   windows: ./build/windows/Taskfile.yaml
-  darwin: ./build/darwin/Taskfile.yaml
-  linux: ./build/linux/Taskfile.yaml
 
 tasks:
   build:
