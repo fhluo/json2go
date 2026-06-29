@@ -104,7 +104,13 @@ test:
 build: build-cli build-wails
 
 [group: 'build']
-build-release: build-cli build-wails-prod
+build-release *args: build-cli build-wails-prod
+  def main [ --upx ] { if $upx { just upx } }; main {{args}}
+
+[group: 'build']
+[working-directory: 'bin']
+upx:
+  upx {{app}}{{extension}} {{cli_file}}
 
 [group: 'build']
 [working-directory: 'cmd/json2go']
