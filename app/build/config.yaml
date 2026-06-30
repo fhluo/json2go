@@ -1,19 +1,14 @@
-# This file contains the configuration for this project.
-# When you update `info` or `fileAssociations`, run `wails3 task common:update:build-assets` to update the assets.
-# Note that this will overwrite any changes you have made to the assets.
 version: '3'
 
-# This information is used to generate the build assets.
 info:
-  companyName: "" # The name of the company
-  productName: "json2go" # The name of the application
-  productIdentifier: "json2go" # The unique product identifier
-  description: "Generate Go type definitions from JSON" # The application description
-  copyright: "Copyright © 2022-2026 fhluo" # Copyright text
-  comments: "" # Comments
-  version: "v0.5.0" # The application version
+  companyName: ""
+  productName: "json2go"
+  productIdentifier: "json2go"
+  description: "Generate Go type definitions from JSON"
+  copyright: "Copyright © 2022-2026 fhluo"
+  comments: ""
+  version: "0.5.0"
 
-# Dev mode configuration
 dev_mode:
   root_path: .
   log_level: warn
@@ -39,20 +34,7 @@ dev_mode:
     - cmd: just run
       type: primary
 
-# File Associations
-# More information at: https://v3alpha.wails.io/noit/done/yet
 fileAssociations:
-#  - ext: wails
-#    name: Wails
-#    description: Wails Application File
-#    iconName: wailsFileIcon
-#    role: Editor
-#  - ext: jpg
-#    name: JPEG
-#    description: Image File
-#    iconName: jpegFileIcon
-#    role: Editor
 
-# Other data
 other:
   - name: My Other Data
