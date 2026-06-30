@@ -7,6 +7,7 @@ extension := if goos == "windows" {
   ""
 }
 app := "json2go"
+version := "0.5.0"
 cli := app + "-cli"
 cli_file := cli + extension
 ci := if env("GITHUB_ACTIONS", "false") == "true" {
@@ -103,6 +104,26 @@ run:
 
 test:
   go test -v ./...
+
+[group: 'build']
+set-version version=version:
+  #!nu
+  open justfile
+  | str replace -r 'version := "\d+\.\d+\.\d+"' 'version := "{{version}}"'
+  | save -f justfile
+
+  open internal/version/version.go
+  | str replace -r 'const version = "\d+\.\d+\.\d+"' 'const version = "{{version}}"'
+  | save -f internal/version/version.go
+
+  open --raw app/build/windows/info.json
+  | str replace -a -r '"\d+\.\d+\.\d+"' '"{{version}}"'
+  | save -f app/build/windows/info.json
+
+  open app/build/windows/wails.exe.manifest
+  | str replace -r 'name="json2go" version="\d+\.\d+\.\d+"' 'name="json2go" version="{{version}}"'
+  | save -f app/build/windows/wails.exe.manifest
+
 
 [group: 'build']
 build: build-cli build-wails
