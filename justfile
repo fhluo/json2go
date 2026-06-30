@@ -226,7 +226,7 @@ package: package-cli package-app
 [working-directory: 'bin']
 [windows]
 package-cli: build-cli
-   powershell Compress-Archive -Force {{cli_file}} {{cli}}-{{goos}}-{{goarch}}.zip
+   7z a -mx9 {{cli}}-{{goos}}-{{goarch}}.zip {{cli_file}}
 
 [group: 'packge']
 [working-directory: 'bin']
