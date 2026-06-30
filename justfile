@@ -136,6 +136,14 @@ set-version version=version:
   | str replace -a -r '"\d+\.\d+\.\d+"' '"{{version}}"'
   | save -f app/build/windows/info.json
 
+  open --raw ui/package.json
+  | str replace -r '"version": "\d+\.\d+\.\d+"' '"version": "{{version}}"'
+  | save -f ui/package.json
+
+  open --raw app/build/config.yaml
+  | str replace -r 'version: "\d+\.\d+\.\d+"' 'version: "{{version}}"'
+  | save -f app/build/config.yaml
+
   open app/build/windows/wails.exe.manifest
   | str replace -r 'name="json2go" version="\d+\.\d+\.\d+"' 'name="json2go" version="{{version}}"'
   | save -f app/build/windows/wails.exe.manifest
