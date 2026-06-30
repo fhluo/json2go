@@ -1,7 +1,6 @@
 package version
 
 import (
-	_ "embed"
 	"fmt"
 	"io"
 	"iter"
@@ -12,27 +11,13 @@ import (
 	"unsafe"
 
 	"github.com/Masterminds/semver"
-	"github.com/pelletier/go-toml/v2"
 )
 
-//go:embed version.toml
-var versionTOML []byte
-
-type versionInfo struct {
-	Version    string `toml:"version"`
-	ReleaseURL string `toml:"release_url"`
-}
-
-var info versionInfo
-
-func init() {
-	if err := toml.Unmarshal(versionTOML, &info); err != nil {
-		slog.Error("failed to unmarshal version toml", "err", err)
-	}
-}
+const version = "0.5.0"
+const ReleaseURL = "https://github.com/fhluo/json2go/releases"
 
 func Version() *semver.Version {
-	v, err := semver.NewVersion(info.Version)
+	v, err := semver.NewVersion(version)
 
 	if err != nil {
 		slog.Error("failed to parse version", "err", err)
@@ -43,7 +28,7 @@ func Version() *semver.Version {
 }
 
 func fetchReleasePage() (string, error) {
-	resp, err := http.Get(info.ReleaseURL)
+	resp, err := http.Get(ReleaseURL)
 	if err != nil {
 		return "", err
 	}
