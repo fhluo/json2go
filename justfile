@@ -144,9 +144,9 @@ set-version version=version:
   | str replace -r 'version: "\d+\.\d+\.\d+"' 'version: "{{version}}"'
   | save -f app/build/config.yaml
 
-  open app/build/windows/wails.exe.manifest
+  open app/build/windows/json2go.exe.manifest
   | str replace -r 'name="json2go" version="\d+\.\d+\.\d+"' 'name="json2go" version="{{version}}"'
-  | save -f app/build/windows/wails.exe.manifest
+  | save -f app/build/windows/json2go.exe.manifest
 
 
 [group: 'build']
@@ -192,7 +192,7 @@ generate-icons:
 [working-directory: 'app']
 [windows]
 build-wails: tidy generate-bindings web-build generate-icons
-  wails3 generate syso -arch {{goarch}} -icon build/windows/icon.ico -manifest build/windows/wails.exe.manifest -info build/windows/info.json -out wails_windows_{{goarch}}.syso
+  wails3 generate syso -arch {{goarch}} -icon build/windows/icon.ico -manifest build/windows/json2go.exe.manifest -info build/windows/info.json -out wails_windows_{{goarch}}.syso
   go build -buildvcs=false -gcflags=all=-l -o ../bin/{{app}}{{extension}}
   rm *.syso
 
@@ -200,7 +200,7 @@ build-wails: tidy generate-bindings web-build generate-icons
 [working-directory: 'app']
 [windows]
 build-wails-prod: tidy generate-bindings web-build generate-icons
-  wails3 generate syso -arch {{goarch}} -icon build/windows/icon.ico -manifest build/windows/wails.exe.manifest -info build/windows/info.json -out wails_windows_{{goarch}}.syso
+  wails3 generate syso -arch {{goarch}} -icon build/windows/icon.ico -manifest build/windows/json2go.exe.manifest -info build/windows/info.json -out wails_windows_{{goarch}}.syso
   go build -tags production -trimpath -buildvcs=false -ldflags="-w -s -H windowsgui" -o ../bin/{{app}}{{extension}}
   rm *.syso
 
