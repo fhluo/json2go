@@ -47,6 +47,22 @@ setup-inno-env:
   $Path = [Environment]::GetEnvironmentVariable("Path", "User")
   [Environment]::SetEnvironmentVariable("Path", $InnoPath + ";" + $Path, "User")
 
+[group: 'setup']
+[windows]
+setup-7z:
+  winget install -e --id 7zip.7zip --accept-source-agreements --accept-package-agreements
+
+[group: 'setup']
+[windows]
+setup-7z-env:
+  #!pwsh -File
+  $7zPath = "C:\Program Files\7-Zip"
+  if (-not (Test-Path $7zPath)) {
+    return
+  }
+
+  $Path = [Environment]::GetEnvironmentVariable("Path", "User")
+  [Environment]::SetEnvironmentVariable("Path", $7zPath + ";" + $Path, "User")
 
 [group: 'setup']
 [windows]
