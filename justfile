@@ -174,6 +174,7 @@ tidy:
 [working-directory: 'app']
 generate-bindings:
   wails3 generate bindings -d ../ui/bindings -ts -i -clean=true
+  just web-fmt
 
 [group: 'build']
 [working-directory: 'app']
