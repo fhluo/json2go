@@ -32,11 +32,11 @@ dev_mode:
       - "*.go"
     git_ignore: true
   executes:
-    - cmd: wails3 build DEV=true
+    - cmd: just build-wails
       type: blocking
-    - cmd: wails3 task common:dev:frontend
+    - cmd: just web-dev
       type: background
-    - cmd: wails3 task run
+    - cmd: just run
       type: primary
 
 # File Associations

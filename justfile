@@ -1,7 +1,7 @@
 set shell := ["nu", "-c"]
-os := env("GOOS", os())
-arch := env("GOARCH", arch())
-extension := if os == "windows" {
+goos := `go env GOOS`
+goarch := `go env GOARCH`
+extension := if goos == "windows" {
   ".exe"
 } else {
   ""
@@ -95,7 +95,11 @@ fmt: web-fmt
 
 [working-directory: 'app']
 dev:
-  $env.JSON2GO_DEV = true; $env.JSON2GO_DEBUG = true; wails3 task dev
+  $env.JSON2GO_DEV = true; $env.JSON2GO_DEBUG = true; wails3 dev
+
+[working-directory: 'bin']
+run:
+  {{app}}{{extension}}
 
 test:
   go test -v ./...
@@ -118,28 +122,80 @@ build-cli:
   go build -o ../../bin/{{cli_file}}
 
 [group: 'build']
-[working-directory: 'app']
-build-wails:
-  wails3 task build
+tidy:
+  go mod tidy
 
 [group: 'build']
 [working-directory: 'app']
-build-wails-prod:
-  $env.PRODUCTION = "true"; wails3 task build
+generate-bindings:
+  wails3 generate bindings -d ../ui/bindings -ts -i -clean=true
+
+[group: 'build']
+[working-directory: 'app']
+[windows]
+generate-icons:
+  wails3 generate icons -input build/appicon.png -windowsfilename build/windows/icons.ico
+
+[group: 'build']
+[working-directory: 'app']
+[macos]
+generate-icons:
+  wails3 generate icons -input build/appicon.png -macfilename build/darwin/icons.icns
+
+[group: 'build']
+[working-directory: 'app']
+[windows]
+build-wails: tidy generate-bindings web-build generate-icons
+  wails3 generate syso -arch {{goarch}} -icon build/windows/icon.ico -manifest build/windows/wails.exe.manifest -info build/windows/info.json -out wails_windows_{{goarch}}.syso
+  go build -buildvcs=false -gcflags=all=-l -o ../bin/{{app}}{{extension}}
+  rm *.syso
+
+[group: 'build']
+[working-directory: 'app']
+[windows]
+build-wails-prod: tidy generate-bindings web-build generate-icons
+  wails3 generate syso -arch {{goarch}} -icon build/windows/icon.ico -manifest build/windows/wails.exe.manifest -info build/windows/info.json -out wails_windows_{{goarch}}.syso
+  go build -tags production -trimpath -buildvcs=false -ldflags="-w -s -H windowsgui" -o ../bin/{{app}}{{extension}}
+  rm *.syso
+
+[group: 'build']
+[working-directory: 'app']
+[linux]
+build-wails: tidy generate-bindings web-build
+  go build -buildvcs=false -gcflags=all=-l -o ../bin/{{app}}{{extension}}
+
+[group: 'build']
+[working-directory: 'app']
+[linux]
+build-wails-prod: tidy generate-bindings web-build
+  go build -tags production -trimpath -buildvcs=false -ldflags="-w -s" -o ../bin/{{app}}{{extension}}
+
+[group: 'build']
+[working-directory: 'app']
+[macos]
+build-wails: tidy generate-bindings web-build generate-icons
+  go build -buildvcs=false -gcflags=all=-l -o ../bin/{{app}}{{extension}}
+
+[group: 'build']
+[working-directory: 'app']
+[macos]
+build-wails-prod: tidy generate-bindings web-build generate-icons
+  go build -tags production -trimpath -buildvcs=false -ldflags="-w -s" -o ../bin/{{app}}{{extension}}
 
 [group: 'packge']
 [working-directory: 'bin']
 [windows]
 package-cli: build-cli
-   powershell Compress-Archive -Force {{cli_file}} {{cli}}-{{os}}-{{arch}}.zip
+   powershell Compress-Archive -Force {{cli_file}} {{cli}}-{{goos}}-{{goarch}}.zip
 
 [group: 'packge']
 [working-directory: 'bin']
 [unix]
 package-cli: build-cli
-  tar -czf {{cli}}-{{os}}-{{arch}}.tar.gz {{cli_file}}
+  tar -czf {{cli}}-{{goos}}-{{goarch}}.tar.gz {{cli_file}}
 
 [group: 'packge']
 [working-directory: 'app']
-package-app:
-  wails3 task package
+package-app: build-wails-prod
+  wails3 generate webview2bootstrapper -dir build/windows
+  ISCC build/windows/json2go.iss
