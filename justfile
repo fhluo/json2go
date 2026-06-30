@@ -226,13 +226,13 @@ package: package-cli package-app
 [working-directory: 'bin']
 [windows]
 package-cli: build-cli
-   7z a -mx9 {{cli}}-{{goos}}-{{goarch}}.zip {{cli_file}}
+   7z a -mx9 {{cli}}-{{version}}-{{goos}}-{{goarch}}.zip {{cli_file}}
 
 [group: 'packge']
 [working-directory: 'bin']
 [unix]
 package-cli: build-cli
-  tar -czf {{cli}}-{{goos}}-{{goarch}}.tar.gz {{cli_file}}
+  tar -czf {{cli}}-{{version}}-{{goos}}-{{goarch}}.tar.gz {{cli_file}}
 
 [group: 'packge']
 [working-directory: 'app']
