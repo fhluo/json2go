@@ -28,14 +28,14 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Set up Task
-        uses: go-task/setup-task@v2
+      - name: Set up Just
+        uses: extractions/setup-just@v4
 
       - name: Setup
-        run: task setup
+        run: just setup
 
       - name: Build
-        run: task build
+        run: just build
 
       - name: Test
-        run: task test
+        run: just test

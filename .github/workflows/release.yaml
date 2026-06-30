@@ -22,18 +22,21 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Set up Task
-        uses: go-task/setup-task@v2
+      - name: Set up Just
+        uses: extractions/setup-just@v4
+
+      - name: Setup Inno Setup
+        run: just setup-inno
 
       - name: Setup
-        run: task setup
+        run: just setup
 
       - name: Package
-        run: task package
+        run: just package
 
       - name: Release
         uses: softprops/action-gh-release@v3
         with:
           files: |
-            bin/json2go.exe
-            bin/json2go-amd64-installer.exe
+            bin/json2go-${{ github.ref_name }}-windows-amd64-setup.exe
+            bin/json2go-cli-${{ github.ref_name }}-windows-amd64.zip

@@ -183,6 +183,9 @@ build-wails-prod: tidy generate-bindings web-build generate-icons
   go build -tags production -trimpath -buildvcs=false -ldflags="-w -s" -o ../bin/{{app}}{{extension}}
 
 [group: 'packge']
+package: package-cli package-app
+
+[group: 'packge']
 [working-directory: 'bin']
 [windows]
 package-cli: build-cli
