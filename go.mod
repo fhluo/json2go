@@ -13,7 +13,7 @@ require (
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
-	github.com/wailsapp/wails/v3 v3.0.0-alpha2.111
+	github.com/wailsapp/wails/v3 v3.0.0-alpha2.112
 	golang.design/x/clipboard v0.8.0
 	golang.org/x/sys v0.46.0
 	golang.org/x/text v0.38.0
@@ -37,7 +37,7 @@ require (
 	github.com/spf13/afero v1.15.0 // indirect
 	github.com/spf13/pflag v1.0.10 // indirect
 	github.com/subosito/gotenv v1.6.0 // indirect
-	github.com/wailsapp/wails/webview2 v1.0.27 // indirect
+	github.com/wailsapp/wails/webview2 v1.0.28 // indirect
 	go.yaml.in/yaml/v3 v3.0.4 // indirect
 	golang.design/x/x11 v0.2.0 // indirect
 	golang.org/x/exp/shiny v0.0.0-20260611194520-c48552f49976 // indirect
