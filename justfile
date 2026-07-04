@@ -256,7 +256,19 @@ package-cli: build-cli
   tar -czf {{cli}}-{{version}}-{{goos}}-{{goarch}}.tar.gz {{cli_file}}
 
 [group: 'packge']
+[working-directory: 'app/build/windows']
+[windows]
+iscc:
+  #!nu
+  ["C:\\Program Files\\Inno Setup 7", $"($env.LOCALAPPDATA)\\Programs\\Inno Setup 7"]
+  | where {|p| $p | path exists }
+  | first
+  | if $in != null { let p = $in; $env.Path = ($env.Path | prepend $p) }
+
+  wails3 generate webview2bootstrapper -dir .
+  ISCC json2go.iss
+
+[group: 'packge']
 [working-directory: 'app']
-package-app: build-wails-prod upx-app
-  wails3 generate webview2bootstrapper -dir build/windows
-  ISCC build/windows/json2go.iss
+[windows]
+package-app: build-wails-prod upx-app iscc
