@@ -122,13 +122,15 @@ test:
   go test -v ./...
 
 [group: 'build']
-set-version version=version:
+check-version version:
   #!nu
   if "{{version}}" not-like '^v?\d+\.\d+\.\d+$' {
     print $"(ansi red)invalid version: {{version}}, expected a version like 0.5.0 or v0.5.0(ansi reset)"
     exit 1
   }
 
+[group: 'build']
+set-version version=version: (check-version version)
   "{{version}}" | str replace '^v' '' | just sync-version $in
 
 [group: 'build']
