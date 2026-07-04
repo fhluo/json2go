@@ -36,3 +36,7 @@ Name: {autodesktop}\{#AppName}; Filename: {app}\{#AppExeName}; Tasks: desktopico
 
 [Run]
 Filename: {app}\{#AppExeName}; Description: {cm:LaunchProgram,{#AppName}}; Flags: nowait postinstall skipifsilent
+
+[Languages]
+Name: english; MessagesFile: compiler:Default.isl
+Name: chinesesimplified; MessagesFile: compiler:Languages\ChineseSimplified.isl

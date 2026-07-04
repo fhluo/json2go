@@ -260,10 +260,21 @@ package-cli: build-cli
 [windows]
 iscc:
   #!nu
-  ["C:\\Program Files\\Inno Setup 7", $"($env.LOCALAPPDATA)\\Programs\\Inno Setup 7"]
-  | where {|p| $p | path exists }
-  | first
-  | if $in != null { let p = $in; $env.Path = ($env.Path | prepend $p) }
+  let inno = (
+    ["C:\\Program Files\\Inno Setup 7", $"($env.LOCALAPPDATA)\\Programs\\Inno Setup 7"]
+    | where {|p| $p | path exists }
+    | first
+  )
+
+  if ($inno != null) {
+    $env.Path = ($env.Path | prepend $inno)
+
+    let lang = ($inno | path join "Languages" "ChineseSimplified.isl")
+    if not ($lang | path exists) {
+      http get "https://raw.githubusercontent.com/kira-96/Inno-Setup-Chinese-Simplified-Translation/main/ChineseSimplified.isl"
+      | save $lang
+    }
+  }
 
   wails3 generate webview2bootstrapper -dir .
   ISCC json2go.iss
