@@ -86,7 +86,7 @@ copy-monaco:
   rm -rf $dst
   mkdir $dst
   cd $src
-  cp -r assets editor basic-languages language/json $dst
+  cp -r assets editor basic-languages language $dst
   cp loader.js nls.messages-loader.js nls.messages.zh-cn.js $dst
   cp `_commonjsHelpers-*.js` `go-*.js` `editor.api-*.js` `jsonMode-*.js` `lspLanguageFeatures-*.js` `workers-*.js` $dst
 
