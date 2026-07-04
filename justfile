@@ -148,6 +148,10 @@ set-version version=version:
   | str replace -r 'name="json2go" version="\d+\.\d+\.\d+"' 'name="json2go" version="{{version}}"'
   | save -f app/build/windows/json2go.exe.manifest
 
+  open app/build/windows/json2go.iss
+  | str replace -r '#define AppVersion "\d+\.\d+\.\d+"' '#define AppVersion "{{version}}"'
+  | save -f app/build/windows/json2go.iss
+
 [group: 'build']
 build: build-cli build-wails
 
