@@ -114,7 +114,7 @@ fmt: web-fmt
 
 [working-directory: 'app']
 dev:
-  $env.JSON2GO_DEV = true; $env.JSON2GO_DEBUG = true; wails3 dev
+  $env.JSON2GO_DEV = true; $env.JSON2GO_DEBUG = true; wails3 dev -config ./build/config.yaml
 
 [working-directory: 'bin']
 run:
