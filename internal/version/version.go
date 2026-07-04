@@ -13,7 +13,7 @@ import (
 	"github.com/Masterminds/semver"
 )
 
-const version = "0.5.2"
+const version = "0.5.3"
 const ReleaseURL = "https://github.com/fhluo/json2go/releases"
 
 func Version() *semver.Version {
