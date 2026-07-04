@@ -46,5 +46,5 @@ jobs:
         uses: softprops/action-gh-release@v3
         with:
           files: |
-            bin/json2go-${{ github.ref_name }}-windows-amd64-setup.exe
-            bin/json2go-cli-${{ github.ref_name }}-windows-amd64.zip
+            bin/json2go-*-windows-amd64-setup.exe
+            bin/json2go-cli-*-windows-amd64.zip
