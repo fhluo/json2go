@@ -278,7 +278,7 @@ iscc:
     }
   }
 
-  wails3 generate webview2bootstrapper -dir .
+  wails3 generate webview2bootstrapper -dir . e>| ignore
   ISCC json2go.iss
 
 [group: 'packge']
