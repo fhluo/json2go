@@ -39,6 +39,9 @@ jobs:
       - name: Setup
         run: just setup
 
+      - name: Set version
+        run: just set-version ${{ github.ref_name }}
+
       - name: Package
         run: just package
 
