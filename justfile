@@ -124,6 +124,16 @@ test:
 [group: 'build']
 set-version version=version:
   #!nu
+  if "{{version}}" not-like '^v?\d+\.\d+\.\d+$' {
+    print $"(ansi red)invalid version: {{version}}, expected a version like 0.5.0 or v0.5.0(ansi reset)"
+    exit 1
+  }
+
+  "{{version}}" | str replace '^v' '' | just sync-version $in
+
+[group: 'build']
+sync-version version=version:
+  #!nu
   open justfile
   | str replace -r 'version := "\d+\.\d+\.\d+"' 'version := "{{version}}"'
   | save -f justfile
