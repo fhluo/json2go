@@ -33,6 +33,9 @@ jobs:
       - name: Setup Inno Setup
         run: just setup-inno
 
+      - name: Setup UPX
+        run: just setup-upx
+
       - name: Setup
         run: just setup
 

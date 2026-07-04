@@ -148,7 +148,6 @@ set-version version=version:
   | str replace -r 'name="json2go" version="\d+\.\d+\.\d+"' 'name="json2go" version="{{version}}"'
   | save -f app/build/windows/json2go.exe.manifest
 
-
 [group: 'build']
 build: build-cli build-wails
 
@@ -158,8 +157,17 @@ build-release *args: build-cli build-wails-prod
 
 [group: 'build']
 [working-directory: 'bin']
-upx:
-  upx {{app}}{{extension}} {{cli_file}}
+upx: upx-cli upx-app
+
+[group: 'build']
+[working-directory: 'bin']
+upx-cli:
+  upx {{cli_file}}
+
+[group: 'build']
+[working-directory: 'bin']
+upx-app:
+  upx {{app}}{{extension}}
 
 [group: 'build']
 [working-directory: 'cmd/json2go']
@@ -234,7 +242,7 @@ package: package-cli package-app
 [group: 'packge']
 [working-directory: 'bin']
 [windows]
-package-cli: build-cli
+package-cli: build-cli upx-cli
    7z a -mx9 {{cli}}-{{version}}-{{goos}}-{{goarch}}.zip {{cli_file}}
 
 [group: 'packge']
@@ -245,6 +253,6 @@ package-cli: build-cli
 
 [group: 'packge']
 [working-directory: 'app']
-package-app: build-wails-prod
+package-app: build-wails-prod upx-app
   wails3 generate webview2bootstrapper -dir build/windows
   ISCC build/windows/json2go.iss
