@@ -82,6 +82,8 @@ copy-monaco:
   #!nu
   let src = ("node_modules/monaco-editor/min/vs" | path expand)
   let dst = ("public/monaco-editor/min/vs" | path expand)
+  # Monaco files have hashed names that change across versions; clean first to avoid stale assets accumulating
+  rm -rf $dst
   mkdir $dst
   cd $src
   cp -r assets editor basic-languages language/json $dst

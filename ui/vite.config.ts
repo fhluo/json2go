@@ -16,6 +16,7 @@ export default defineConfig({
     },
     build: {
         outDir: "../app/ui/dist",
+        emptyOutDir: true, // outDir is outside project root, Vite won't empty it by default
     },
     server: {
         host: "127.0.0.1",
