@@ -26,7 +26,7 @@ ArchitecturesInstallIn64BitMode=x64compatible
 SetupArchitecture=x64
 
 [Files]
-Source: {#BinDir}\json2go.exe; DestDir: {app}
+Source: {#BinDir}\json2go.exe; DestDir: {app}; Flags: ignoreversion
 
 [Tasks]
 Name: desktopicon; Description: {cm:CreateDesktopIcon}; GroupDescription: {cm:AdditionalIcons}
