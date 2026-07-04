@@ -271,8 +271,10 @@ iscc:
 
     let lang = ($inno | path join "Languages" "ChineseSimplified.isl")
     if not ($lang | path exists) {
+      print $"(ansi light_gray)Downloading Simplified Chinese translation for Inno Setup...(ansi reset)"
       http get "https://raw.githubusercontent.com/kira-96/Inno-Setup-Chinese-Simplified-Translation/main/ChineseSimplified.isl"
       | save $lang
+      print $"(ansi green)✓ Saved to ($lang)(ansi reset)"
     }
   }
 
