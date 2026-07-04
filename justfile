@@ -131,7 +131,29 @@ check-version version:
 
 [group: 'build']
 set-version version=version: (check-version version)
-  "{{version}}" | str replace '^v' '' | just sync-version $in
+  "{{version}}" | str replace -r '^v' '' | just sync-version $in
+
+[group: 'build']
+bump-version version: (check-version version)
+  #!nu
+  let status = (git status --porcelain --untracked-files=no)
+  if ($status | is-not-empty) {
+    print $"(ansi red)working tree is not clean, please commit or stash changes first(ansi reset)"
+    exit 1
+  }
+
+  let ver = ("{{version}}" | str replace -r '^v' '')
+  print $"(ansi light_gray)Syncing version to ($ver)...(ansi reset)"
+  just sync-version $ver
+
+  print $"(ansi light_gray)Committing...(ansi reset)"
+  git add justfile internal/version/version.go app/build/windows/info.json ui/package.json app/build/config.yaml app/build/windows/json2go.exe.manifest app/build/windows/json2go.iss
+  git commit -m $"chore: bump version to ($ver)"
+
+  print $"(ansi light_gray)Tagging v($ver)...(ansi reset)"
+  git tag $"v($ver)" -m $"v($ver)"
+
+  print $"(ansi green)✓ Bumped to ($ver)(ansi reset)"
 
 [group: 'build']
 sync-version version=version:
