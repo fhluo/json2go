@@ -321,3 +321,62 @@ iscc:
 [working-directory: 'app']
 [windows]
 package-app: build-wails-prod upx-app iscc
+
+doctor:
+  #!nu
+  let inno = (
+    ["C:\\Program Files\\Inno Setup 7", $"($env.LOCALAPPDATA)\\Programs\\Inno Setup 7"]
+    | where {|p| $p | path exists }
+    | first
+  )
+
+  if ($inno != null) {
+      $env.Path = ($env.Path | prepend $inno)
+  }
+
+  def found [name: string, cmd: string] {
+    if (which $cmd | is-not-empty) {
+      return true
+    }
+
+    print $"(ansi red)  ✗ ($name): not found(ansi reset)"
+    return false
+  }
+
+  def print_ver [name: string, ver: string] {
+    print $"(ansi green)  ✓ ($name) ($ver)(ansi reset)"
+  }
+
+  print $"(ansi white_bold)Environment(ansi reset)"
+
+  if (found Go go) {
+    go version | parse "go version go{version} {_}" | get version.0 | print_ver Go $in
+  }
+
+  if (found Bun bun) {
+    bun --version | print_ver Bun $in
+  }
+
+  if (found Nushell nu) {
+    nu --version | print_ver Nushell $in
+  }
+
+  if (found Just just) {
+    just --version | parse "{_} {version}" | get version.0 | print_ver Just $in
+  }
+
+  if (found Wails wails3) {
+    wails3 version e>| print_ver Wails $in
+  }
+
+  if (found UPX upx) {
+    upx --version | parse "{_} {version}\n{_}" | get version.0 | print_ver UPX $in
+  }
+
+  if (found 7z 7z) {
+    7z | parse "{_} {version} {_}" | get version.0 | print_ver 7z $in
+  }
+
+  if (found "Inno Setup" "iscc") {
+    iscc | complete | get stdout | parse "Inno Setup {version} {_}" | get version.0 | print_ver "Inno Setup" $in
+  }
