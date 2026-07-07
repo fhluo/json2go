@@ -7,7 +7,7 @@ info:
   description: "Generate Go type definitions from JSON"
   copyright: "Copyright © 2022-2026 fhluo"
   comments: ""
-  version: "0.5.3"
+  version: "0.5.4"
 
 dev_mode:
   root_path: .

@@ -1,6 +1,6 @@
 #define AppName "json2go"
 #define AppExeName AppName + ".exe"
-#define AppVersion "0.5.3"
+#define AppVersion "0.5.4"
 #define GOOS "windows"
 #define GOARCH "amd64"
 #define RootDir "..\..\.."
