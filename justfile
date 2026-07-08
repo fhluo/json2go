@@ -7,7 +7,7 @@ extension := if goos == "windows" {
   ""
 }
 app := "json2go"
-version := "0.5.4"
+version := "0.5.5"
 cli := app + "-cli"
 cli_file := cli + extension
 ci := if env("GITHUB_ACTIONS", "false") == "true" {

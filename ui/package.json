@@ -1,6 +1,6 @@
 {
   "name": "json2go",
-  "version": "0.5.4",
+  "version": "0.5.5",
   "private": true,
   "type": "module",
   "scripts": {
