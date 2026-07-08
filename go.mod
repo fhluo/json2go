@@ -13,10 +13,10 @@ require (
 	github.com/spf13/cobra v1.10.2
 	github.com/spf13/viper v1.21.0
 	github.com/stretchr/testify v1.11.1
-	github.com/wailsapp/wails/v3 v3.0.0-alpha2.115
+	github.com/wailsapp/wails/v3 v3.0.0-alpha2.117
 	golang.design/x/clipboard v0.8.0
-	golang.org/x/sys v0.46.0
-	golang.org/x/text v0.39.0
+	golang.org/x/sys v0.47.0
+	golang.org/x/text v0.40.0
 )
 
 require (
