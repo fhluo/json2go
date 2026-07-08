@@ -1,6 +1,6 @@
 module github.com/fhluo/json2go
 
-go 1.27rc1
+go 1.27rc2
 
 require (
 	github.com/Masterminds/semver v1.5.0
