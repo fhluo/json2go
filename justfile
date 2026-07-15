@@ -276,22 +276,22 @@ build-wails: tidy generate-bindings web-build generate-icons
 build-wails-prod: tidy generate-bindings web-build generate-icons
   go build -tags production -trimpath -buildvcs=false -ldflags="-w -s" -o ../bin/{{app}}{{extension}}
 
-[group: 'packge']
+[group: 'package']
 package: package-cli package-app
 
-[group: 'packge']
+[group: 'package']
 [working-directory: 'bin']
 [windows]
 package-cli: build-cli upx-cli
    7z a -mx9 {{cli}}-{{version}}-{{goos}}-{{goarch}}.zip {{cli_file}}
 
-[group: 'packge']
+[group: 'package']
 [working-directory: 'bin']
 [unix]
 package-cli: build-cli
   tar -czf {{cli}}-{{version}}-{{goos}}-{{goarch}}.tar.gz {{cli_file}}
 
-[group: 'packge']
+[group: 'package']
 [working-directory: 'app/build/windows']
 [windows]
 iscc:
@@ -317,7 +317,7 @@ iscc:
   wails3 generate webview2bootstrapper -dir . e>| ignore
   ISCC json2go.iss
 
-[group: 'packge']
+[group: 'package']
 [working-directory: 'app']
 [windows]
 package-app: build-wails-prod upx-app iscc
